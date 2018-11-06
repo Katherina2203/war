@@ -1,0 +1,1 @@
+The database of electronic components with possibility for leave requests.
