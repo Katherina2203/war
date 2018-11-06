@@ -51,6 +51,7 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                         'data-toggle'=>'tooltip',
                         'style'=>' cursor:pointer;color:red'
                     ]);?>
+        
         <?php Modal::begin([
                 'header' => '<b>' . Yii::t('app', 'Create new Request') . '</b>',
                 'id' => 'modalRequest',

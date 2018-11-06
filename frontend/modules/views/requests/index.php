@@ -28,7 +28,8 @@ $this->title = 'Журнал заявок';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="requests-index">
-     <ul class="nav nav-tabs">
+    
+    <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="<?= Url::to(['requests/index']) ?>"><?= 'All requests' ?></a></li>
         <li role="presentation"><a href="<?= Url::to(['requests/myrequests', 'iduser' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'My Requests' ?></a></li>
        
@@ -39,16 +40,22 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box box-solid bg-gray-light" style="background: #fff;">
             <div class="box-body">
                 <span>Поиск по:</span>
-                <?php //border: 1px solid #d2d6de;
-                echo $this->render('_search', ['model' => $searchModel]); ?>
+                <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             </div>
         </div>
     </div>
   
     <p>
-        <?= Html::a('Создать заявку', ['create', 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-success']) ?>
+         <?php echo Html::tag('span',
+                Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create', 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-success']),
+                    [
+                        'title'=> yii::t('app', 'Создать заявку'),
+                        'data-toggle'=>'tooltip',
+                        'style'=>' cursor:pointer;color:red'
+                    ]);?>
     </p>
-    <?php Pjax::begin(['id' => 'requests']); ?>    
+    
+  <?php Pjax::begin(['id' => 'requests']); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
