@@ -1,0 +1,62 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\widgets\DetailView;
+use yii\widgets\Pjax;
+use yii\helpers\ArrayHelper;
+/* @var $this yii\web\View */
+/* @var $model common\models\Processingrequest */
+/* @var $form yii\widgets\ActiveForm */
+?>
+<?php
+    $this->registerJs(
+        '$("document").ready(function(){
+            $("#new_process").on("pjax:end", function() {
+            $.pjax.reload({container:"#checkprocess"});  //Reload GridView
+        });
+    });'
+    );
+?>
+<div class="processingrequest-form">
+    <span>Укажите исполнителя заявки</span>
+    <?php Pjax::begin(['id' => 'new_process']) ?>
+        <?php $form = ActiveForm::begin(['options' => ['enctype'=>'multipart/form-data']]); ?>
+            <?=  $form->field($model, 'idresponsive')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
+                   ['prompt'=>'Select Person']) 
+                   ?>
+
+           <?php //echo $form->field($model, 'idrequest')->textInput(['style'=>'width:100px'])?>
+
+           <?= $form->field($model, 'idpurchasegroup')->radioList(ArrayHelper::map(\common\models\Users::find()->select(['surname','id'])->where(['role' => '2'])->all(), 'id', 'surname'),
+                   ['prompt'=>'Select Person']) 
+                   ?>
+
+
+           <div class="form-group">
+               <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+           </div>
+
+        <?php ActiveForm::end(); ?>
+    <?php Pjax::end(); ?>
+</div>
+
+<div>
+    <?php  if(isset($model->idrequest)){ ?>
+        <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'idprocessing',
+            'idpurchasegroup',
+            'idresponsive',
+            'idrequest',
+            'created_at',
+         //   'updated_at',
+            
+        ],
+    ]) ?>
+    <?php }?>
+     
+</div>
+
+
