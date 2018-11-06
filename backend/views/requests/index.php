@@ -126,6 +126,7 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                 'attribute' => 'created_at',
                // 'label' => Yii::t('requests/view', 'required'),
                 'format' => ['date', 'php:Y-m-d'],
+              
                
                
             ],

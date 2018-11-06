@@ -120,10 +120,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'required_date',
-               // 'label' => Yii::t('requests/view', 'required'),
                 'format' => ['date', 'php:Y-m-d'],
-               
-               
+                'value' => $model->required_date != null ? $model->required_date : NULL,
             ],
             [
                 'attribute' => 'idproject',

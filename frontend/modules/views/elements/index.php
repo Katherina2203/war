@@ -26,7 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="elements-index">
     <p>
-        <?= Html::a('Создать новый товар', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::tag('span',
+                Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'], ['class' => 'btn btn-success']), 
+                [
+                        'title'=> yii::t('app', 'Создать новый товар'),
+                        'data-toggle'=>'tooltip',
+                        'style'=>' cursor:pointer;color:red'
+                    ]);?>
     </p>
 
     <div class="search-form">
@@ -37,8 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="sort">
                 <div class="box-body">
-                    <span><?= yii::t('app', 'Sort by')?>:</span>
-                     <?php  echo $this->render('_sort', ['model' => $searchModel]); ?>
+                    <span><?php  yii::t('app', 'Sort by')?></span>
+                     <?php   $this->render('_sort', ['model' => $searchModel]); ?>
                 </div>
             </div>
         </div>
