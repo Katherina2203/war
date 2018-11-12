@@ -356,7 +356,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </div>
 
-
+<div class="row">
+    <div class='col-sm-6'>
+        <div class="box box-primary">
+            <div class="box-header with-border"><h3 class="box-title">Вернули на склад</h3></div>
+            <div class="box-body">
+                <?= GridView::widget([
+                    'dataProvider' => $dataProviderreceipt,
+                //'filterModel' => $searchModelacc,
+                    'showOnEmpty' => false,
+                    'emptyText' => '<table><tbody></tbody></table>',
+                    'columns' => [
+                      //  'idreturn',
+                        'quantity',
+                        'created_at',
+                    ],
+                    ]);
+                ?>
+            </div>
+        </div>
+    </div>  
+</div>
 <div class="row">
     <div class='col-sm-12'>
     <div class="box box-primary">
@@ -405,10 +425,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ], 
             [
                 'attribute' => 'idboart',
-                'value' => function($data){
-                  //  return $data->boards->BoardnameId;
+                'format' => 'raw',
+                'value' => function($data, $url){
+                    $url = Url::to(['boards/view', 'id' => $data->idboart]);
+                    return html::a($data->boards->BoardnameId, $url);//$data->boards->BoardnameId = '0' ? '-' :
                 },
-                'format' => 'text',
                 'filter' => Html::activeDropDownList($searchModelout, 'idboart', ArrayHelper::map(\common\models\Boards::find()->select(['idboards', 'name'])->where(['discontinued' => '1'])->all(), 'idboards', 'BoardnameId'),['class'=>'form-control','prompt' => 'Выберите плату']),
             ], 
             'ref_of_board',

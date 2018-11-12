@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     
     <ul class="nav nav-tabs">
+        
         <li role="presentation"><a href="<?= Url::to(['requests/index']) ?>"><?= 'All requests' ?></a></li>
         <li role="presentation" class="active"><a href="<?= Url::to(['requests/myrequests', 'iduser' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'My Requests' ?></a></li>
         <!--<li role="presentation" ><a href="#"><span class="glyphicon glyphicon-comment"></span> <?=  'Created by {name}'?></a></li>-->

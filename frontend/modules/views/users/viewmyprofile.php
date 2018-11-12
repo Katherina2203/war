@@ -33,7 +33,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'captionOptions' => ['tooltip' => 'Tooltip'], 
                 'contentOptions' => ['class' => 'bg-red'],   
             ],
-            'password:ntext',
+            [
+                'attribute' => 'password',
+                'format' => 'raw',
+                'value' => function($data, $url){
+
+                    $url = Url::to(['changepassword', \yii::$app->user->identity]);
+                  
+                          return   Html::a('Change password', $url);
+           
+                  
+                },
+            ],
+            
             'email:email',
             [
                 'attribute' => 'birthday',
