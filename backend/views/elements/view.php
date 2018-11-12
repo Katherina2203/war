@@ -405,10 +405,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ], 
             [
                 'attribute' => 'idboart',
-                'value' => function($data){
-                  //  return $data->boards->BoardnameId;
+                'format' => 'raw',
+                'value' => function($data, $url){
+                    $url = Url::to(['boards/view', 'id' => $data->idboart]);
+                    return html::a($data->boards->BoardnameId, $url);//$data->boards->BoardnameId = '0' ? '-' :
                 },
-                'format' => 'text',
                 'filter' => Html::activeDropDownList($searchModelout, 'idboart', ArrayHelper::map(\common\models\Boards::find()->select(['idboards', 'name'])->where(['discontinued' => '1'])->all(), 'idboards', 'BoardnameId'),['class'=>'form-control','prompt' => 'Выберите плату']),
             ], 
             'ref_of_board',
