@@ -356,7 +356,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </div>
 
-
+<div class="row">
+    <div class='col-sm-6'>
+        <div class="box box-primary">
+            <div class="box-header with-border"><h3 class="box-title">Вернули на склад</h3></div>
+            <div class="box-body">
+                <?= GridView::widget([
+                    'dataProvider' => $dataProviderreceipt,
+                //'filterModel' => $searchModelacc,
+                    'showOnEmpty' => false,
+                    'emptyText' => '<table><tbody></tbody></table>',
+                    'columns' => [
+                      //  'idreturn',
+                        'quantity',
+                        'created_at',
+                    ],
+                    ]);
+                ?>
+            </div>
+        </div>
+    </div>  
+</div>
 <div class="row">
     <div class='col-sm-12'>
     <div class="box box-primary">

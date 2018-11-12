@@ -161,6 +161,12 @@ class ElementsController extends Controller
         $dataProviderout = new ActiveDataProvider([
             'query' => $queryout,
         ]);
+        
+        $searchModelreceipt = new \backend\models\ReturnitemSearch();
+        $queryreceipt = Returnitem::find()->where(['idelement' => $id])->orderBy('created_at DESC');
+        $dataProviderreceipt = new ActiveDataProvider([
+            'query' => $queryreceipt,
+        ]);
            
         return $this->render('view', [
          //   'pages' => $pages,
@@ -173,6 +179,8 @@ class ElementsController extends Controller
             'dataProviderpur' => $dataProviderpur,
             'dataProviderout' => $dataProviderout,
             'searchModelout' => $searchModelout,
+            'searchModelreceipt' => $searchModelreceipt,
+            'dataProviderreceipt' => $dataProviderreceipt,
         ]);
     }
     
