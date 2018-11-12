@@ -41,7 +41,7 @@ class RequestsSearch extends Requests
      */
     public function search($params)
     {
-        $query = Requests::find()-> with(['elements'])->orderBy('created_at DESC');
+        $query = Requests::find()-> with(['elements']);//->orderBy('idrequest DESC')
 
         // add conditions that should always apply here
 
