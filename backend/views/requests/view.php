@@ -112,6 +112,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => ArrayHelper::getValue($model, 'themes.name')
                     ],
                     [
+                        'attribute' => 'idboard',
+                        'value' => ArrayHelper::getValue($model, 'board.name')
+                    ],
+                    [
                         'attribute' => 'idsupplier',
                         'value' => $model->idsupplier !=null ? ArrayHelper::getValue($model, 'supplier.name') : '-',
                     ],

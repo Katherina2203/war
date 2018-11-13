@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
+    <?php //$form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
 

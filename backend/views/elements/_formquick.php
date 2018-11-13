@@ -16,7 +16,7 @@ use dosamigos\datepicker\DatePicker;
 
 <div class="requestquick-response"></div>
 <div class="requestquick-form">
-
+<?php Pjax::begin(['id' => 'quickorder']); ?>
     <?php $form = ActiveForm::begin(
             ['options' => ['data-pjax' => true]]
             ); ?>
@@ -27,6 +27,10 @@ use dosamigos\datepicker\DatePicker;
                 ->all(),
                 'idtheme', 
                 'name'),['prompt'=>'Выберете проект']); ?>
+    
+            <?= $form->field($model, 'idboard')->textInput()->input('№ платы', ['placeholder' => "Enter number pcb"])->label(false)
+                   
+                     ?>
 
             <?= $form->field($model, 'quantity')->textInput() ?>
           
@@ -38,6 +42,7 @@ use dosamigos\datepicker\DatePicker;
                         'format' => 'yyyy-mm-dd'
                     ]
                   ]); ?>
+    
             <?= $form->field($model, 'note')->textarea(['rows' => 2]) ?>
     
             <?= $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
@@ -51,5 +56,5 @@ use dosamigos\datepicker\DatePicker;
                         ?>
         </div>
     <?php ActiveForm::end(); ?>
-<?php //Pjax::end() ?>
+<?php Pjax::end() ?>
 </div>

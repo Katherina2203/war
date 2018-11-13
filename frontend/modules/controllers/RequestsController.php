@@ -386,7 +386,7 @@ class RequestsController extends Controller
         $model = new Requests();
         $model->iduser = $iduser;
             
-        $query = Requests::find()->where(['iduser' => $iduser])->orderBy('created_at DESC')->orderBy('status ASC');
+        $query = Requests::find()->where(['iduser' => $iduser])->orderBy('created_at DESC');//->orderBy('status ASC')
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
