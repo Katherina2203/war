@@ -101,9 +101,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="container-items">
             
             <div class="container-items"><!-- widgetContainer -->
-
+                <div>
+                    <?= Html::a('Недостачи', ['shortage', 'idboard' => $model->idboards], ['class' => 'btn btn-primary']) ?>
+                </div>
                        <div class="item panel panel-default"><!-- widgetBody -->
                            <div class="panel-heading">
+                               
                                <h3 class="panel-title pull-left">Elements</h3>
                                <div class="pull-right">
                                    <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>

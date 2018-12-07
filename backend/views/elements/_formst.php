@@ -26,6 +26,7 @@ use common\models\Users;
         //themes/projects
         $themes = Themes::find()->where(['status' => 'active'])->all();
         $themeList = ArrayHelper::map($themes,'idtheme', 'name');
+       
         //units
         $units = Themeunits::find()->where(['idtheme' => 'themes.idtheme'])->all();
         $unitsList = ArrayHelper::map($units, 'idunit', 'nameunit');

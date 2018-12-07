@@ -18,6 +18,7 @@ use common\models\Themes;
 use common\models\Themeunits;
 use common\models\Elements;
 use backend\models\ElementsSearch;
+use common\models\Shortage;
 
 use common\models\BoardsQuery;
 /**
@@ -164,7 +165,7 @@ class BoardsController extends Controller
              ]);
     }
     
-     public function actionThemeunit() 
+    public function actionThemeunit() 
     {
         $out = [];
     if (isset($_POST['depdrop_parents'])) {
@@ -183,6 +184,20 @@ class BoardsController extends Controller
         }
     }
     echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+    public function actionShortage($idboard) 
+    {
+        $model = $this->findModel($idboard);
+        $modelsh = new Shortage();
+        $searchModelsh = new \backend\models\ShortageSearch();
+        
+          return $this->render('shortage', [
+             'model' => $model,
+             'modelsh' => $modelsh,
+             'searchModelsh' => $searchModelsh,
+ 
+             ]);
+        
     }
     /**
      * Deletes an existing Boards model.

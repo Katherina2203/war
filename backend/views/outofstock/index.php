@@ -27,7 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'idofstock',
-            'idelement',
+            [
+                'attribute' => 'idelement',
+                'value' => function($data){
+                    return $data->elements->name . ', ' . $data->elements->nominal;
+                }
+            ],
+            
             [
                 'attribute' => 'iduser',
                 'value' => 'users.surname',
