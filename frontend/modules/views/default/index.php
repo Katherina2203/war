@@ -52,48 +52,72 @@ $this->title = 'Мой профиль';
             <?php ActiveForm::end(); ?>
         </div> 
       
-      <div class="row">
-        <div class="col-md-4">
-            <div class="box box-danger">
+    <div class="row">
+        <div class="col-md-6">
+          
+            <div class=" box box-warning">
                 <div class="box-header with-border"><i class="glyphicon glyphicon-signal"></i><h3 class="box-title">Мои заявки</h3></div>
-
                 <div class="box-body">
-                <div class="col-sm-3">
-                    <center>
-                        <h3><?= Html::a(count($modelrequests->idrequest), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=0 ?></h3>
-                        <?= Html::a('Новые', ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id]) ?>
-                    </center>
-                </div>
-                <div class="col-sm-3">
-                    <center>
-                        <h3><?= Html::a(count($modelrequests->idrequest), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=0 ?></h3>
-                        <?= Html::a('Активные', ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id]) ?>
-                    </center>
-                </div>
-                <div class="col-sm-3">
-                    <center>
-                        <h3><?= Html::a(count($modelrequests->idrequest), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=0 ?></h3>
-                        <?= Html::a('Заблокировано', ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id]) ?>
-                    </center>
-                </div>
+                    <div class="col-sm-4 border-right">
+                        <center>
+                            <h3><?= Html::a($statusactive = 15, ['/requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=0 ?></h3>
+                            <span class="description-text">Не обработаны</span>
+                            
+                        </center>
+                    </div>
+                    <div class="col-sm-4 border-right">
+                        <center>
+                            <h3><?= Html::a(count($modelrequests->idrequest), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=1 ?></h3>
+                            <span class="description-text">Активные</span>
+                        </center>
+                    </div>
+                    <div class="col-sm-4">
+                        <center>
+                            <h3><?= Html::a(count($modelrequests->idrequest), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=2 ?></h3>
+                            <span class="description-text">Заблокировано</span>        
+                        </center>
+                    </div>
                 </div>  
             </div><!--/.box-->
         </div>
-      </div><!--/.row-->
+        <div class="col-md-6">
+             <div class="box bg-info box-danger">  
+                <div class="box-header with-border">
+                    <div class="box-title"><?php echo Yii::t('app', 'Welcome, '), Yii::$app->user->identity->surname. ' '. Yii::$app->user->identity->name. '! ';?></div>
+                    <div class="box-tools pull-right" >
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="modal-body">
+                        <span>Приветствуем вас в системе. Посмотрите <a href="<?= yii::$app->urlManager->createUrl(['/myaccount/default/instruction'])?>" style="color: red">инструкцию</a> по работе c данной системой. <br/>
+                            </span>
+                        <p>В <?= Html::a('Мои данные', ['users/myprofile', 'id' => yii::$app->user->identity->id], ['style' => 'color:red']) ?> можно внести или отредактировать свои личные данные</p>
+                    </div>
+               
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            
+        </div>
+        
+    </div><!--/.row-->
        
       <div class="row">   
         <div class="col-md-8">
             <!--Form for create request-->
-           <div class="box box-success">
+            <div class="box box-success">
                 <div class="box-header with-border"><i class="glyphicon glyphicon-envelope"></i><h3 class="box-title">Создать заявку</h3>
                     <div class="pull-right box-tools">
                        
-                         <button class="btn btn-info" data-widget="collapse"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn btn-info" data-widget="collapse"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                     </div>
                 </div>
                 <div class="box-body">
                     <div class="requests-create">
-                      <?php Pjax::begin(); ?>
+                        <?php Pjax::begin(); ?>
                             <?= $this->render('_formrequest', [
                                         'model' => $modelrequests,
                             ]) ?>
@@ -104,35 +128,7 @@ $this->title = 'Мой профиль';
    
     
         <div class="col-md-4">
-            <div class="box">
-             <div class="box-solid bg-primary">  <!--style="border: 1px solid #9acfea;"  small-box bg-info-->
-                <div class="box-header with-border"><?php echo Yii::t('app', 'Welcome, '), Yii::$app->user->identity->surname. '! ';?></div>
-                <div class="box-body">
-                    <div class="modal-body">
-                        <span>Приветствуем вас в системе. Посмотрите <a href="<?= yii::$app->urlManager->createUrl(['/myaccount/default/instruction'])?>" style="color: red">инструкцию</a> по работе c данной системой. <br/>
-                             Если вы не нашли ответа на свой вопрос, обратитесь к администрации. </span>
-                        <p>В <?= Html::a('Мои данные', ['users/myprofile', 'id' => yii::$app->user->identity->id], ['style' => 'color:red']) ?> можно внести или отредактировать свои личные данные</p>
-                    </div>
-               
-                </div>
-            </div>
-            </div>
-
-            <div class="info-box">
-                <!-- Apply any bg-* class to to the icon to color it -->
-                <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-tree-deciduous"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Языки</span>
-                    <span><?= Yii::t('app', 'Current language: ') . '<strong>' . Yii::$app->language . '</strong>';?></span>
-                    <span class="info-box-number">
-                          <?= LanguageSelector::widget(); ?>
-                    </span>
-                  
-                </div><!-- /.info-box-content -->
-            </div><!-- /.info-box -->
-              
-              
-            <div class="box box-solid">
+            <div class="box box-default">
                 <div class="box-header with-border"><i class="glyphicon glyphicon-tree-tasks"></i><h3 class="box-title">Объявления</h3></div>
                 <div class="box-body">
                     <?php 

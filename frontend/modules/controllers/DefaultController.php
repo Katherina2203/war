@@ -33,8 +33,10 @@ class DefaultController extends Controller
         $searchModelreq = new RequestsSearch();
         $searchElements = new ElementsSearch();
         
+        $statusactive =count($modelrequests->idrequest);
         
-        $query = Requests::find()->where(['status' => '0'])->andWhere(['iduser' => yii::$app->user->identity->id])->orderBy('created_at DESC'); //->orderBy('created_at DESC')->all();
+        
+        $query = Requests::find()->where(['status' => '0'])->andWhere(['iduser' => yii::$app->user->identity->id])->orderBy('created_at DESC')->groupBy('status'); //->all();
         $dataProviderreq = new ActiveDataProvider([
             'query' => $query,
               'pagination' => [
@@ -81,9 +83,10 @@ class DefaultController extends Controller
             'dataProviderreq' => $dataProviderreq,
            // 'dataProviderconf' => $dataProviderconf,
             'dataProviderpay' => $dataProviderpay,
-            'dataProviderTheme'=>$dataProviderTheme,
+            'dataProviderTheme' => $dataProviderTheme,
             'searchElements' => $searchElements,
-            'searchModelTheme'=>$searchModelTheme
+            'searchModelTheme' => $searchModelTheme,
+            'statusactive' => $statusactive
             ]);
     }
     /*

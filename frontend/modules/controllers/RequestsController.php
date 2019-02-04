@@ -54,7 +54,7 @@ class RequestsController extends Controller
                     //    'roles' => ['updateOwnPost'],
                     ],
                     [
-                        'actions' => ['checkprocess', 'changestatus', 'updatestatus', 'viewprocess'],
+                        'actions' => ['checkprocess', 'changestatus', 'updatestatus', 'viewprocess', 'myrequests'],
                         'allow' => true,
                         'roles' => ['admin', 'PurchasegroupAccess', 'head'],
                     ],
@@ -385,6 +385,7 @@ class RequestsController extends Controller
         $searchModel = new RequestsSearch();
         $model = new Requests();
         $model->iduser = $iduser;
+        //$statusactive = count($model->idrequest);
             
         $query = Requests::find()->where(['iduser' => $iduser])->orderBy('created_at DESC');//->orderBy('status ASC')
         $dataProvider = new ActiveDataProvider([
