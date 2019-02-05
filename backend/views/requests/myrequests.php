@@ -132,13 +132,13 @@ $getSupplier = ArrayHelper::map($modelSupp::find()->select(['idsupplier', 'name'
               //  'filter' => Html::activeDropDownList($searchModel, 'status', $gridColumns),
                 'value'=> function($model){
                     if($model->status == '0'){ //not active
-                       return '<span class="glyphicon glyphicon-unchecked" style="color: #d05d09"> Не обработано</span>';
+                       return '<span class="label label-warning glyphicon glyphicon-unchecked"> Не обработано</span>'; // style="color: #d05d09"
                     }elseif($model->status == '1'){//active
-                       return '<span class="glyphicon glyphicon-ok" style="color: green"> Активна</span>';
+                       return '<span class="label label-success glyphicon glyphicon-ok"> Активна</span>';// style="color: green"
                     } elseif($model->status == '2'){//cancel
-                       return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d"> Отменено</span>';
+                       return '<span class="label label-error glyphicon glyphicon-remove"> Отменено</span>'; // style="color: #b02c0d"
                     }elseif($model->status == '3'){ //done
-                       return '<span class="glyphicon glyphicon-saved" style="color:grey"> Выполнено</span>';
+                       return '<span class="label label-info glyphicon glyphicon-saved" style="color:grey"> Выполнено</span>';
                     };
                 },
                 'filter' => ['0'=> 'Не обработано', '1' => 'Активна','2' => 'Отменено','3' => 'Выполнено']

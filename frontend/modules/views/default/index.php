@@ -8,6 +8,7 @@ use yii\widgets\Pjax;
 use common\widgets\NewExecutorWidget; 
 use yii\helpers\Url;
 use common\widgets\LanguageSelector;
+use yii\widgets\ListView;
 
 
 
@@ -155,8 +156,13 @@ $this->title = 'Мой профиль';
       <div class="row">
           <div class="col-md-6">
               <div class="box box-warning">
-                <div class="box-header with-border"><i class="glyphicon glyphicon-tree-tasks"></i><h3 class="box-title">Текущие проекты</h3></div>
+                <div class="box-header with-border"><i class="glyphicon glyphicon-tree-tasks"></i><h3 class="box-title">Текущие проекты</h3>
+                    <div class="pull-right box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
                 <div class="box-body">
+                   
                     <?php Pjax::begin(); ?>
                             <?= $this->render('_projectlist', [
                                         'model' => $modelTheme,
@@ -178,6 +184,9 @@ $this->title = 'Мой профиль';
                                         'searchModelreq' => $searchModelreq
                             ]) ?>
                     <?php Pjax::end(); ?>
+                </div>
+                <div class="box-footer text-center">
+                    <?=  Html::a(Html::encode('View all Requests'), Url::to(['requests/myrequests', 'iduser' => yii::$app->user->identity->id]));?>
                 </div>
                 </div>
           </div>

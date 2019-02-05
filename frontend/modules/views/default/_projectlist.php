@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 use common\models\Themes;
+//use yii\data\ActiveDataProvider;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ThemesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -12,27 +13,24 @@ use common\models\Themes;
 $this->title = 'Текущие проекты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+ 
 
-<?php Pjax::begin(['id' => 'themes-indexshort']); ?> 
+
     <?php  
-  
-        $dataProviderChild = new ActiveDataProvider([
-            'query'=> Category::find()->where("parent=:parent", [":parent"=>$model->idcategory])->groupBy('idcategory')->orderBy('name ASC') //, [":parent"=>$model->idcategory = 1]
-        ]); 
-        
         echo '<ul>';
-        foreach ($dataProviderChild->models as $child) {
+            foreach ($dataProviderTheme->models as $project) {
             echo "<li>";
-                echo  Html::a(Html::encode($child->name). '  <span class="badge">' . $model->elements_count. '</span>', Url::to(['elements/viewcat', 'idcategory' => $child->idcategory])); //. '  <span class="badge">' . $model->elements_count. '</span>'
-            echo '</li>';
-            }?>
-    </ul>
-    ]);?>
+                    echo  Html::a(Html::encode($project->name), Url::to(['themes/units', 'idtheme' => $project->idtheme]), ['class' => 'product-title']);
+                    echo '</li>';
+                    }?>
+        </ul>
+
+   
     <?= GridView::widget([
         'dataProvider' => $dataProviderTheme,
       //  'filterModel' => $searchModelTheme,
         'pjax' => true,
-        'striped' => true,
+       // 'striped' => true,
         'condensed' => true,
         'responsive' => true,
         'hover' => true,
@@ -60,6 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ],
     ]); ?>
-<?php Pjax::end(); ?>  
+
 
 
