@@ -137,6 +137,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+              
+                'label' => 'Invoice',  
+            ],  
+            [
                 'attribute' => 'idrequest',
                 'label' => 'Примечание',
                 'value' => 'requests.note',
