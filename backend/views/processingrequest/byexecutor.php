@@ -115,7 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
              //   'value' => 'prices.price',
                 'value'=>   call_user_func(function($modelPurchase){//call_user_func
-                    return ArrayHelper::getValue($modelPurchase, 'prices.price');
+                 //   return ArrayHelper::getValue($modelPurchase, 'prices.price');
                 }, $model),
             ],
             [
