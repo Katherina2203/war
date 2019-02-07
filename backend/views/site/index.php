@@ -56,48 +56,53 @@ $this->title = 'Мой профиль';
     <section class="connectedSortable">
        
     <div class="row">
-        <div class="col col-md-4">
-        <div class="box">
-            <div class="box-header with-border"><i class="glyphicon glyphicon-signal"></i><h3 class="box-title">Статистика заявок</h3></div>
+       <div class="col-md-6">
+          
+            <div class=" box box-warning">
+                <div class="box-header with-border"><i class="glyphicon glyphicon-signal"></i><h3 class="box-title">Мои заявки</h3></div>
                 <div class="box-body">
-                    <div class="col-sm-3">
-                        <center><h3><?= Html::a('1', ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id]) ?></h3>
-                            <?= Html::a('Новые', ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id]) ?>
+                    <div class="col-sm-4 border-right">
+                        <center>
+                            <h3><?= Html::a($statusactive = 15, ['/requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=0 ?></h3>
+                            <span class="description-text">Не обработаны</span>
+                            
                         </center>
                     </div>
-                    <div class="col-sm-3">
-                        <center><div class="box-request"><h3>2</h3></div>
-                           <?= Html::a('Мои  заявки', ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id]) ?>
+                    <div class="col-sm-4 border-right">
+                        <center>
+                            <h3><?= Html::a($statusactive = 4, ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=1 ?></h3>
+                            <span class="description-text">Активные</span>
                         </center>
                     </div>
-                    <div class="col-sm-3">
-                        <center><h3>0</h3>
-                            <?= Html::a('Заблокировано', ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id]) ?>
+                    <div class="col-sm-4">
+                        <center>
+                            <h3><?= Html::a(count($modelrequests->idrequest), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=2 ?></h3>
+                            <span class="description-text">Заблокировано</span>        
                         </center>
+                    </div>
+                </div>  
+            </div><!--/.box-->
+        </div>
+         <div class="col-md-6">
+             <div class="box bg-info box-danger">  
+                <div class="box-header with-border">
+                    <div class="box-title"><?php echo Yii::t('app', 'Welcome, '), Yii::$app->user->identity->surname. ' '. Yii::$app->user->identity->name. '! ';?></div>
+                    <div class="box-tools pull-right" >
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                     </div>
                 </div>
-        </div>
-        </div> <!-- end class col-md-6-->
-        <div class="col col-md-2">
-            <div class="box box-solid">
-                <div class="box-body bg-gray-light language">
-                    <div class="box-header with-border"><i class="glyphicon glyphicon-tree-deciduous"></i><h3 class="box-title">Языки</h3></div>
-                    <div id="current-lang">
-                        <span class="box-title"><?= Yii::t('app', 'Current language:') . Yii::$app->language;?></span>
-                        <!--    <div  id="language-selector" class="pull-left" style="position: relative; top: 60px;">
-                                <?= common\widgets\LanguageSelector::widget(); ?>
-                            </div>-->
+                <div class="box-body">
+                    <div class="modal-body">
+                        <span>Приветствуем вас в системе. Посмотрите <a href="<?= yii::$app->urlManager->createUrl(['/myaccount/default/instruction'])?>" style="color: red">инструкцию</a> по работе c данной системой. <br/>
+                            </span>
+                        <p>В <?= Html::a('Мои данные', ['users/myprofile', 'id' => yii::$app->user->identity->id], ['style' => 'color:red']) ?> можно внести или отредактировать свои личные данные</p>
                     </div>
-                    <div class="small-box-footer">
-                        <select>
-                            <option>English</option>
-                            <option>Русский</option>
-                        </select>
-                    </div>
-                 
+               
                 </div>
             </div>
-        </div> <!-- end class col-md-2-->
+        </div>
+        
+        
         <div class="col col-md-3">
             <div class="box-solid bg-info">  <!--style="background: #d7ecf7; border: 1px solid #9acfea;"   small-box bg-info-->
                 <div class="box-header with-border"><?php echo Yii::t('app', 'Welcome, '), Yii::$app->user->identity->surname. '! ';?></div>
@@ -138,28 +143,27 @@ $this->title = 'Мой профиль';
                     </div>
             </div>
         </div>
-        <div class="col col-md-3">
-            <div class="box box-solid">
-                <div class="box-header with-border"><i class="glyphicon glyphicon-tree-tasks"></i><h3 class="box-title">Объявления</h3></div>
-                <div class="box-body">
-                    <?php 
-                        $model = common\models\Adverts::find()->all();
-                        if(count($model)):?>
-                        <?php foreach ($model as $advert):?>
-                            <div class="block-advert" style="border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; background-color: #F7F7F7">
-                       <div class="adverts-date" style="color: grey; padding-left: 20px;padding-top: 10px;"><?= $advert->created_at?></div>
-                       <div class="textadvert" style="padding: 10px; ">
-                                   <p><?= $advert->content?></p>
-                            </div>       
-                        </div>
-                    <?php endforeach;?>
-               <?php endif ?> 
-               </div>
-            </div>
-        </div>
+     
     </div>    <!-- end class row-->    
     
     <div class="row"> 
+         <div class="col-md-6">
+              <div class="box box-info">
+                <div class="box-header with-border"><i class="glyphicon glyphicon-tree-tasks"></i><h3 class="box-title">My requests</h3></div>
+                <div class="box-body">
+                    <?php Pjax::begin(); ?>
+                            <?= $this->render('_requestlist', [
+                                        'model' => $modelrequests,
+                                        'dataProviderreq' => $dataProviderreq,
+                                        'searchModelreq' => $searchModelreq
+                            ]) ?>
+                    <?php Pjax::end(); ?>
+                </div>
+                <div class="box-footer text-center">
+                    <?=  Html::a(Html::encode('View all Requests'), Url::to(['requests/myrequests', 'iduser' => yii::$app->user->identity->id]));?>
+                </div>
+                </div>
+          </div>
             <div class="col col-md-8">
                
             <?php Pjax::begin(['id' => 'requests-index']); ?>  
@@ -230,7 +234,26 @@ $this->title = 'Мой профиль';
            <?php Pjax::end(); ?> 
                  
         </div>
-
+           <div class="col col-md-3">
+            <div class="box box-solid">
+                <div class="box-header with-border"><i class="glyphicon glyphicon-tree-tasks"></i><h3 class="box-title">Объявления</h3></div>
+                <div class="box-body">
+                    <?php 
+                        $model = common\models\Adverts::find()->all();
+                        if(count($model)):?>
+                        <?php foreach ($model as $advert):?>
+                            <div class="block-advert" style="border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; background-color: #F7F7F7">
+                       <div class="adverts-date" style="color: grey; padding-left: 20px;padding-top: 10px;"><?= $advert->created_at?></div>
+                       <div class="textadvert" style="padding: 10px; ">
+                                   <p><?= $advert->content?></p>
+                            </div>       
+                        </div>
+                    <?php endforeach;?>
+               <?php endif ?> 
+               </div>
+            </div>
+        </div>
+</div>
     
             
     </section>
