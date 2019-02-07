@@ -21,6 +21,7 @@ class ElementsSearch extends Elements
         return [
             [['idelements', 'quantity', 'created_by' , 'edited_by', 'idcategory'], 'integer'],
             [['box', 'name', 'nominal', 'image', 'active', 'searchstring', 'idproduce'], 'safe'],
+            ['name', 'trim'],
         ];
     }
 
@@ -88,14 +89,20 @@ class ElementsSearch extends Elements
             'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'idelements', $this->idelements])
+        
+        $query = $query->andFilterWhere(['like', 'idelements', $this->idelements])
        //     ->andFilterWhere(['like', 'box', $this->box])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'nominal', $this->nominal])
+           // ->andFilterWhere(['like', 'nominal', $this->nominal])
           //  ->andFilterWhere(['like', 'nominal', $this->searchstring])
             ->andFilterWhere(['like', 'quantity', $this->quantity])
             ->andFilterWhere(['like', 'name', $this->searchstring])
             ->andFilterWhere(['like', 'active', $this->active]);
+        $nominalParam = preg_split('/\s+/', $this->nominal, -1, PREG_SPLIT_NO_EMPTY);
+        foreach($nominalParam as $sParam) {
+            $query->andFilterWhere(['like', 'nominal', $sParam]);
+        }
+        
 
         return $dataProvider;
     }
