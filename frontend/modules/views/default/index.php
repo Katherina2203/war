@@ -127,8 +127,22 @@ $this->title = 'Мой профиль';
                 </div>
             </div>
    
-    
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="box box-default">
+                <div class="box-header with-border"><i class="glyphicon glyphicon-tree-tasks"></i><h3 class="box-title">Мои платы</h3></div>
+                <div class="box-body">
+                     <?php Pjax::begin(); ?>
+                            <?= $this->render('_myboards', [
+                                        'model' => $modelBoard,
+                                        'dataProviderBoard'=>$dataProviderBoard,
+                                       // 'searchModelTheme'=>$searchModelBoard
+                            ]) ?>
+                    <?php Pjax::end(); ?>
+                </div>
+            </div><!-- /.box -->
+        </div>
+            
+        <div class="col-md-3">
             <div class="box box-default">
                 <div class="box-header with-border"><i class="glyphicon glyphicon-tree-tasks"></i><h3 class="box-title">Объявления</h3></div>
                 <div class="box-body">
@@ -145,11 +159,10 @@ $this->title = 'Мой профиль';
                  <?php endforeach;?>
             <?php endif ?> 
                 </div>
-       
- 
-           
+
             </div><!-- /.box -->
         </div>
+         
             
            
       </div> <!--/.row-->

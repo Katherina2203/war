@@ -26,8 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'idboard',
-            'ref_of',
             'idelement',
+            'ref_of',
             'quantity',
             // 'date',
 
