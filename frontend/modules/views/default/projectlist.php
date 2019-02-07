@@ -20,7 +20,7 @@ ListView::widget([
                                     'pagination' => $pages,
                                 ],        
                             'emptyText' => '<p>Список пуст</p>',
-                            'summary' => 'Показано {count} из {totalCount}',
+                            'summary' => '',//Показано {count} из {totalCount}
                         ])//;
                     ?>
 <?php Pjax::end(); ?>  
