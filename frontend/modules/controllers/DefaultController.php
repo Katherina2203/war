@@ -75,7 +75,7 @@ class DefaultController extends Controller
         $searchModelTheme = new \backend\models\ThemesSearch;
         $modelTheme = new Themes();
         
-        $queryBoard = Boards::find()->where(['discontinued' => '1'])->orderBy('created_at DESC');
+        $queryBoard = Boards::find()->where(['discontinued' => '1'])->andWhere(['current' => yii::$app->user->identity->id])->orderBy('created_at DESC');
         $dataProviderBoard = new ActiveDataProvider([
             'query' => $queryBoard,
         ]);

@@ -138,7 +138,11 @@ $this->title = 'Мой профиль';
                                        // 'searchModelTheme'=>$searchModelBoard
                             ]) ?>
                     <?php Pjax::end(); ?>
+                
+                 <div class="box-footer pull-left">
+                    <?=  Html::a(Html::encode('Create new board'), Url::to(['boards/create', 'iduser' => yii::$app->user->identity->id]), ['class' => 'btn btn-success']);?>
                 </div>
+                    </div>
             </div><!-- /.box -->
         </div>
             
