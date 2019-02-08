@@ -102,7 +102,7 @@ class ElementsSearch extends Elements
         foreach($nominalParam as $sParam) {
             $query->andFilterWhere(['like', 'nominal', $sParam]);
         }
-        
+        $query->orderBy(['quantity' => SORT_DESC]);
 
         return $dataProvider;
     }
