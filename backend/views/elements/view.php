@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div><!-- /end .row -->
 
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-sm-7">
         <div class="box box-warning">
             <div class="box-header with-border"><h3 class="box-title">История заказа</h3></div>
             <div class="box-body">
@@ -237,37 +237,43 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class='col-sm-4'>
             <div class="box">
                 <div class="box-header with-border"><h3 class="box-title">Цена</h3></div>
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider2,
-              //  'filterModel' => $searchModel2,
-                'showOnEmpty' => false,
-                'emptyText' => '<table><tbody></tbody></table>',
-                'columns' => [
-                    'idpr',
-                    [
-                        'attribute' =>  'unitPrice',
-                        'format' => 'raw',
-                        'value' => function($data){
-                               return $data->unitPrice. '/'. $data->forUP;
-                        },
-                    ],
-                    'pdv',
-                    'usd',
-                    [
-                         'attribute' => 'idsup',
-                         'value' => 'supplier.name',
-                     //    'filter' => Html::activeDropDownList($searchModel2, 'idsup', ArrayHelper::map(common\models\Supplier::find()->select(['idsupplier', 'name'])->indexBy('idsupplier')->all(), 'idsupplier', 'name'),['class'=>'form-control','prompt' => 'Выберите поставщика']),
-                    ],
-                    'created_at',
-                ], 
-            ]);
-           ?>
+                 <div class="box-body">
+                    <?= GridView::widget([
+                        'dataProvider' => $dataProvider2,
+                      //  'filterModel' => $searchModel2,
+                        'showOnEmpty' => false,
+                        'emptyText' => '<table><tbody></tbody></table>',
+                        'columns' => [
+                            'idpr',
+                            [
+                                'attribute' =>  'unitPrice',
+                                'format' => 'raw',
+                                'value' => function($data){
+                                       return $data->unitPrice. '/'. $data->forUP. '<br/><small style="color:grey">+'. $data->pdv . '</small>';
+                                },
+                            ],
+                            'usd',
+                            [
+                                'attribute' => 'idsup',
+                                'value' => 'supplier.name',
+                             //    'filter' => Html::activeDropDownList($searchModel2, 'idsup', ArrayHelper::map(common\models\Supplier::find()->select(['idsupplier', 'name'])->indexBy('idsupplier')->all(), 'idsupplier', 'name'),['class'=>'form-control','prompt' => 'Выберите поставщика']),
+                                'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],
+                            ],
+                            [
+                                'attribute' => 'created_at',
+                                'format' => ['date', 'php:Y-m-d'],
+                            ]
+                            
+                        ], 
+                    ]);
+                   ?>    
+                </div>
             </div>
         </div>
       
         
-        <div class="col-md-8">
-            <div class="box">
+        <div class="col-md-7">
+            <div class="box box-info">
               <div class="box-header with-border"><h3 class="box-title">Поступление на склад</h3></div>
              <div class="box-body">
              <?= GridView::widget([
@@ -276,6 +282,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'showOnEmpty' => false,
                 'emptyText' => '<table><tbody></tbody></table>',
                 'columns' => [
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{receipt}',
+                        'controller' => 'accounts',
+                        'buttons' => [
+                            'receipt' => function ($url,$model,$key) {
+                                $url = Url::to(['createreceipt', 'idord' => $key, 'idel' => $model->idelem]);
+                                return $model->status == '2' ? Html::a('<span class="glyphicon glyphicon-plus"></span>', $url,['title' => 'Прием товара'])
+                                : '';
+                            },
+                        ],
+                    ],
                     'idord',
                     [
                         'attribute' => 'quantity',
@@ -335,18 +353,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                    'date_receive',
                     //],
-                    [
-                        'class' => 'yii\grid\ActionColumn',
-                        'template' => '{receipt}',
-                        'controller' => 'accounts',
-                        'buttons' => [
-                            'receipt' => function ($url,$model,$key) {
-                                $url = Url::to(['createreceipt', 'idord' => $key, 'idel' => $model->idelem]);
-                                return $model->status == '2' ? Html::a('<span class="glyphicon glyphicon-plus"></span>', $url,['title' => 'Прием товара'])
-                                : '';
-                            },
-                        ],
-                    ],
+                   
                  ],
                 ]);
             ?>
