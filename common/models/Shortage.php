@@ -73,7 +73,7 @@ class Shortage extends \yii\db\ActiveRecord
             [['idboard', 'idelement', 'quantity'], 'integer'],
             [['date'], 'safe'],
             [['status'], 'string'],
-            [['ref_of'], 'string', 'max' => 32],
+            [['ref_of', 'status'], 'string', 'max' => 32],
         ];
     }
 
@@ -88,12 +88,12 @@ class Shortage extends \yii\db\ActiveRecord
             'ref_of' => 'Ref Of',
             'idelement' => 'Idelement',
             'quantity' => 'Quantity',
-            'date' => 'Date',
+            'created_at' => 'Date',
         ];
     }
     
     public function getBoards() {
-        return $this->hasMany(Boards::className(), ['idboards' =>'idboard']);
+        return $this->hasOne(Boards::className(), ['idboards' =>'idboard']);
     }
     
     public function getElements() {

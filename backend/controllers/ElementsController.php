@@ -31,6 +31,7 @@ use common\models\Users;
 use common\models\Returnitem;
 use common\models\Purchaseorder;
 use common\models\Produce;
+use common\models\Shortage;
 
 /**
  * ElementsController implements the CRUD actions for Elements model.
@@ -167,7 +168,13 @@ class ElementsController extends Controller
         $dataProviderreceipt = new ActiveDataProvider([
             'query' => $queryreceipt,
         ]);
-           
+        
+        $modelShortage = new Shortage();
+        $queryShortage = Shortage::find()->where(['idelement' => $id])->orderBy('created_at DESC');
+        $dataProviderShortage = new ActiveDataProvider([
+            'query' => $queryShortage,
+        ]);
+        
         return $this->render('view', [
          //   'pages' => $pages,
             'model' => $this->findModel($id),
@@ -175,9 +182,11 @@ class ElementsController extends Controller
             'dataProvider2' => $dataProvider2,
             'modelprice' => $modelprice,
             'modelrequests' => $modelrequests,
+            'modelShortage' => $modelShortage,
             'dataProvideracc' => $dataProvideracc,
             'dataProviderpur' => $dataProviderpur,
             'dataProviderout' => $dataProviderout,
+            'dataProviderShortage' => $dataProviderShortage,
             'searchModelout' => $searchModelout,
             'searchModelreceipt' => $searchModelreceipt,
             'dataProviderreceipt' => $dataProviderreceipt,
