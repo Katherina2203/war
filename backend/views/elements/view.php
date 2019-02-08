@@ -233,18 +233,18 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         </div> 
         <div class='col-sm-4'>
-        <div class="box box-danger">
-            <div class="box-header with-border"><h3 class="box-title">Недостачи по платам</h3></div>
-            <div class="box-body">
-                <?php Pjax::begin(); ?>
-                            <?= $this->render('_shortageby', [
-                                        'model' => $modelShortage,
-                                        'dataProviderShortage'=>$dataProviderShortage,
-                                       // 'searchModelTheme'=>$searchModelBoard
-                            ]) ?>
-                <?php Pjax::end(); ?>
+            <div class="box box-danger">
+                <div class="box-header with-border"><h3 class="box-title">Недостачи по платам</h3></div>
+                <div class="box-body">
+                    <?php Pjax::begin(); ?>
+                                <?= $this->render('_shortageby', [
+                                            'model' => $modelShortage,
+                                            'dataProviderShortage'=>$dataProviderShortage,
+                                           // 'searchModelTheme'=>$searchModelBoard
+                                ]) ?>
+                    <?php Pjax::end(); ?>
+                </div>
             </div>
-        </div>
     </div> 
 </div>
 <div class="row">

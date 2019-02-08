@@ -170,7 +170,7 @@ class ElementsController extends Controller
         ]);
         
         $modelShortage = new Shortage();
-        $queryShortage = Shortage::find()->where(['idelement' => $id])->orderBy('created_at DESC');
+        $queryShortage = Shortage::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
         $dataProviderShortage = new ActiveDataProvider([
             'query' => $queryShortage,
         ]);
