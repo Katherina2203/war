@@ -234,6 +234,10 @@ echo dmstr\widgets\Menu::widget([
                              'url' => ['/boards/currentboard']
                             ],
                             [
+                               'label' => 'Список Недостач по платам',
+                                'url' => ['/myaccount/shortage']
+                            ],
+                            [
                                'label' => 'Список Всех плат',
                              'url' => ['/boards/index']
                             ],

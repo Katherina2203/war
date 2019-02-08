@@ -34,7 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
             if($model->status == '0'){  // not active
                 return ['style' => 'label label-default glyphicon glyphicon-time; color: #b2b2b2;'];;  //active class => 'sucess'   label label-primary glyphicon glyphicon-ok
             }elseif($model->status == '1'){  //active
-                 return ['class' => 'success']; //unactive color: #b2b2b2 label label-danger glyphicon glyphicon-remove
+               //  return ['class' => 'success']; //unactive color: #b2b2b2 label label-danger glyphicon glyphicon-remove
+            return ;
+
             }
         },
         'columns' => [
@@ -67,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if($data->status == '1'){
                         return '<span class="label label-success">Active</span>';
                     }elseif($data->status == '0'){
-                        return '<span class="label label-primer">Close</span>';
+                        return '<span class="label label-default">Close</span>';
                     }
                    
                 },
