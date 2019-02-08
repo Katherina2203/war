@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\BoardsSearch */
@@ -14,11 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="boards-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-   
-    
+  
+  <?php Pjax::begin(['id' => 'myboards']); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -31,22 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
            
         },
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+         //   ['class' => 'yii\grid\SerialColumn'],
 
            
             [
                 'attribute' => 'idboards',
+                'label' => 'Номер платы',
                // 'inputWidth'=>'40%'
             ],
-            
             [
-                'attribute' => 'idtheme',
-                'value' => 'themes.name',
-                'format' => 'text',
-                 'filter' => Html::activeDropDownList($searchModel, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->all(), 'idtheme', 'name'),['class'=>'form-control','prompt' => 'Выберите проект']),
-            ],
-            'idthemeunit',
-           [
                 'attribute' => 'name',
                 'label' => 'Название платы',
              //   'pageSummary'=>'Page Summary',
@@ -56,6 +49,24 @@ $this->params['breadcrumbs'][] = $this->title;
                    return Html::a($model->name, ['view', 'id' => $model->idboards]);
                 },
             ],
+            [
+                'attribute' => 'idtheme',
+                'value' => function($model){
+                    return Html::a($model->themes->name, ['view', 'id' => $model->idboards]);
+                },
+                'format' => 'raw',
+                 'filter' => Html::activeDropDownList($searchModel, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->all(), 'idtheme', 'name'),['class'=>'form-control','prompt' => 'Выберите проект']),
+            ],
+            [
+                'attribute' => 'idthemeunit',
+                'value' => function($model){
+                    return Html::a($model->themeunits->nameunit, ['view', 'id' => $model->idboards]);
+                },
+                'format' => 'raw',
+                //'filter' => Html::activeDropDownList($searchModel, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->all(), 'idtheme', 'name'),['class'=>'form-control','prompt' => 'Выберите проект']),
+            ],
+           
+          
             //'current',
             'date_added',
             [
@@ -72,9 +83,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             ['class' => 'yii\grid\ActionColumn',
              'contentOptions' => ['style' => 'width:45px;'],
-             'template' => '{view} {update} {delete}',  
+             'template' => '{view} {update}',  
            
                 ],
         ],
     ]); ?>
+      <?php Pjax::end(); ?>  
 </div>

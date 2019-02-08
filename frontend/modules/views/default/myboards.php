@@ -1,5 +1,6 @@
 <?php
 use yii\widgets\ListView;
+use yii\widgets\Pjax;
 ?>
 <?= Pjax::begin(['id' => 'project-list']);
 ListView::widget([
