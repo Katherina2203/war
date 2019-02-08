@@ -118,6 +118,10 @@ class Boards extends \yii\db\ActiveRecord
         return $this->idboards. ' '. $this->name;
     }
     
+    public function getShortage(){
+        return $this->hasOne(Shortage::className(), ['idboard' => 'idboards']);
+    }
+    
     public static function getBoardList($idtheme, $idthemeunit)
     {
         $out = [];

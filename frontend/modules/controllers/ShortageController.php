@@ -1,14 +1,15 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\modules\controllers;
 
 use Yii;
-use app\models\Shortage;
+use common\models\Shortage;
 use backend\models\ShortageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use yii\data\ActiveDataProvider;
+
 
 /**
  * ShortageController implements the CRUD actions for Shortage model.
@@ -20,25 +21,7 @@ class ShortageController extends Controller
      */
     public function behaviors()
     {
-         return [
-            'access' => [
-                'class' => AccessControl::className(),
-              //  'only' => ['index', 'view','create'],
-                'rules' => [
-                    [
-                      //  'actions' => ['index'],
-                        'allow' => true,
-                        'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
-                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'createreceipt', 'update', 'viewcat', 'createfromquick', 'shortage'],
-                    ],
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'actions' => ['index', 'view', 'shortage'],
-                    ],
-                ],
-            ],
-            
+        return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -73,6 +56,27 @@ class ShortageController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+    
+    public function actionCurrentboard($idboard)
+    {
+      //  $model = $this->findModel($idboard);
+        $searchModel = new ShortageSearch();
+        $model = new Shortage();
+        $model->idboard = $idboard;
+        
+        $query = Shortage::find()->with('elements')->where(['idboard' => $idboard])->orderBy(['created_at DESC'])->limit(20);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            
+        ]);
+        
+        return $this->render('currentboard',[
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider
+        ]);
+        
     }
 
     /**

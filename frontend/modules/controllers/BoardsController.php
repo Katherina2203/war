@@ -16,6 +16,8 @@ use common\models\Boards;
 use backend\models\BoardsSearch;
 use common\models\Themes;
 use common\models\Themeunits;
+use common\models\Shortage;
+use backend\models\ShortageSearch;
 
 
 
@@ -73,8 +75,13 @@ class BoardsController extends Controller
             'query' => $query,
         ]);
         
+     //   $modelShortage = new Shortage();
+      //  $searchModelShortage = new ShortageSearch();
+        
         return $this->render('myboards', [
             'searchModel' => $searchModel,
+         //   'searchModelShortage' => $searchModelShortage,
+            
             'dataProvider' => $dataProvider,
         ]);
     }

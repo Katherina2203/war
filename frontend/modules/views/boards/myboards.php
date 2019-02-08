@@ -66,7 +66,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 //'filter' => Html::activeDropDownList($searchModel, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->all(), 'idtheme', 'name'),['class'=>'form-control','prompt' => 'Выберите проект']),
             ],
-                        
+            [
+                'attribute' => 'idboards',
+                'label' => 'Недостачи',
+                'value' => function($model){
+                    return Html::a(('<span class="label label-warning">' . $model->shortage->idboard . '</span>'), ['shortage/currentboard', 'idboard' => $model->idboards]);
+                },
+                'format' => 'raw',
+            ],           
             [
                 'attribute' => 'discontinued',
                 'format' => 'raw',

@@ -19,7 +19,7 @@ class ShortageSearch extends Shortage
     {
         return [
             [['id', 'idboard', 'idelement', 'quantity'], 'integer'],
-            [['ref_of', 'date'], 'safe'],
+            [['ref_of', 'date', 'status'], 'safe'],
         ];
     }
 
@@ -63,7 +63,8 @@ class ShortageSearch extends Shortage
             'idboard' => $this->idboard,
             'idelement' => $this->idelement,
             'quantity' => $this->quantity,
-            'date' => $this->date,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'ref_of', $this->ref_of]);
