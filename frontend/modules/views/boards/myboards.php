@@ -22,14 +22,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'rowOptions' => function($model, $key, $index, $grid){
+      /*  'rowOptions' => function($model, $key, $index, $grid){
             if($model->discontinued == '1'){
                 return ['class' => 'info'];
             }else{
                  return ['class' => 'danger'];
             }
            
-        },
+        },*/
         'columns' => [
          //   ['class' => 'yii\grid\SerialColumn'],
 
@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
               //  'pageSummaryOptions'=>['class'=>'text-right text-warning'],
                 'format' => 'raw',
                 'value' => function($model, $key, $index){
-                   return Html::a($model->name, ['view', 'id' => $model->idboards]);
+                   return Html::a($model->name, ['view', 'id' => $model->idboards]). '<br/><span style="color:grey"> Created: <small>'. $model->date_added . '</small></span>';
                 },
             ],
             [
@@ -55,7 +55,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->themes->name, ['view', 'id' => $model->idboards]);
                 },
                 'format' => 'raw',
-                 'filter' => Html::activeDropDownList($searchModel, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->all(), 'idtheme', 'name'),['class'=>'form-control','prompt' => 'Выберите проект']),
+                'filter' => Html::activeDropDownList($searchModel, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->all(), 'idtheme', 'name'),['class'=>'form-control','prompt' => 'Выберите проект']),
+                'contentOptions' => ['style' => 'max-width: 120px;white-space: normal'],
             ],
             [
                 'attribute' => 'idthemeunit',
@@ -65,10 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 //'filter' => Html::activeDropDownList($searchModel, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->all(), 'idtheme', 'name'),['class'=>'form-control','prompt' => 'Выберите проект']),
             ],
-           
-          
-            //'current',
-            'date_added',
+                        
             [
                 'attribute' => 'discontinued',
                 'format' => 'raw',
@@ -82,8 +80,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter'=>['1' => 'Актуально', '0' => 'Закрыто'],
             ],
             ['class' => 'yii\grid\ActionColumn',
-             'contentOptions' => ['style' => 'width:45px;'],
-             'template' => '{view} {update}',  
+                'contentOptions' => ['style' => 'width:45px;'],
+                'template' => '{view} {changestatus}',  
+              /*  'buttons' => [
+                    'changestatus' => function ($url,$model,$key) {
+                        $url = Url::to(['viewprocess', 'idrequest' => $key]);
+                    return Html::a('<span class="glyphicon glyphicon-user"></span>', $url,
+                            ['title' => 'Посмотреть обработку заявок']
+                            );
+                },
+              ],*/
            
                 ],
         ],
