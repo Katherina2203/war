@@ -120,6 +120,10 @@ use mdm\admin\components\MenuHelper;
                              'url' => ['/myaccount/boards/currentboard']
                             ],
                             [
+                               'label' => 'Список Недостач по платам',
+                                'url' => ['/myaccount/shortage']
+                            ],
+                            [
                                'label' => 'Список Всех плат',
                              'url' => ['/myaccount/boards/index']
                             ],

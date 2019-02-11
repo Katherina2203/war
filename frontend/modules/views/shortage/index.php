@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-//use yii\grid\GridView;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
@@ -13,14 +12,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="shortage-index">
 
-
+ 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Create Shortage', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(['id' => 'shortage']); ?>    
-    <?= GridView::widget([
+<?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'pjax' => true,
@@ -41,10 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
         },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'idboard',
-             [
+            [
                 'attribute' => 'idelement', 
                 'label' => 'name',
                 'value' => function($model){
@@ -61,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'ref_of',
             'quantity',
-            
             [
                 'attribute' => 'status',
                 'format' => 'raw',

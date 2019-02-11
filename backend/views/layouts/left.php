@@ -231,7 +231,11 @@ echo dmstr\widgets\Menu::widget([
                             ],
                             [
                                'label' => 'Список Текущих плат',
-                             'url' => ['/boards/currentboard']
+                                'url' => ['/boards/currentboard']
+                            ],
+                            [
+                               'label' => 'Список Недостач по платам',
+                                'url' => ['/shortage']
                             ],
                             [
                                'label' => 'Список Всех плат',

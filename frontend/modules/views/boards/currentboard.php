@@ -12,18 +12,35 @@ use common\models\Themeunits;
 /* @var $searchModel backend\models\BoardsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Список плат';
+$this->title = 'Список текущих плат';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="boards-index">
-
     
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-
-   
     <p>
-        <?= Html::a('Создать плату', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php // Html::a('Создать плату', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+   <div class="row">
+        <div class="col-md-6">
+            <div class="search-form">
+                <div class="box box-solid box-default">
+                    <div class="box-body">
+                        <span>Поиск по:</span>
+                        <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="<?= Url::to(['boards/currentboard']) ?>"><?= 'Burrent boards' ?></a></li>
+        <li role="presentation"><a href="<?= Url::to(['boards/myboards', 'iduser' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'My Boards' ?></a></li>
+       <!-- <li role="presentation"><a href="<?= Url::to(['elements/view', 'id' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Member View' ?></a></li>
+        <li role="presentation" ><a href="#"><span class="glyphicon glyphicon-comment"></span> <?=  'Posts created by {name}'?></a></li>
+    -->  
+    </ul>
+    
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -39,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'pjax'=>true,
         'striped'=>true,
         'hover'=>true,
-        'panel'=>['type'=>'primary', 'heading'=>'Список плат'],
+        'panel'=>['type'=>'primary'],
         'columns' => [
           //  ['class'=>'kartik\grid\SerialColumn'],
             [

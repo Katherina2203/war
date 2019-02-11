@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'ref_of',
             'idelement',
             'quantity',
-            'status',
             'created_at',
         ],
     ]) ?>

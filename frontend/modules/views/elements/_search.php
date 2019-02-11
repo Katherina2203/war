@@ -31,7 +31,7 @@ $getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufactu
                     ['prompt'=>'Выберите категорию'])?>
         </div>
         <div class="col col-md-4">
-            <?php  echo $form->field($model, 'idproduce')->dropDownList($getproduce,
+            <?= $form->field($model, 'idproduce')->dropDownList($getproduce,
                     ['prompt'=>'Выберите производителя']) ?>
         </div>
     </div>

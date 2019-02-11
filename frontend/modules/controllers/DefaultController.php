@@ -12,6 +12,7 @@ use common\models\Processingrequest;
 use common\models\Supplier;
 use backend\models\ElementsSearch;
 use common\models\Themes;
+use common\models\Boards;
 
 
 /**
@@ -74,17 +75,27 @@ class DefaultController extends Controller
         $searchModelTheme = new \backend\models\ThemesSearch;
         $modelTheme = new Themes();
         
+        $queryBoard = Boards::find()->where(['discontinued' => '1'])->andWhere(['current' => yii::$app->user->identity->id])->orderBy('created_at DESC');
+        $dataProviderBoard = new ActiveDataProvider([
+            'query' => $queryBoard,
+        ]);
+        $searchModelBoard = new \backend\models\BoardsSearch;
+        $modelBoard = new Boards();
+        
         return $this->render('index', [
             'modelrequests' => $modelrequests,
             'modelpay' => $modelpay,
             'modelTheme' => $modelTheme,
+            'modelBoard' => $modelBoard,
             'searchModelreq' => $searchModelreq,
             'dataProviderreq' => $dataProviderreq,
            // 'dataProviderconf' => $dataProviderconf,
             'dataProviderpay' => $dataProviderpay,
             'dataProviderTheme' => $dataProviderTheme,
+            'dataProviderBoard' => $dataProviderBoard,
             'searchElements' => $searchElements,
             'searchModelTheme' => $searchModelTheme,
+            'searchModelBoard' => $searchModelBoard,
             'statusactive' => $statusactive
             ]);
     }

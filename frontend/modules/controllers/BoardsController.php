@@ -8,6 +8,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
+use yii\filters\AccessControl;
 
 use common\models\Outofstock;
 use backend\models\OutofstockSearch;
@@ -15,6 +16,8 @@ use common\models\Boards;
 use backend\models\BoardsSearch;
 use common\models\Themes;
 use common\models\Themeunits;
+use common\models\Shortage;
+use backend\models\ShortageSearch;
 
 
 
@@ -22,7 +25,25 @@ class BoardsController extends Controller
 {
    public function behaviors()
     {
-        return [
+         return [
+            'access' => [
+                'class' => AccessControl::className(),
+              //  'only' => ['index', 'view','create'],
+                'rules' => [
+                    [
+                      //  'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
+                        'actions' => ['create', 'myboards', 'update', 'view', 'currentboard'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'actions' => ['index', 'view', 'currentboard', 'myboards', 'create'],
+                    ],
+                ],
+            ],
+            
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -49,13 +70,18 @@ class BoardsController extends Controller
         $model = new Boards();
         $model->current = $iduser;
         
-        $query = Boards::find()->where(['current' => $iduser])->orderBy('date_added DESC')->orderBy('discontinued ASC');
+        $query = Boards::find()->where(['current' => $iduser])->andWhere(['discontinued' => '1'])->orderBy('date_added DESC')->orderBy('discontinued ASC');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
         
+     //   $modelShortage = new Shortage();
+      //  $searchModelShortage = new ShortageSearch();
+        
         return $this->render('myboards', [
             'searchModel' => $searchModel,
+         //   'searchModelShortage' => $searchModelShortage,
+            
             'dataProvider' => $dataProvider,
         ]);
     }
