@@ -18,8 +18,10 @@ use yii\behaviors\BlameableBehavior;
  */
 class Shortage extends \yii\db\ActiveRecord
 {
-    const STATUS_NOACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    const STATUS_ACTIVE = 1; //детали нет, нехватка в перечне
+    const STATUS_CHANGED = 2; //сделали замену в перечне
+    const STATUS_CANCELED = 3; //отказались от этой позиции
+    const STATUS_CLOSE = 4;//когда деталь положили в перечень, списано. Добавлена строка в outofstock
     /**
      * @inheritdoc
      */
@@ -55,7 +57,7 @@ class Shortage extends \yii\db\ActiveRecord
     
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->status = self::STATUS_NOACTIVE;
+                $this->status = self::STATUS_ACTIVE;
             }
             return true;
         } else {
@@ -74,6 +76,7 @@ class Shortage extends \yii\db\ActiveRecord
             [['date'], 'safe'],
             [['status'], 'string'],
             [['ref_of', 'status'], 'string', 'max' => 32],
+            [['note'], 'string', 'max' => 64],
         ];
     }
 
@@ -88,7 +91,9 @@ class Shortage extends \yii\db\ActiveRecord
             'ref_of' => 'Ref Of',
             'idelement' => 'Idelement',
             'quantity' => 'Quantity',
+            'noteы' => \yii::t('app', 'Примечание'),
             'created_at' => 'Date',
+            
         ];
     }
     
