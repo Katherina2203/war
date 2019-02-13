@@ -173,6 +173,10 @@ class Elements extends \yii\db\ActiveRecord
         return $this->hasOne(Reserve::className(), ['idelement' =>'idelements']);
     }
     
+    public function getElements() {
+        return $this->hasOne(Shortage::className(), ['idelement' =>'idelements']);
+    }
+    
     public function getAccounts() {
         return $this->hasMany(Accounts::className(), ['idelem' =>'idelement'])->viaTable('purchaseorder', ['idelement' => 'idelements']);
     }

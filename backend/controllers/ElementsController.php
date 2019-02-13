@@ -135,6 +135,15 @@ class ElementsController extends Controller
             $modelrequests->estimated_category = $model->idcategory;
             $modelrequests->estimated_idel = $model->idelements;
            // $result = ['success' => true, 'message' => 'Заявка успешно создана!'];
+                if($modelrequests->idboard !=NULL){
+                    //create shortage
+                    Yii::$app->db->createCommand()->insert('shortage', [
+                        'idboard' => $modelrequests->idboard, 
+                        'idelement' => $model->idelements, 
+                        'quantity' => $modelrequests->quantity, 
+                        'status' => Shortage::STATUS_ACTIVE]
+                        )->execute();
+                }
             if($modelrequests->save(false)) {
                 Yii::$app->session->setFlash('success', 'Товар успешно отправлен в заявку!');
                 return $this->redirect(['elements/view', 'id' => $model->idelements]);
