@@ -41,7 +41,7 @@ class ShortageSearch extends Shortage
      */
     public function search($params)
     {
-        $query = Shortage::find();
+        $query = Shortage::find()->With(['boards', 'elements']);
 
         // add conditions that should always apply here
 

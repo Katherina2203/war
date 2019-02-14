@@ -48,7 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'PCB',
                 'format' => 'raw',
                 'value' => function($model){
-                    return Html::a($model->boards->name, ['boards/view', 'idboards'=> $model->idboard]);
+                    return Html::a($model->boards->name, ['boards/view', 'idboards'=> $model->idboard]). ', ' .
+                            $model->boards->themes->name;
                 }
             ],
             
