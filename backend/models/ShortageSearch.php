@@ -41,7 +41,7 @@ class ShortageSearch extends Shortage
      */
     public function search($params)
     {
-        $query = Shortage::find()->With(['boards', 'elements']);
+        $query = Shortage::find()->With(['boards', 'elements']) ->orderBy('created_at DESC');
 
         // add conditions that should always apply here
 

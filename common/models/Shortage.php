@@ -105,10 +105,10 @@ class Shortage extends \yii\db\ActiveRecord
         return $this->hasOne(Elements::className(), ['idelements' =>'idelement']);
     }
     
-    public function getThemes() 
+   /* public function getThemes() 
     {
         return $this->hasMany(Themes::className(), ['idtheme' => 'idtheme'])
                 ->viaTable('boards', ['idboards' => 'idboard']);
     }
-    
+    */
 }
