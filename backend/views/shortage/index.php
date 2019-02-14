@@ -42,8 +42,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'idboard',
+         //   'id',
+            [
+                'attribute' => 'idboard',
+                'label' => 'PCB',
+                'format' => 'raw',
+                'value' => function($model){
+                    return Html::a($model->boards->name, ['boards/view', 'idboards'=> $model->idboard]);
+                }
+            ],
+            
              [
                 'attribute' => 'idelement', 
                 'label' => 'name',
