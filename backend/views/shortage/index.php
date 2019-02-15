@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'hover' => true,
         'resizableColumns'=>true,
         'rowOptions' => function($model, $key, $index, $grid){
-            if($model->status == '0'){  // not active
+            if($model->status == '4'){  // not active
                 return ['style' => 'label label-default glyphicon glyphicon-time; color: #b2b2b2;'];;  //active class => 'sucess'   label label-primary glyphicon glyphicon-ok
             }elseif($model->status == '1'){  //active
                //  return ['class' => 'success']; //unactive color: #b2b2b2 label label-danger glyphicon glyphicon-remove
@@ -40,26 +40,37 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         },
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+          //  ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'idboard',
+            [
+                'attribute' => 'idboard',
+                'label' => 'PCB',
+                'format' => 'raw',
+                'value' => function($model){
+                    return Html::a($model->boards->name, ['boards/view', 'idboards'=> $model->idboard]). ',<br/> ' .
+                            $model->boards->themes->name;
+                }
+            ],
+            
              [
                 'attribute' => 'idelement', 
                 'label' => 'name',
+                'format' => 'raw',
                 'value' => function($model){
-                    return $model->elements->name;
+                    return Html::a($model->elements->name, ['elements/view', 'id' => $model->idelement]) . ', <br/>' . $model->elements->nominal;
                 }
             ],
-            [
+         /*   [
                 'attribute' => 'idelement', 
                 'label' => 'nominal',
                 'value' => function($model){
                     return $model->elements->nominal;
                 }
                 
-            ],
+            ],*/
             'ref_of',
+                    
             'quantity',
             
             [
@@ -68,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($data){
                     if($data->status == '1'){
                         return '<span class="label label-success">Active</span>';
-                    }elseif($data->status == '0'){
+                    }elseif($data->status == '4'){
                         return '<span class="label label-default">Close</span>';
                     }
                    
@@ -76,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter'=>['1' => 'Active', '2' => 'Close'],
                 'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],
             ],
-            // 'date',
+            'created_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
