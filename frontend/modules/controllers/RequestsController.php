@@ -51,7 +51,7 @@ class RequestsController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'actions' => ['myrequests','index', 'view','create'],
-                    //    'roles' => ['updateOwnPost'],
+                        'roles' => ['updateOwnPost'],
                     ],
                     [
                         'actions' => ['checkprocess', 'changestatus', 'updatestatus', 'viewprocess', 'myrequests'],

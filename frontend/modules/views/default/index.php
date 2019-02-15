@@ -61,20 +61,20 @@ $this->title = 'Мой профиль';
                 <div class="box-body">
                     <div class="col-sm-4 border-right">
                         <center>
-                            <h3><?= Html::a($statusactive = 15, ['/requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=0 ?></h3>
+                            <h3><?= Html::a($statusactive = 15, ['requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=0 ?></h3>
                             <span class="description-text">Не обработаны</span>
                             
                         </center>
                     </div>
                     <div class="col-sm-4 border-right">
                         <center>
-                            <h3><?= Html::a($statusactive = 4, ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=1 ?></h3>
+                            <h3><?= Html::a($statusactive = 4, ['requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=1 ?></h3>
                             <span class="description-text">Активные</span>
                         </center>
                     </div>
                     <div class="col-sm-4">
                         <center>
-                            <h3><?= Html::a(count($modelrequests->idrequest), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=2 ?></h3>
+                            <h3><?= Html::a(count($modelrequests->idrequest), ['requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=2 ?></h3>
                             <span class="description-text">Заблокировано</span>        
                         </center>
                     </div>
