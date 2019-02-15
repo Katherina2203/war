@@ -45,11 +45,17 @@ class DefaultController extends Controller
             ]
         ]);
         
-        if ($modelrequests->load(Yii::$app->request->post())) {
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-               if($modelrequests->save()){
+        $modelrequests->iduser = yii::$app->user->identity->id;
+        $modelrequests->status = '0';
+        $modelrequests->idtype = '1';
+        
+        if ($modelrequests->load(\yii::$app->request->post())) {
+            
+           // \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            
+               if($modelrequests->save(false)) {
                 Yii::$app->session->setFlash('success', 'Заявка успешно сохранена');
-                 return $this->redirect(['view', 'id' => $modelrequests->idrequest]);
+                return $this->redirect(['view', 'id' => $modelrequests->idrequest]);
            }
         } 
         /*else{

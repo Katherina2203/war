@@ -42,6 +42,7 @@ class ThemeunitsSearch extends Themeunits
     public function search($params)
     {
         $query = Themeunits::find()
+                ->with('themes')
                 ->select(['{{%themeunits}}.*', 'boards_count' => new Expression('COUNT({{%boards}}.idboards)')])
                 ->joinWith(['boards'], false)
                 ->groupBy(['{{%themeunits}}.idunit']);

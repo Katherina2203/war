@@ -43,6 +43,7 @@ class ThemesSearch extends Themes
     public function search($params)
     {
         $query = Themes::find()
+             
               //  ->select([['{{%themes}}.*'], ['units_count' => new Expression('COUNT({{%themeunits}}.idunit)')]])
                     //, 'boards_count' => new Expression('COUNT({{%boards}}.idboards)')
                 ->joinWith(['themeunits', 'boards'], false)

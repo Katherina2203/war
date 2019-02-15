@@ -67,7 +67,7 @@ class Themeunits extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idtheme', 'quantity_required', 'nameunit'], 'required'],
+            [['idtheme', 'quantity_required', 'nameunit', 'status'], 'required'],
             [['nameunit'], 'required', 'message' => 'Please choose a category'],
             [['quantity_required'], 'required', 'message' => 'Please enter a quanity'],
             [['idtheme', 'quantity_required', 'created_by' , 'edited_by'], 'integer'],
@@ -85,10 +85,12 @@ class Themeunits extends \yii\db\ActiveRecord
             'idtheme' => Yii::t('app', 'Project'),
             'nameunit' => Yii::t('app', 'Unit name'),
             'quantity_required' => Yii::t('app', 'Quantity'),
+            'status' => Yii::t('app', 'Статус'),
             'created_at' => Yii::t('app', 'Дата создания'),
             'created_by' => Yii::t('app', 'Кем создано'),
             'updated_at' => Yii::t('app', 'Дата обновления'),
             'edited_by' => Yii::t('app', 'Кем редактировано'),
+            
         ];
     }
     
@@ -122,7 +124,7 @@ class Themeunits extends \yii\db\ActiveRecord
         $data = Themeunits::find()
                 ->select(['idunit as id', 'nameunit as name'])
                 ->where(['idtheme' => $idtheme])
-           //       ->andWhere(['!=', 'status', 'Deleted'])
+             //     ->andWhere(['!=', 'status', 'Deleted'])
                 ->asArray()
                 ->all();
         $value = (count($data) == 0) ? ['' => ''] : $data;

@@ -61,7 +61,7 @@ $this->title = 'Мой профиль';
                 <div class="box-body">
                     <div class="col-sm-4 border-right">
                         <center>
-                            <h3><?= Html::a($statusactive = 15, ['requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=0 ?></h3>
+                            <h3><?= Html::a($statusactive = 1, ['requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=0 ?></h3>
                             <span class="description-text">Не обработаны</span>
                             
                         </center>
@@ -119,7 +119,7 @@ $this->title = 'Мой профиль';
                 <div class="box-body">
                     <div class="requests-create">
                         <?php Pjax::begin(); ?>
-                            <?= $this->render('_formrequest', [
+                            <?=  $this->render('_formrequest', [
                                         'model' => $modelrequests,
                             ]) ?>
                         <?php Pjax::end(); ?>

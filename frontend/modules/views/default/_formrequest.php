@@ -80,7 +80,7 @@ use common\models\TypeRequest;
     
     <?php // $form->field($model, 'status')->dropDownList([ '0' => 'не  активна', '1' => 'Активна', '2' => 'Отмена', '3' => 'Выполнено'], ['prompt' => '']) ?>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Создать заявку' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
    </div> 
  </div>
@@ -92,43 +92,43 @@ use common\models\TypeRequest;
            <h4 class="box-title pull-left">Необязательные поля для заявки</h4>
            <div class="clearfix"></div>
        </div>
-      <div class="box-body"> 
-        
-        <?= $form->field($model, 'idsupplier')->widget(Select2::className(), [
-            'data' => $suppliers,
-            'options' => ['placeholder' => 'Выберите поставщика '],
-                'pluginOptions' => [
-                'allowClear' => true
-                ],
-        ]);?>
-    
-        <?=   $form->field($model, 'idproduce')->widget(Select2::className(), [
-            'data' => $produces,
-            'options' => ['placeholder' => 'Выберите производителя '],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-        ]);?>
+            <div class="box-body"> 
 
-        <?= $form->field($model, 'img') ->widget(FileInput::classname(), [
-                                         'options' => ['accept' => 'images/requests/*'],
-                             ]);  ?>
+              <?= $form->field($model, 'idsupplier')->widget(Select2::className(), [
+                  'data' => $suppliers,
+                  'options' => ['placeholder' => 'Выберите поставщика '],
+                      'pluginOptions' => [
+                      'allowClear' => true
+                      ],
+              ]);?>
 
-        <?= $form->field($model, 'note')->textarea(['rows' => 2, 'cols' => 5]) ?>
+              <?=   $form->field($model, 'idproduce')->widget(Select2::className(), [
+                  'data' => $produces,
+                  'options' => ['placeholder' => 'Выберите производителя '],
+                      'pluginOptions' => [
+                          'allowClear' => true
+                      ],
+              ]);?>
 
-        <?= $form->field($model, 'estimated_executor')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->where(['role' => '2'])->all(), 'id', 'UserName'),
-            ['prompt'=>'Выберите Предполагаемого исполнителя']) ?>
-        
-        <?= $form->field($model, 'estimated_category')->widget(Select2::className(),[
-            'data' => $category,
-            'options' => ['placeholder' => 'Выберите категорию '],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]);?>
-    
-       
-       </div> 
+              <?php /*$form->field($model, 'img') ->widget(FileInput::classname(), [
+                                               'options' => ['accept' => 'images/requests/*'],
+                                   ]);*/  ?>
+
+              <?= $form->field($model, 'note')->textarea(['rows' => 2, 'cols' => 5]) ?>
+
+              <?= $form->field($model, 'estimated_executor')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->where(['role' => '2'])->all(), 'id', 'UserName'),
+                  ['prompt'=>'Выберите Предполагаемого исполнителя']) ?>
+
+              <?= $form->field($model, 'estimated_category')->widget(Select2::className(),[
+                  'data' => $category,
+                  'options' => ['placeholder' => 'Выберите категорию '],
+                  'pluginOptions' => [
+                      'allowClear' => true
+                  ],
+              ]);?>
+
+
+             </div> 
       </div>   
     </div> 
  

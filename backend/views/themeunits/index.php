@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 } /*. '('.$data->boards_count. ')' */
             ],
             'quantity_required',
+            'status',
             'created_at',
             [
                 'attribute' => 'boards_count',

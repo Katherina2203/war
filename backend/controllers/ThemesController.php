@@ -102,7 +102,7 @@ class ThemesController extends Controller
         $modelreq = new Requests();
         $searchModelreq = new RequestsSearch();
         
-        $query = Themeunits::find()->where(['idtheme' => $idtheme]);
+        $query = Themeunits::find()->where(['idtheme' => $idtheme])->andWhere(['status' => 'active']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

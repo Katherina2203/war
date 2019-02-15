@@ -136,9 +136,9 @@ use common\models\TypeRequest;
                 Modal::end();
             ?>
 
-        <?= $form->field($model, 'img') ->widget(FileInput::classname(), [
+        <?php /* $form->field($model, 'img') ->widget(FileInput::classname(), [
                                          'options' => ['accept' => 'images/requests/*'],
-        ])?>
+        ])*/?>
 
         <?= $form->field($model, 'note')->textarea(['rows' => 2, 'cols' => 5]) ?>
 
