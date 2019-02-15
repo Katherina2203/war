@@ -2,6 +2,20 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/xampp/htdocs/war/backend/models/RequestsSearch.php</file>
+            <file>file:/C:/xampp/htdocs/war/backend/controllers/ElementsController.php</file>
+            <file>file:/C:/xampp/htdocs/war/backend/views/shortage/index.php</file>
+            <file>file:/C:/xampp/htdocs/war/frontend/views/layouts/left.php</file>
+            <file>file:/C:/xampp/htdocs/war/frontend/modules/views/shortage/index.php</file>
+            <file>file:/C:/xampp/htdocs/war/common/models/Boards.php</file>
+            <file>file:/C:/xampp/htdocs/war/backend/models/ShortageSearch.php</file>
+            <file>file:/C:/xampp/htdocs/war/common/models/Shortage.php</file>
+            <file>file:/C:/xampp/htdocs/war/backend/controllers/ShortageController.php</file>
+        </group>
+>>>>>>> 79e8c7640ead272a456e2d4c532ba4d423c8ed41
     </open-files>
 </project-private>
