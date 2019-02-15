@@ -263,7 +263,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' =>  'unitPrice',
                                 'format' => 'raw',
                                 'value' => function($data){
-                                       return $data->unitPrice. '/'. $data->forUP. '<br/><small style="color:grey">+'. $data->pdv . '</small>';
+                                       return $data->unitPrice. '/'. $data->forUP. ' ' .$data->currency->currency . '<br/><small style="color:grey">+'. $data->pdv . '</small>';
                                 },
                             ],
                             'usd',

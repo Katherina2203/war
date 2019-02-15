@@ -56,19 +56,21 @@ $this->params['breadcrumbs'][] = $this->title;
              [
                 'attribute' => 'idelement', 
                 'label' => 'name',
+                'format' => 'raw',
                 'value' => function($model){
-                    return $model->elements->name;
+                    return Html::a($model->elements->name, ['elements/view', 'id' => $model->idelement]) . ', <br/>' . $model->elements->nominal;
                 }
             ],
-            [
+         /*   [
                 'attribute' => 'idelement', 
                 'label' => 'nominal',
                 'value' => function($model){
                     return $model->elements->nominal;
                 }
                 
-            ],
+            ],*/
             'ref_of',
+                    
             'quantity',
             
             [
