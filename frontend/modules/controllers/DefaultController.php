@@ -53,16 +53,13 @@ class DefaultController extends Controller
             
            // \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             
-               if($modelrequests->save(false)) {
+            if($modelrequests->save(false)) {
                 Yii::$app->session->setFlash('success', 'Заявка успешно сохранена');
                 return $this->redirect(['view', 'id' => $modelrequests->idrequest]);
-           }
+            }
         } 
-        /*else{
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }*/
+        // end form requests
+
       //  if($modelrequests->idrequest != $modelproc->idrequest){
         $dataProviderconf = new ActiveDataProvider([
             'query' => Requests::find()->where(['status' => '0'])->asArray(),

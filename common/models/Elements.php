@@ -180,6 +180,9 @@ class Elements extends \yii\db\ActiveRecord
     public function getAccounts() {
         return $this->hasMany(Accounts::className(), ['idelem' =>'idelement'])->viaTable('purchaseorder', ['idelement' => 'idelements']);
     }
+    public function getInvoice() {
+        return $this->hasOne(Accounts::className(), ['idelem' =>'idelements']);
+    }
     
     public function getManufacturerName(){
        /*  $produce = Produce::find()

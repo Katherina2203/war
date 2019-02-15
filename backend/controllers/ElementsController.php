@@ -88,9 +88,16 @@ class ElementsController extends Controller
         $model = new Elements();
         $searchModel = new ElementsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $modelacc = new Accounts();
+        $queryacc = Accounts::find()->where(['idelem' => $model->idelements])->orderBy('date_receive DESC')->limit(10);
+        $dataProvideracc = new ActiveDataProvider([
+            'query' => $queryacc,
+        ]);
       
         return $this->render('index', [
                 'model' => $model,
+                'modelacc' => $modelacc,
                 'searchModel' => $searchModel,
                 'searchModelprice' => $searchModelprice,
                 'dataProvider' => $dataProvider,
@@ -99,6 +106,7 @@ class ElementsController extends Controller
                 'modelrequests' => $modelrequests, //for elements
                 'searchModelrequests' => $searchModelrequests,
                 'dataProviderrequests' => $dataProviderrequests,
+                'dataProvideracc' => $dataProvideracc,
             ]);
         
     }
@@ -354,7 +362,7 @@ class ElementsController extends Controller
         $element = new Elements();
         $element->idelements = $idel;
         
-        $board = new \common\models\Boards();
+        $board = new Boards();
         $model->idtheme = $board->idtheme;
         $model->idthemeunit = $board->idthemeunit;
         

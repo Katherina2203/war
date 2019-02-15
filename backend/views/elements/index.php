@@ -134,8 +134,13 @@ $gridColumns = [
                 'attribute' => 'quantity',
                 'label' => 'Onstock',
                 'format' => 'raw',
-                'value' => function($data){
-                    return '<center><strong>' . $data->quantity.'</strong></center>';
+                'value' => function($data, $index){
+                    
+                    if ($data->quantity == '0'){
+                        return '<center><strong>' . $data->quantity.'</strong></center>'. '<br/><center><small>Will be: '. $index . '</small></center>';
+                    }else{
+                        return '<center><strong>' . $data->quantity.'</strong></center>';
+                    }  
                 },
                 'contentOptions'=>['style'=>'width: 50px;'],
             ],
