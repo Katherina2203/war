@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 /* @var $form yii\widgets\ActiveForm */
 use common\models\Category;
 $getcategory = Category::getHierarchy(); //ArrayHelper::map(common\models\Category::find()->select(['name_ru', 'idcategory'])->all(), 'idcategory', 'name_ru');
-$getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufacture', 'idpr'])->all(), 'idpr', 'manufacture');
+$getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufacture', 'idpr'])->orderBy('manufacture')->asArray()->all(), 'idpr', 'manufacture');
 ?>
 
 <div class="elements-search">
@@ -16,29 +16,25 @@ $getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufactu
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
-
-   <div class="row">
+    <div class="row">
         <div class="col col-md-4">
             <?= $form->field($model, 'name') ?>
         </div>
         <div class="col col-md-4">
-            <?= $form->field($model, 'nominal') ?>
+            <?= $form->field($model, 'idcategory')->dropDownList($getcategory,
+                    ['prompt'=>'Выберите категорию'])?>
         </div>
     </div>
     <div class="row">
         <div class="col col-md-4">
-            <?= $form->field($model, 'idcategory')->dropDownList($getcategory,
-                    ['prompt'=>'Выберите категорию'])?>
+            <?= $form->field($model, 'nominal') ?>
+            
         </div>
         <div class="col col-md-4">
-            <?= $form->field($model, 'idproduce')->dropDownList($getproduce,
+            <?php  echo $form->field($model, 'idproduce')->dropDownList($getproduce,
                     ['prompt'=>'Выберите производителя']) ?>
         </div>
     </div>
-
-    <?php // echo $form->field($model, 'date_added') ?>
-
-    <?php // echo $form->field($model, 'active') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
@@ -48,6 +44,6 @@ $getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufactu
 </div>
 <script> 
 $(document).ready(function () {
-$('.elements-search').val("");
+    $('.elements-search').val("");
 });
 </script>

@@ -26,91 +26,70 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="elements-index">
     <p>
-        <?= Html::tag('span',
-                Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'], ['class' => 'btn btn-success']), 
-                [
-                        'title'=> yii::t('app', 'Создать новый товар'),
-                        'data-toggle'=>'tooltip',
-                        'style'=>' cursor:pointer;color:red'
-                    ]);?>
+        <?php echo Html::a('Создать новый товар', ['create'], ['class' => 'btn btn-success']) ?>
+      
+       
     </p>
-
     <div class="search-form">
-        <div class="box box-solid box-default">
+        <div class="box box-solid bg-gray-light" style="background: #fff;">
             <div class="box-body">
-                <span><?= yii::t('app', 'Search by')?>:</span>
+                <span>Поиск по:</span>
                 <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             </div>
-            <div class="sort">
-                <div class="box-body">
-                    <span><?php  yii::t('app', 'Sort by')?></span>
-                     <?php   $this->render('_sort', ['model' => $searchModel]); ?>
-                </div>
-            </div>
         </div>
-        
     </div>
    
-<?php Pjax::begin(['id' => 'elements']); ?>    
+<?php Pjax::begin(['id' => 'elements']); ?>  
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'tableOptions' => [
-            'class' => 'table table-striped table-bordered'
-        ],
         'pjax' => true,
-        'bordered' => true,
+       // 'bordered' => true,
         'striped' => true,
-        'condensed' => false,
+        'condensed' => true,
         'responsive' => true,
         'hover' => true,
         'columns' => $gridColumns,
         'resizableColumns'=>true,
-         
-        'columns' => [
-         //  ['class' => 'yii\grid\SerialColumn'],
-         /*    ['class' => 'kartik\grid\ExpandRowColumn',
-                'value' => function($model, $key, $index, $column){
-                            return GridView::ROW_COLLAPSED;
-                           },
-                'detail' => function($model, $key, $index, $column){
-                           $searchModelprice = new PricesSearch();
-                           $searchModelprice->idel = $model->idelements;
-                           $dataProviderprice = $searchModelprice->search(Yii::$app->request->queryParams);
-                               
-                           return Yii::$app->controller->renderPartial('_detailpricesitems', [
-                               'searchModelprice' => $searchModelprice,
-                               'dataProviderprice' => $dataProviderprice,
-                           ]);
-                          },
-              ],*/
-            
+      //  'fontAwesome' => true,
 
-         /*     [         'attribute' => 'idelements',
-                'label' => 'Id',
-       
-            ],
-*/
+        // 'floatHeader' => true,
+        'tableOptions' => [
+            'class' => 'table table-striped table-bordered'
+        ],
+        'containerOptions' => ['style'=>'overflow: auto'], // only set when $responsive = false
+        'columns' => [
+        /*    [
+                'class' => 'yii\grid\ActionColumn',
+               // 'contentOptions' => ['style' => 'width:45px;'],
+                  'buttons' => [
+                'prices' => function ($url,$model,$key) {
+                  $url = Url::to(['viewprice', 'idel' => $key]);
+                    return Html::a('<span class="glyphicon glyphicon-euro"></span>', $url,
+                            ['title' => 'Посмотреть цену']
+                            );
+                },
+            ],*/
+         //   ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute' => 'image',
                 'label' => 'Image',
                 'format' => 'raw',
                 'contentOptions' =>['class' => 'table_class','style'=>'display:block;'],
                 'value' => function ($model) {
-                    if($model->image){
+                  //  if($data->image){
                          return Html::img(Yii::getAlias('@web').'/images/' . $model->image,//$data['image'],
-                           ['width' => '60px']);
-                  }else{
-                        return '<span>no image</span>';
-                    }
-                 // return $model->displayImage;
-                //  return $model->image;
+                               
+                         ['width' => '60px']);
+                //    }else{
+                //        return '<span>no image</span>';
+                 //   }
+                  // return $model->displayImage;
                 },
-                'filter' => false,        
             ],
             [
                 'attribute' => 'idelements', 
-                'filter' => false,
+                //'filter' => false,
             ],
             [
                 'attribute' =>  'box',
