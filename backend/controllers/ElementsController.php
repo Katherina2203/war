@@ -57,7 +57,7 @@ class ElementsController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'actions' => ['index', 'view', 'orderquick'],
+                        'actions' => ['index', 'view', 'orderquick', 'vue'],
                     ],
                 ],
             ],
@@ -109,6 +109,11 @@ class ElementsController extends Controller
                 'dataProvideracc' => $dataProvideracc,
             ]);
         
+    }
+    
+    public function actionVue()
+    {
+        return $this->render('vue');
     }
     /**
      * Displays a single Elements model.

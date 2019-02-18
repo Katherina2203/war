@@ -21,6 +21,8 @@ class AppAsset extends AssetBundle
     public $js = [
         'dist/js/adminlte.min.js',
         'dist/js/myjs.js',
+        'js/vue.js',
+        'dist/js/vuejsscript.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

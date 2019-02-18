@@ -79,13 +79,28 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+          if (!Yii::$app->user->isGuest) {
+            return $this->redirect(['/myaccount/']);
+           //  return $this->redirect(['backend/admin/']);
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            
+            return $this->goBack();
+        } else {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
+    
     //   $modeluser = new User();
        /*  return $this->render('index', [
             'model' => $model,
         ]);*/
-         if (!Yii::$app->user->isGuest) {
-             //  return $this->goHome();
-              return $this->redirect(['/myaccount/']);
+  /*       if (!Yii::$app->user->isGuest) {
+               return $this->goHome();
+             // return $this->redirect(['/myaccount/']);
             //   return Yii::$app->urlManagerBackend->createUrl(['site/index']);
            //   return $this->redirect(Yii::$app->user->getReturnUrl());
                       //|| $this->redirect(Yii2::$app->user->returnUrl);
@@ -94,16 +109,16 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
            // return $this->goBack();
-            
-              
-           
+
             return Yii::$app->urlManagerBackend->createUrl(['site/index']);
         } else {
             return $this->render('login', [
                 'model' => $model,
             ]);
         }
-
+        
+        
+*/
     }
 
     /**

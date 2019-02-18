@@ -75,5 +75,16 @@ class Processingrequest extends \yii\db\ActiveRecord
     public function getSupplier() {
         return $this->hasMany(Supplier::className(), ['idsupplier' =>'idsupplier'])->viaTable('requests', ['idrequest' => 'idrequest']);
     }
-   
+    
+    public function getElements() 
+    {
+        return $this->hasMany(Elements::className(), ['idelements' => 'idelement'])
+                ->viaTable('purchaseorder', ['idrequest' => 'idrequest']);
+    }
+    
+    public function getAccounts() 
+    {
+        return $this->hasMany(Accounts::className(), ['idelem' => 'idelement'])
+                ->viaTable('purchaseorder', ['idrequest' => 'idrequest']);
+    }
 }

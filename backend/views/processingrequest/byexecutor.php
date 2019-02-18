@@ -107,16 +107,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($data){
                     return '<strong><center>'. $data->requests->quantity .'</center></strong>';
-                }
+                },
+                'contentOptions' => ['style' => 'max-width: 50px;white-space: normal'],
             ],
             [
                 'attribute' => 'idrequest',
                 'label' => 'Prices',  
                 'format' => 'raw',
-             //   'value' => 'prices.price',
-                'value'=>   call_user_func(function($modelPurchase){//call_user_func
+                'value' => function($data){
+                  //  return $data->elements->prices->price;
+                }
+              //  'elements.prices.price',
+            /*    'value'=>   call_user_func(function($modelPurchase){//call_user_func
                  //   return ArrayHelper::getValue($modelPurchase, 'prices.price');
-                }, $model),
+                }, $model),*/
+           /*     'value' => function($data){
+                    return $data->prices->price;
+                }*/
             ],
             [
                 'attribute' => 'idrequest',
@@ -137,8 +144,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-              
+                'attribute' => 'idrequest',
                 'label' => 'Invoice',  
+                'format' => 'raw',
+                'value' => function($model){
+                return $model-> idrequest;
+              
+                 //   return $model->accounts->idelem;
+                }
             ],  
             [
                 'attribute' => 'idrequest',

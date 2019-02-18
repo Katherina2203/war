@@ -48,6 +48,17 @@ class User extends ActiveRecord implements IdentityInterface
         ];
          
     }
+    
+    public function beforeSave($insert)
+{
+    if (!parent::beforeSave($insert)) {
+        return false;
+    }
+    if ($insert) {
+        $this->generateAuthKey();
+    }
+    return true;
+}
 
     /**
      * @inheritdoc

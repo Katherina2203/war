@@ -47,8 +47,8 @@ return [
             'identityClass' => 'common\models\User',// 'identityClass' => 'mdm\admin\models\User',
             'enableAutoLogin' => true,
         //    'enableSession' => true,
-            'authTimeout' => 1800,
-        //    'loginUrl' => ['site/login'],
+            'authTimeout' => 3600 * 30 * 24, //1800,
+            'loginUrl' => ['site/login', 'site/index'],
             'identityCookie' => [
                    'name' => '_backendIdentity',
                    'httpOnly' => true,

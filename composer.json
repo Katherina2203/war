@@ -43,7 +43,8 @@
 	    "mimicreative/yii2-react": "~1.0",
         "cebe/yii2-gravatar": "dev-master",
         "dmstr/yii2-helpers": "*",
-        "nizsheanez/yii2-asset-converter": " 1.*"
+        "nizsheanez/yii2-asset-converter": " 1.*",
+        "antkaz/yii2-vue": "~1.0"
 
     },
     "require-dev": {
