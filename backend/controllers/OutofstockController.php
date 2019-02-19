@@ -255,32 +255,31 @@ class OutofstockController extends Controller
  
     public function actionBoard() 
     {
-        $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $ids = $_POST['depdrop_parents'];
-            $idtheme = empty($ids[0]) ? null : $ids[0];
-            $idthemeunit = empty($ids[1]) ? null : $ids[1];
-                if ($idtheme != null) {
-                   $data = Boards::getBoardList($idtheme, $idthemeunit);
-                    /**
-                     * the getProdList function will query the database based on the
-                     * cat_id and sub_cat_id and return an array like below:
-                     *  [
-                     *      'out'=>[
-                     *          ['id'=>'<prod-id-1>', 'name'=>'<prod-name1>'],
-                     *          ['id'=>'<prod_id_2>', 'name'=>'<prod-name2>']
-                     *       ],
-                     *       'selected'=>'<prod-id-1>'
-                     *  ]
-                     */
+        $post = Yii::$app->request->post('depdrop_parents');
+//        $out = [];
+        if (isset($post)) {
+            //$idtheme = empty($ids[0]) ? null : $ids[0];
+            $idthemeunit = empty($post[0]) ? null : $post[0];
+            if (!is_null($idthemeunit)) {
+//                $data = Boards::getBoardList($idthemeunit);
+                /**
+                 * the getProdList function will query the database based on the
+                 * cat_id and sub_cat_id and return an array like below:
+                 *  [
+                 *      'output'=>[
+                 *          ['id'=>'<prod-id-1>', 'name'=>'<prod-name1>'],
+                 *          ['id'=>'<prod_id_2>', 'name'=>'<prod-name2>']
+                 *       ],
+                 *       'selected'=>'<prod-id-1>'
+                 *  ]
+                 */
 
-                   echo Json::encode(['output'=>$data['out'], 'selected'=>$data['selected']]);
-                   return;
-                }
+                echo Json::encode(Boards::getBoardList($idthemeunit));
+                return;
+            }
         }
-    echo Json::encode(['output'=>'', 'selected'=>'']);
+        echo Json::encode(['output'=>'', 'selected'=>'']);
     
-      
     }
    
   

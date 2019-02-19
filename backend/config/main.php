@@ -49,6 +49,12 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget', //в файл
+                    'categories' => ['ajax'], //категория логов
+                    'logFile' => '@runtime/logs/ajax.log', //куда сохранять
+                    'logVars' => [] //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
+                ],
             ],
         ],
         'errorHandler' => [

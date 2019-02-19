@@ -122,31 +122,30 @@ class Boards extends \yii\db\ActiveRecord
         return $this->hasOne(Shortage::className(), ['idboard' => 'idboards']);
     }
     
-    public static function getBoardList($idtheme, $idthemeunit)
+    public static function getBoardList($idthemeunit)
     {
-        $out = [];
-        $selected = '';
+//        $out = [];
+//        $selected = '';
         $data = Boards::find()
-                ->where(['idtheme' => $idtheme])
-                ->andWhere(['idthemeunit' => $idthemeunit])
-                ->select(['idboards as id', 'name'])
+                //->where(['idtheme' => $idtheme])
+                ->where(['idthemeunit' => $idthemeunit])
+                ->select(['idboards as id', 'CONCAT(idboards, "  ", name) as name'])
                 ->asArray()
                 ->all();
-         
-        foreach ($data as $dat => $datas) {
-             $out[] = ['idboards' => $datas['idboart'], 'name' => $datas['idboart']];
 
-            if($dat == 0){
-                    $aux = $datas['idboart'];
-                }
-
-
-            ($datas['idtheme'] == $idtheme) ? $selected = $idtheme : $selected = $aux;
-
-        }
-        return $out = [
-            'output' => $output,
-            'selected' => $selected
+//        foreach ($data as $dat => $datas) {
+//             $out[] = ['idboards' => $datas['idboards'], 'name' => $datas['name']];
+//
+//            if($dat == 0){
+//                $aux = $datas['idboards'];
+//            }
+////            ($datas['idtheme'] == $idtheme) ? $selected = $idtheme : $selected = $aux;
+//
+//        }
+        $selected = isset($data[0]) ? $data[0]['id'] : '0';
+        return [
+            'output' => $data,
+            'selected' => $selected,
         ];
 
     }

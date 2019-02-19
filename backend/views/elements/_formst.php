@@ -52,20 +52,20 @@ use common\models\Users;
         ]);?>
 
     <?=  /* selecting boards*/ 
-     /*   $form->field($model, 'idboart')->widget(DepDrop::classname(), [
+        $form->field($model, 'idboart')->widget(DepDrop::classname(), [
+            'options'=>['id'=>'idboart'],
                 'type' => DepDrop::TYPE_SELECT2,
-        //    'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
                 'pluginOptions'=>[
                     'depends' => ['idthemeunit'],
-                    'initDepends' => ['idtheme'],
+//                    'initDepends' => ['idtheme'],
                     'placeholder'=>'Выберите плату...',
                     'url'=>Url::to(['/outofstock/board']),
                  //   'initialize' => true,
             ],
         ]);
-*/
     
-    $form->field($model, 'idboart')->dropDownList($boardsList, ['id' => 'idboards']);
+//    $form->field($model, 'idboart')->dropDownList($boardsList, ['id' => 'idboards']);
     ?>
        
     <?= $form->field($model, 'ref_of_board')->textInput(['maxlength' => true]) ?>
