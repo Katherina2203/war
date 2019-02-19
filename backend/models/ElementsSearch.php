@@ -19,7 +19,7 @@ class ElementsSearch extends Elements
     public function rules()
     {
         return [
-            [['idelements', 'quantity', 'created_by' , 'edited_by', 'idcategory'], 'integer'],
+            [['idelements', 'quantity', 'created_by' , 'updated_by', 'idcategory'], 'integer'],
             [['box', 'name', 'nominal', 'image', 'active', 'searchstring', 'idproduce'], 'safe'],
             ['name', 'trim'],
         ];
