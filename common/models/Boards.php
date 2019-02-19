@@ -122,26 +122,26 @@ class Boards extends \yii\db\ActiveRecord
         return $this->hasOne(Shortage::className(), ['idboard' => 'idboards']);
     }
     
-    public static function getBoardList($idtheme, $idthemeunit)
+    public static function getBoardList($idthemeunit)
     {
         $out = [];
         $selected = '';
         $data = Boards::find()
-                ->where(['idtheme' => $idtheme])
-                ->andWhere(['idthemeunit' => $idthemeunit])
+               // ->where(['idtheme' => $idtheme])
+                ->Where(['idthemeunit' => $idthemeunit])
                 ->select(['idboards as id', 'name'])
                 ->asArray()
                 ->all();
          
         foreach ($data as $dat => $datas) {
-             $out[] = ['idboards' => $datas['idboart'], 'name' => $datas['idboart']];
+             $out[] = ['id' => $datas['idboart'], 'name' => $datas['idboart']];
 
             if($dat == 0){
                     $aux = $datas['idboart'];
                 }
 
 
-            ($datas['idtheme'] == $idtheme) ? $selected = $idtheme : $selected = $aux;
+            ($datas['idthemeunit'] == $idthemeunit) ? $selected = $aux : '';
 
         }
         return $out = [

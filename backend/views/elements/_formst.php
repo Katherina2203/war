@@ -52,7 +52,7 @@ use common\models\Users;
         ]);?>
 
     <?=  /* selecting boards*/ 
-     /*   $form->field($model, 'idboart')->widget(DepDrop::classname(), [
+        $form->field($model, 'idboart')->widget(DepDrop::classname(), [
                 'type' => DepDrop::TYPE_SELECT2,
         //    'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
                 'pluginOptions'=>[
@@ -63,9 +63,9 @@ use common\models\Users;
                  //   'initialize' => true,
             ],
         ]);
-*/
+
     
-    $form->field($model, 'idboart')->dropDownList($boardsList, ['id' => 'idboards']);
+   // $form->field($model, 'idboart')->dropDownList($boardsList, ['id' => 'idboards']);
     ?>
        
     <?= $form->field($model, 'ref_of_board')->textInput(['maxlength' => true]) ?>
