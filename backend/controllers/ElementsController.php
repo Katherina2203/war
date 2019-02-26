@@ -155,8 +155,10 @@ class ElementsController extends Controller
                         'idboard' => $modelrequests->idboard, 
                         'idelement' => $model->idelements, 
                         'quantity' => $modelrequests->quantity, 
-                        'status' => Shortage::STATUS_ACTIVE]
-                        )->execute();
+                        'status' => Shortage::STATUS_ACTIVE,
+                        'created_by' => yii::$app->user->identity->id,
+                        'updated_by' => yii::$app->user->identity->id,
+                        ])->execute();
                 }
             if($modelrequests->save(false)) {
                 Yii::$app->session->setFlash('success', 'Товар успешно отправлен в заявку!');

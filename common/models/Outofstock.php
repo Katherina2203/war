@@ -42,7 +42,7 @@ class Outofstock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idelement', 'iduser', 'quantity',  'idtheme', 'idboart', 'ref_of_board'], 'required'], //here was date
+            [['idelement', 'iduser', 'quantity',  'idtheme', 'idboart', 'ref_of_board'], 'required'], 
             [['idelement', 'iduser', 'quantity', 'idtheme', 'idthemeunit', 'idboart', 'idprice'], 'integer'],
             [['quantity'], 'safe'],
             [['ref_of_board'], 'string', 'max' => 64],

@@ -39,7 +39,7 @@ class Shortage extends \yii\db\ActiveRecord
             [
                 'class' => BlameableBehavior::className(),
                 'createdByAttribute' => 'created_by',
-                'updatedByAttribute' => 'edited_by',
+                'updatedByAttribute' => 'updated_by',
             ],
         ];
          
@@ -51,7 +51,7 @@ class Shortage extends \yii\db\ActiveRecord
             $this->created_by = \yii::$app->user->identity->id;
           //  $this->CreatedOn = time();
         } else {
-            $this->edited_by = \yii::$app->user->identity->id;
+            $this->updated_by = \yii::$app->user->identity->id;
             //$this->ModifiedOn = time();
         }
     
