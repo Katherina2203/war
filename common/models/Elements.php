@@ -85,9 +85,10 @@ class Elements extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['box', 'name', 'nominal'], 'required'],
+            [['box', 'name', 'nominal', 'idcategory', 'idproduce'], 'required'],
             [['quantity', 'idproduce', 'idcategory', 'created_by' , 'updated_by'], 'integer'],
             ['box', 'required', 'message' => 'Please choose a category'],
+            [['name', 'nominal'], 'string', 'max' => 20],
             ['idcategory', 'required', 'message' => 'Please choose a category'],
             ['idproduce', 'required', 'message' => 'Please choose a produce'],
             ['active', 'default', 'value' => self::ELEMENT_ACTIVE],
