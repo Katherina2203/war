@@ -428,34 +428,23 @@ $this->params['breadcrumbs'][] = $this->title;
          //   'idtheme',
             [
                 'attribute' => 'idtheme',
-                 'format' => 'raw',
-                'value' => function($model, $url){
-                    $url = Url::to(['boards/view', 'id' => $model->idboart]);
-                    $theme = empty($data->idtheme) ? '-' : $data->themes->name;
-                    $themeunits = empty($data->idthemeunit) ? '-' : $data->themeunits->nameunit;
-                    $boards = html::a($data->boards->BoardnameId, $url);
-              /*  return empty($data->idtheme) ? '-' : $data->themes->name . ', ' . 
-                       empty($data->idthemeunit) ? '-' : $data->themeunits->nameunit. '<br/>' . 
-                        html::a($data->boards->BoardnameId, $url);*/
-                  
-                        return $theme . ', ' . $themeunits . '<br/>' . 
-                        html::a($model->boards->BoardnameId, $url);
-        
-                    
+                'format' => 'raw',
+                'value' => function($data){
+                    return empty($data->idtheme) ? '-' : $data->themes->name;
                 },
-                'format' => 'text',
+                
                // 'filter' => Html::activeDropDownList($searchModelout, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->where(['status' => 'active'])->all(), 'idtheme', 'ThemList'),['class'=>'form-control','prompt' => 'Выберите проект']),
             ],
-        /*    [
+            [
                 'attribute' => 'idthemeunit',
               //  'value' => 'themeunits.UnitsListId',
                 'value' => function($data){
                     return empty($data->idthemeunit) ? '-' : $data->themeunits->nameunit;
                 },
-                'format' => 'text',
+                'format' => 'raw',
                 'filter' => Html::activeDropDownList($searchModelout, 'idthemeunit', ArrayHelper::map(\common\models\Themeunits::find()->select(['idunit', 'nameunit'])->all(), 'idunit', 'UnitsListId'),['class'=>'form-control','prompt' => 'Выберите модуль']),
-            ], */
-          /*  [
+            ], 
+            [
                 'attribute' => 'idboart',
                 'format' => 'raw',
                 'value' => function($data, $url){
@@ -463,7 +452,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return html::a($data->boards->BoardnameId, $url);//$data->boards->BoardnameId = '0' ? '-' :
                 },
                 'filter' => Html::activeDropDownList($searchModelout, 'idboart', ArrayHelper::map(\common\models\Boards::find()->select(['idboards', 'name'])->where(['discontinued' => '1'])->all(), 'idboards', 'BoardnameId'),['class'=>'form-control','prompt' => 'Выберите плату']),
-            ], */
+            ], 
             'ref_of_board',
 
             ['class' => 'yii\grid\ActionColumn',
