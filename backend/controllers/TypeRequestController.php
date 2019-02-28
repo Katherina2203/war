@@ -1,6 +1,5 @@
 <?php
-
-namespace app\modules\admin\controllers;
+namespace backend\controllers;
 
 use Yii;
 use common\models\TypeRequest;

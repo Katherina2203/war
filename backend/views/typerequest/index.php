@@ -22,10 +22,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
             'idtype',
-            'name',
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function($data){
+                    return html::a($data->name, ['requests/index']);
+                }
+            ],
+            
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
