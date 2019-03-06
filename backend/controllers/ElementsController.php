@@ -367,6 +367,7 @@ class ElementsController extends Controller
         $model->iduser = $iduser;
         $user = new Users();
         $user->id = $iduser;
+       
         $element = new Elements();
         $element->idelements = $idel;
         
@@ -416,15 +417,56 @@ class ElementsController extends Controller
         }
     }
     
+    
+    public function actionCloseshortage($idel)
+    {   
+        $model = new Outofstock();
+        
+         if ($model->load(Yii::$app->request->post())) {
+            
+            $transaction = $model->getDb()->beginTransaction(//Yii::$app->db->beginTransaction(
+                 //   Transaction::SERIALIZABLE
+                    );
+            try{
+                $valid = $model->validate();
+               
+                 Yii::$app->db->createCommand()->update('shortages', ['status' => Requests::REQUEST_DONE], ['idrequest' => $model->requests->idrequest])->execute(); //change status to close at chortage 
+                    
+                if ($valid) {
+                // the model was validated, no need to validate it once more
+                    $model->save(false);
+
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
+                    return $this->redirect(['viewfrom', 'idel' => $model->idelement]);
+                } else {
+                    $transaction->rollBack();
+                }  
+                }catch (ErrorException $e) {
+                    $transaction->rollBack();
+                    echo $e->getMessage();
+            }
+           
+        } else {
+            return $this->render('close', [
+                'model' => $model,
+            
+                
+            ]);
+        }
+
+    }
+         
+    
      public function actionCreatefromquick($idel, $iduser)
     {
         $model = new Outofstock();
+        
         $model->idelement = $idel;
         $model->iduser = $iduser;
       //  $user = new Users();
       //  $user->id = $iduser;
-        $element = new Elements();
-        $element->idelements = $idel;
+  
         
         $board = new Boards();
         $board->idtheme = $model->idtheme;
@@ -463,7 +505,7 @@ class ElementsController extends Controller
             return $this->render('createfromquick', [
                 'model' => $model,
              //   'user' => $user,
-                'element' => $element,
+              
                 'board' => $board,
             ]);
         }

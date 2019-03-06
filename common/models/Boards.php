@@ -129,6 +129,7 @@ class Boards extends \yii\db\ActiveRecord
         $data = Boards::find()
                 //->where(['idtheme' => $idtheme])
                 ->where(['idthemeunit' => $idthemeunit])
+                ->andWhere(['discontinued' => '1'])
                 ->select(['idboards as id', 'CONCAT(idboards, "  ", name) as name'])
                 ->asArray()
                 ->all();

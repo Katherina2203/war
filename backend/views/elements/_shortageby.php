@@ -20,7 +20,8 @@ use yii\widgets\Pjax;
                     echo Html::a(Html::encode($shortage->boards->name), Url::to(['shortage/index']), ['class' => 'product-title']).
                             ', <span style="color:lightgrey">' . $shortage->boards->themes->name . '</span>' . 
                             '<br/><span>'. $shortage->ref_of . '</span>';
-                    echo '<span class="label label-danger pull-right">'. $shortage->quantity. '</span>';
+                    echo '<span class="label label-danger">'. $shortage->quantity. '</span>';
+                    echo '<a class="label label-warning pull-right">'. html::a('Взять со склада', ['elements/closeshortage', 'idel' => $shortage->idelement, 'iduser' => yii::$app->user->identity->id]). '</a>';
                     echo '</li>';
                     }?>
        </ul>
