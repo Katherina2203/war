@@ -19,7 +19,7 @@ class PayerSearch extends Payer
     {
         return [
             [['idpayer'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'contact', 'email', 'phone'], 'safe'],
         ];
     }
 
@@ -60,6 +60,9 @@ class PayerSearch extends Payer
         // grid filtering conditions
         $query->andFilterWhere([
             'idpayer' => $this->idpayer,
+            'name' => $this->name,
+            'contact' => $this->contact,
+           // 'address' => $this->address,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
