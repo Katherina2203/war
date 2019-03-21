@@ -3,8 +3,7 @@
 use yii\helpers\Html;
 
 use yii\helpers\Url;
-use yii\data\ActiveDataProvider;
-use common\models\Payer;
+
 
 ?>
 

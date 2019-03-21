@@ -84,6 +84,13 @@ class Requests extends \yii\db\ActiveRecord
             [['note'], 'string', 'max' => 128],
         ];
     }
+    
+    public function scenarios()
+    {
+        return [
+            'default' => ['img', '!thumb'],
+        ];
+    }
     /**
      * @inheritdoc
      */

@@ -48,6 +48,7 @@ class Themes extends \yii\db\ActiveRecord
             [['description', 'status'], 'string'],
             [['date'], 'safe'],
             [['projectnumber'], 'string', 'max' => 20],
+            [['designnumber'], 'string', 'max' => 32],
             [['name', 'customer'], 'string', 'max' => 64],
             [['full_name'], 'string', 'max' => 128],
             [['subcontractor'], 'string', 'max' => 30],
@@ -63,6 +64,7 @@ class Themes extends \yii\db\ActiveRecord
         return [
             'idtheme' => Yii::t('app', '#проекта'),
             'projectnumber' => Yii::t('app', 'Номер'),
+            'designnumber' => Yii::t('app', 'Номер КД'),
             'name' => Yii::t('app', 'Проект'),
             'full_name' => Yii::t('app', 'Полное название'),
             'customer' => Yii::t('app', 'Заказчик'),
