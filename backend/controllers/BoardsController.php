@@ -19,6 +19,8 @@ use common\models\Themeunits;
 use common\models\Elements;
 use backend\models\ElementsSearch;
 use common\models\Shortage;
+use common\models\Requests;
+use backend\models\RequestsSearch;
 
 use common\models\BoardsQuery;
 /**
@@ -57,6 +59,25 @@ class BoardsController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    public function actionRequests($idb)
+    {
+        $model = $this->findModel($idb);
+        $modelrequests = new Requests();
+        $searchModel = new RequestsSearch();
+        
+        $query = Requests::find()->where(['idboard' => $idb])->orderBy('created_at DESC');
+        $dataProviderreq = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        
+        return $this->render('requests', [
+            'model' => $model,
+            'modelrequests' => $modelrequests,
+            'dataProviderreq' => $dataProviderreq,
+            'searchModel' => $searchModel,
         ]);
     }
     

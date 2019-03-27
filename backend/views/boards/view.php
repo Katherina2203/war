@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model common\models\Boards */
 
@@ -14,13 +15,14 @@ $this->params['breadcrumbs'][] = ['label' => 'Boards', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="boards-view">
-    <section class="invoice">
-        <div class="row">
-            <div class="col-xs-12">
-                <span>Номер платы: <strong><?= $model->idtheme. '-'. $model->idthemeunit. '-'. $model->idboards;?></strong></span>
-               <h4><i class="glyphicon glyphicon-hdd"></i> <?= Html::encode($this->title) ?></h4>
-            </div>
-            <div class="col-xs-6">
+    <div class="row">
+         <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border"><span>Номер платы: <strong><?= $model->idtheme. '-'. $model->idthemeunit. '-'. $model->idboards;?></strong></span>
+                    <h4><i class="glyphicon glyphicon-hdd"></i> <?= Html::encode($this->title) ?></h4>
+                </div>
+            <div class="box-body">
+            
                 <p>
                     <?= Html::a('Update', ['update', 'id' => $model->idboards], ['class' => 'btn btn-primary']) ?>
                     <?= Html::a('Delete', ['delete', 'id' => $model->idboards], [
@@ -59,8 +61,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
             </div>
+          </div> 
         </div>
-    </section>
+    </div>
+    
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="<?= Url::to(['requests/index']) ?>"><?= 'Specification' ?></a></li>
+        <li role="presentation"><a href="<?= Url::to(['requests/myrequests', 'iduser' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'Template of the specification' ?></a></li>
+        <li role="presentation"><a href="<?= Url::to(['elements/view', 'id' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
+        <li role="presentation" ><a href="#"><span class="glyphicon glyphicon-comment"></span> <?=  'Requests'?></a></li>
+   
+    </ul>
+ <p>
+         <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Specification', ['create'], [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-success']) ?>
+    </p>
     <div class="panel panel-default">
         <div class="panel-heading"><h4><i class="glyphicon glyphicon-hdd"></i> Перечень электронных компонентов</h4></div>
         <div class="panel-body">
