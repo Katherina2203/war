@@ -76,9 +76,9 @@ class Boards extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idtheme', 'idthemeunit'], 'integer'],
-            [['name', 'current', 'date_added', 'discontinued'], 'required'],
-            [['date_added'], 'safe'],
+            [['idtheme', 'idthemeunit', 'quantity'], 'integer'],
+            [['name', 'current', 'date_added', 'discontinued', 'quantity'], 'required'],
+            [['date_added', 'quantity'], 'safe'],
             [['discontinued'], 'string'],
             [['name', 'current'], 'string', 'max' => 60],
         ];
@@ -95,6 +95,7 @@ class Boards extends \yii\db\ActiveRecord
             'idthemeunit' => 'Модуль',
             'name' => 'Название',
             'current' => 'Ответственный',
+            'quantity' => 'Количество',
             'date_added' => 'Дата создания',
             'discontinued' => 'Актуальность',
         ];

@@ -136,17 +136,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'value' => 'elements.nominal'
                                             ],
                                             [
-                                                'attribute' => 'iduser',
-                                                'value' => 'users.surname',
-                                               //   'filter' => Html::activeDropDownList($searchModeloutof, 'iduser', ArrayHelper::map(\common\models\Users::find()->select(['id', 'surname'])->indexBy('id')->all(), 'id', 'surname'),['class'=>'form-control','prompt' => 'Select user']),
-                                            ],
-                                            [
                                                 'attribute' => 'quantity',
                                                 'format' => 'raw',
                                                 'value' => function($data){
                                                     return '<strong><center>' . $data->quantity . '</center></strong>';
                                                 }
                                             ],
+                                            [
+                                                'attribute' => 'iduser',
+                                                'value' => 'users.surname',
+                                               //   'filter' => Html::activeDropDownList($searchModeloutof, 'iduser', ArrayHelper::map(\common\models\Users::find()->select(['id', 'surname'])->indexBy('id')->all(), 'id', 'surname'),['class'=>'form-control','prompt' => 'Select user']),
+                                            ],
+                                           
                                             'date',
                                          //   'idtheme',
                                             [
