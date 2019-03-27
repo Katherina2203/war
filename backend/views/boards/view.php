@@ -66,11 +66,11 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="<?= Url::to(['requests/index']) ?>"><?= 'Specification' ?></a></li>
-        <li role="presentation"><a href="<?= Url::to(['requests/myrequests', 'iduser' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'Template of the specification' ?></a></li>
-        <li role="presentation"><a href="<?= Url::to(['elements/view', 'id' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
-        <li role="presentation" ><a href="#"><span class="glyphicon glyphicon-comment"></span> <?=  'Requests'?></a></li>
-   
+        <li role="presentation" class="active"><a href="<?= Url::to(['boards/view', 'id'=> $model->idboards]) ?>"><?= 'Specification' ?></a></li>
+        <li role="presentation"><a href="<?= Url::to(['boards/template', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'Template of the specification' ?></a></li>
+        <li role="presentation"><a href="<?= Url::to(['boards/view', 'id' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
+        <li role="presentation" ><a href="<?= Url::to(['boards/requests', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Requests'?></a></li>
+        <li role="presentation" ><a href="<?= Url::to(['boards/shortage', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Shortage'?></a></li>
     </ul>
  <p>
          <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Specification', ['create'], [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-success']) ?>

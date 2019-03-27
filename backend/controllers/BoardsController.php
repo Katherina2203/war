@@ -212,11 +212,16 @@ class BoardsController extends Controller
         $modelsh = new Shortage();
         $searchModelsh = new \backend\models\ShortageSearch();
         
+        $query = Shortage::find()->where(['idboard' => $idboard]);
+        $dataProvidersh = new \yii\data\ActiveDataProvider([
+            'query' => $query,
+        ]);
+        
           return $this->render('shortage', [
-             'model' => $model,
-             'modelsh' => $modelsh,
-             'searchModelsh' => $searchModelsh,
- 
+               'model' => $model,
+               'modelsh' => $modelsh,
+               'searchModelsh' => $searchModelsh,
+               'dataProvidersh' => $dataProvidersh,
              ]);
         
     }
