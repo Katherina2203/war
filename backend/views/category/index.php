@@ -58,30 +58,31 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <div class="row">
         <div class="col-md-6">
-                    <?= ListView::widget([
+                    <?php 
+                        $columns = 3;
+                        $cl = 12 / $columns;
+                        echo ListView::widget([
                             'dataProvider' =>  $dataProviderParent,
-                            'options' => [
-                                'tag' => 'div',
-                                'class' => 'list-wrapper',
-                                'id' => 'list-wrapper',
-                            ],
-                        //    'layout' => "{pager}\n{items}\n{summary}",
+                            'layout'       => '{items}{pager}',
+                            'options' => ['class' => 'list-wrapper'],
+                            'itemOptions'  => ['class' => "col-sm-$cl"],
+                            'beforeItem'   => function ($model, $key, $index, $widget) use ($columns) {
+                                if ( $index % $columns == 0 ) {
+                                    return "<div class='row'>";
+                                }
+                            },
                             'itemView' => function ($model, $key, $index, $widget) {
                                 return $this->render('_categorylist',['model' => $model]);
-
-                                // or just do some echo
-                                // return $model->title . ' posted by ' . $model->author;
                             },
-                            'itemOptions' => [
-                                'tag' => false,
-                            ],
-                            'pager' => [
-                                    'pagination' => $pages,
-                            
-                            ],
-                            'emptyText' => '<p>Список пуст</p>',
-                            'summary' => 'Показано {count} из {totalCount}',
-                        ]);
+                           'afterItem' => function ($model, $key, $index, $widget) use ($columns) {
+                                if ( $index != 0 && $index % ($columns - 1) == 0 ) {
+                                    return "</div>";
+                                }
+                            }
+                            ]);
+                            if ($dataProviderParent->totalCount % $columns != 0) {
+                                echo "</div>";
+                            }
                         ?>
                  
         </div>
