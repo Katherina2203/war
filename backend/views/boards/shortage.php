@@ -78,8 +78,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Shortage', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
-        'dataProvider' => $dataProvidersh,
-        'filterModel' => $searchModelsh,
+        'dataProvider' => $dataProvideroutof,
+      //  'filterModel' => $searchModelsh,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

@@ -1,9 +1,12 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+use yii\helpers\Html;
 /**
  * This is the model class for table "specification".
  *
@@ -18,14 +21,51 @@ use Yii;
  */
 class Specification extends \yii\db\ActiveRecord
 {
+    const STATUS_NOACTIVE = 0; //статус относится к недостачам. 0-нет недостач
+    const STATUS_ACTIVE = 1; //
+    const STATUS_CANCEL = 2; //отмена в недостачах
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'specification';
+        return '{{%specification}}';
     }
 
+    public function behaviors() {
+        return [
+            'timestamp' => [
+               'class' => TimestampBehavior::className(),
+               'value' => new \yii\db\Expression('NOW()'),
+            ],
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
+            ],
+        ];
+         
+    }
+    
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->created_by = \yii::$app->user->identity->id;
+          //  $this->CreatedOn = time();
+        } else {
+            $this->updated_by = \yii::$app->user->identity->id;
+            //$this->ModifiedOn = time();
+        }
+    
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->status = self::STATUS_NOACTIVE;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
     /**
      * @inheritdoc
      */
@@ -53,5 +93,9 @@ class Specification extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('app', 'Updated At'),
             'updated_by' => Yii::t('app', 'Updated By'),
         ];
+    }
+    
+    public function getElements() {
+        return $this->hasOne(Elements::className(), ['idelements' =>'idelement']);
     }
 }

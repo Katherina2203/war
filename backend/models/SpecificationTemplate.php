@@ -19,7 +19,7 @@ class SpecificationTemplate extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'specification_template';
+        return '{{%specification_template}}';
     }
 
     /**

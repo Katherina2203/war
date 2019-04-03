@@ -7,6 +7,7 @@ use yii\grid\GridView;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $model common\models\Boards */
 
@@ -65,19 +66,17 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="<?= Url::to(['boards/view', 'id'=> $model->idboards]) ?>"><?= 'Specification' ?></a></li>
-        <li role="presentation"><a href="<?= Url::to(['boards/template', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'Template of the specification' ?></a></li>
-        <li role="presentation"><a href="<?= Url::to(['boards/view', 'id' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
-        <li role="presentation" ><a href="<?= Url::to(['boards/requests', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Requests'?></a></li>
-        <li role="presentation" ><a href="<?= Url::to(['boards/shortage', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Shortage'?></a></li>
-    </ul>
- <p>
-         <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Specification', ['create'], [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-success']) ?>
-    </p>
+    
+   
+    
     <div class="panel panel-default">
-        <div class="panel-heading"><h4><i class="glyphicon glyphicon-hdd"></i> Перечень электронных компонентов</h4></div>
+        <div class="panel-heading">
+            <h4><i class="glyphicon glyphicon-hdd"></i> Перечень электронных компонентов в спецификации</h4>
+          
+        </div>
+        
         <div class="panel-body">
+           <div class="panel-body">
             <?php DynamicFormWidget::begin([
                 'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
                 'widgetBody' => '.container-items', // required: css class selector
@@ -89,12 +88,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'formId' => 'dynamic-form',
                 'formFields' => [
-                    'full_name',
+                    /*'full_name',
                     'address_line1',
                     'address_line2',
                     'city',
                     'state',
-                    'postal_code',
+                    'postal_code',*/
+                    'idelement',
+                    'status'
                 ],
             ]); ?>
             
@@ -115,34 +116,59 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="container-items">
             
             <div class="container-items"><!-- widgetContainer -->
-                <div>
-                    <?= Html::a('Недостачи', ['shortage', 'idboard' => $model->idboards], ['class' => 'btn btn-primary']) ?>
-                </div>
-                       <div class="item panel panel-default"><!-- widgetBody -->
+              
+                    <?php // Html::a('Недостачи', ['shortage', 'idboard' => $model->idboards], ['class' => 'btn btn-primary']) ?>
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" class="active"><a href="<?= Url::to(['boards/view', 'id'=> $model->idboards]) ?>"><?= 'Specification' ?></a></li>
+                        <li role="presentation"><a href="<?= Url::to(['boards/specificationtemplate', 'id' => $model->idboards]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'Template of the specification' ?></a></li>
+                        <li role="presentation"><a href="<?= Url::to(['boards/outof', 'idboard' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
+                        <li role="presentation" ><a href="<?= Url::to(['boards/requests', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Requests'?></a></li>
+                        <li role="presentation" ><a href="<?= Url::to(['boards/shortage', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Shortage'?></a></li>
+                    </ul>
+             
+                <div class="item panel panel-default"><!-- widgetBody -->
                            <div class="panel-heading">
                                
-                               <h3 class="panel-title pull-left">Elements</h3>
+                          
                                <div class="pull-right">
-                                   <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
-                                   <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
+                                  <!-- <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus" title="Создать шаблон для спецификации"></i></button>-->
+                                 <span><?= Html::a('<i class="glyphicon glyphicon-plus"></i>', ['specificationtemplate/create'], [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-success']) ?></span>
+                                   <span><?= Html::a('<i class="glyphicon glyphicon-eye-open"></i> template', ['create'], [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-warning']) ?></span>
                                </div>
                                <div class="clearfix"></div>
                            </div>
                            <div class="panel-body">
-                            <div>
-                                
-                            </div>
-                               <div class="row">
+
+                              <?php Pjax::begin(['id' => 'specifications']); ?>  
                                 <?= GridView::widget([
-                                        'dataProvider' => $dataProvideroutof,
-                                        'filterModel' => $searchModeloutof,
+                                        'dataProvider' => $dataProviderspec,
+                                        'filterModel' => $searchModelspec,
+                                   
+                                        'tableOptions' => [
+                                            'class' => 'table table-striped table-bordered'
+                                        ],
+                                       /* 'rowOptions' => function($modelspec, $key, $index, $grid){
+                                            if($modelspec->status == '0'){  // not active
+                                                return ['class' => 'warning'];  //active class => 'sucess'   label label-primary glyphicon glyphicon-ok
+                                            }elseif($modelspec->status == '1'){  //active
+                                                return ['class' => 'success']; //unactive color: #b2b2b2 label label-danger glyphicon glyphicon-remove
+                                            }elseif($modelspec->status == '2'){ //cancel
+                                                return ['style' => 'label label-default glyphicon glyphicon-time; color: #b2b2b2;']; //cancel f97704 - orange color:#c48044
+                                            }
+                                        },*/
                                         'columns' => [
-                                            'idofstock',
-                                            'idelement',
+                                            [
+                                                'attribute' => 'idelement',
+                                                'contentOptions'=>['style'=>'width: 90px;'],
+                                            ],
                                             [
                                                 'attribute' => 'idelement',
                                                 'label' => 'Наименование',
-                                                'value' => 'elements.name'
+                                                'format' => 'raw',
+                                                'value' => function($data){
+                                                       return html::a($data->elements->name, ['elements/view', 'id' => $data->idelement]);
+                                                }
+                                                
                                             ],
                                             [
                                                 'attribute' => 'idelement',
@@ -154,15 +180,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'format' => 'raw',
                                                 'value' => function($data){
                                                     return '<strong><center>' . $data->quantity . '</center></strong>';
-                                                }
+                                                },
+                                                'contentOptions'=>['style'=>'width: 70px;'],
                                             ],
-                                            [
-                                                'attribute' => 'iduser',
-                                                'value' => 'users.surname',
-                                               //   'filter' => Html::activeDropDownList($searchModeloutof, 'iduser', ArrayHelper::map(\common\models\Users::find()->select(['id', 'surname'])->indexBy('id')->all(), 'id', 'surname'),['class'=>'form-control','prompt' => 'Select user']),
-                                            ],
-                                           
-                                            'date',
+                                       
+                                        //    'date',
                                          //   'idtheme',
                                             [
                                                'attribute' => 'idprice',
@@ -173,41 +195,37 @@ $this->params['breadcrumbs'][] = $this->title;
                                                }
 
                                             ],
+                                            'ref_of',
                                             [
-                                                'attribute' => 'idprice',
-                                                'label' => 'USD',
-                                                'value' => function($data){
-                                                    return empty($data->idprice) ? '-' : $data->prices->usd;
-                                                }
+                                                'attribute' => 'status',
+                                                'format' => 'raw',
+                                                'value'=> call_user_func(function($data){
+                                                    if($data->status == '0'){ //not active
+                                                       return '<span class="glyphicon glyphicon-unchecked" style="color: #d05d09"> недостач нет</span>';
+                                                    }elseif($data->status == '1'){//active
+                                                       return '<span class="glyphicon glyphicon-ok" style="color: green"> Имеется недостача</span>';
+                                                    } elseif($data->status == '2'){//cancel
+                                                       return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d"> Отменено в недостачах</span>';
+                                                    }
+
+                                                }, $modelspec),
+                                                'filter' => ['0'=> 'недостач нет', '1' => 'недостача','2' => ' Отменено в недостачах']
                                             ],
-                                            [
-                                                'label' => 'Сумма',
-                                             //   'attribute' => 'amount',
-                                             //   'footer' => backend\components\TotalPrice::pageTotal($dataProvider->models,'amount'),
-                                               
-                                            ],
-                                            'ref_of_board',
 
                                             ['class' => 'yii\grid\ActionColumn',
                                              //'controller' => common\models\Outofstock   
                                                 ],
                                         ],
                                     ]); ?>
-                               </div><!-- .row -->
-
+                              <!-- .row -->
+                            <?php Pjax::end(); ?>  
                            </div>
                        </div>
 
             </div>
             <?php DynamicFormWidget::end(); ?>
-
-
-        </div>
     </div>
-    
-    
    
 </div>
 
-</div>
 

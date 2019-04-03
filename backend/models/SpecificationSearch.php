@@ -19,7 +19,7 @@ class SpecificationSearch extends Specification
     {
         return [
             [['idspec', 'quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'status'], 'safe'],
         ];
     }
 
@@ -63,11 +63,19 @@ class SpecificationSearch extends Specification
             'quantity' => $this->quantity,
             'idelement' => $this->idelement,
             'idboard' => $this->idboard,
+            'status' => $this->status,
+            'ref_of' => $this->ref_of,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
             'updated_by' => $this->updated_by,
         ]);
+        
+         $query
+            ->andFilterWhere(['like', 'idelement', $this->idelement])
+
+            ->andFilterWhere(['like', 'status', $this->status]);
+           // ->andFilterWhere(['like', 'processing_count', $this->processing_count]);
 
         return $dataProvider;
     }
