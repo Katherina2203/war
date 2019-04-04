@@ -56,14 +56,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php echo Html::a('Создать category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     
-    <div class="row">
-        <div class="col-md-6">
+  
                     <?php 
                         $columns = 3;
                         $cl = 12 / $columns;
                         echo ListView::widget([
                             'dataProvider' =>  $dataProviderParent,
-                            'layout'       => '{items}{pager}',
+                         //   'layout'       => '{items}{pager}',
                             'options' => ['class' => 'list-wrapper'],
                             'itemOptions'  => ['class' => "col-sm-$cl"],
                             'beforeItem'   => function ($model, $key, $index, $widget) use ($columns) {
@@ -85,6 +84,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ?>
                  
-        </div>
-    </div>
+      
+ 
 </div>

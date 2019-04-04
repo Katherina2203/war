@@ -14,7 +14,7 @@ use yii\widgets\Pjax;
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php  
-        echo "<ull>";
+        echo "<ul>";
             foreach ($dataProviderShortage->models as $shortage) {
             echo "<li style='padding-bottom: 15px; border-bottom: 1px solid lightgrey'>";
                     echo Html::a(Html::encode($shortage->boards->name), Url::to(['shortage/index']), ['class' => 'product-title']).

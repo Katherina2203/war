@@ -50,7 +50,7 @@ class CategoryController extends Controller
         $searchModel = new CategorySearch();
 
     //    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $queryParent = Category::find()->where(['parent' => FALSE]); //->orderBy('idcategory DESC')
+        $queryParent = Category::find()->where(['parent' => FALSE])->groupBy('idcategory'); //->orderBy('idcategory DESC')
         //$pages = new Pagination(['totalCount' => $queryParent->count()]);
         
         $dataProviderParent = new ActiveDataProvider([

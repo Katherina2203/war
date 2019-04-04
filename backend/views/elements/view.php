@@ -237,9 +237,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="box-header with-border"><h3 class="box-title">Недостачи по платам</h3></div>
                 <div class="box-body">
                     <?php Pjax::begin(); ?>
-                                <?= $this->render('_shortageby', [
-                                            'model' => $modelShortage,
-                                            'dataProviderShortage'=>$dataProviderShortage,
+                                <?= $this->render('_specificationby', [
+                                            'model' => $modelSpecification,
+                                            'dataProviderSpecification'=>$dataProviderSpecification,
                                            // 'searchModelTheme'=>$searchModelBoard
                                 ]) ?>
                     <?php Pjax::end(); ?>

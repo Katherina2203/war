@@ -22,7 +22,7 @@ use yii\helpers\Html;
 class Specification extends \yii\db\ActiveRecord
 {
     const STATUS_NOACTIVE = 0; //статус относится к недостачам. 0-нет недостач
-    const STATUS_ACTIVE = 1; //
+    const STATUS_ACTIVE = 1; // есть недостача
     const STATUS_CANCEL = 2; //отмена в недостачах
     /**
      * @inheritdoc
@@ -97,5 +97,9 @@ class Specification extends \yii\db\ActiveRecord
     
     public function getElements() {
         return $this->hasOne(Elements::className(), ['idelements' =>'idelement']);
+    }
+    
+    public function getBoards() {
+        return $this->hasOne(Boards::className(), ['idboards' =>'idboard']);
     }
 }
