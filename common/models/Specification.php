@@ -24,7 +24,7 @@ class Specification extends \yii\db\ActiveRecord
     const STATUS_NOACTIVE = 0; //статус относится к недостачам. 0-нет недостач
     const STATUS_ACTIVE = 1; // есть недостача
     const STATUS_CANCEL = 2; //отмена в недостачах
-     const STATUS_SENT = 4; //отправлено в outofstock
+    const STATUS_SENT = 4; //отправлено в outofstock
     /**
      * @inheritdoc
      */

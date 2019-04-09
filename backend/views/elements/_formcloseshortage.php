@@ -6,6 +6,7 @@ use dosamigos\datepicker\DatePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use kartik\depdrop\DepDrop;
+use yii\widgets\Pjax;
 
 
 use common\models\Themes;
@@ -17,24 +18,22 @@ use common\models\Users;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="elements-createfromstock-form col-lg-6">
-
-    <?php $form = ActiveForm::begin(
-            /*['id'=>$model->formName(),
+<div class="elements-formcloseshortages col-lg-6">
+    <div class="box">
+        <div class="box-body">
+    <?php Pjax::begin(['id' => 'closeshortage']); ?>
+    <?php $form = ActiveForm::begin(['id'=>$model->formName(),
                                      'enableClientValidation'=> true,
-                                     'fieldConfig' => ['template' => '{label}{input}{hint}'
-                                         ]*/
-        ); 
+                                     'fieldConfig' => ['template' => '{label}{input}{hint}']
+        ]); 
 
          ?>
 
     <?= $form->field($model, 'quantity')->textInput(['style'=>'width:150px']) ?>
+    
+    <?= $form->field($model, 'ref_of_board')->textInput() ?>
 
-    
-    
-    
-    <?= //$form->field($model, 'date')->textInput() 
-        $form->field($model, 'date')->widget(DatePicker::className(), [
+    <?= $form->field($model, 'date')->widget(DatePicker::className(), [
                                     'options' => [ 
                                         'value' => date("Y-m-d H:i:s"), 
                                        // 'disabled' => 'disabled',
@@ -47,14 +46,7 @@ use common\models\Users;
                                     ]
         ]);?>
     
-    <?= $form->field($model, 'idelement')->textInput(['style'=>'width:100px', 'disabled' => true]) ?>
-     <?= $form->field($model, 'idtheme')->textInput() ?>
-     <?= $form->field($model, 'idthemeunit')->textInput() ?>
-    <?= $form->field($model, 'idboart')->textInput() ?>
-     <?= $form->field($model, 'ref_of_board')->textInput() ?>
-
-    <?=
-        $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
+    <?= $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
             ['prompt'=>'Select Person'])  
     ?>
 
@@ -66,6 +58,7 @@ use common\models\Users;
 
    <?php ActiveForm::end(); ?>
 
-
-
+    <?php Pjax::end(); ?>
+       </div>
+    </div>
 </div>

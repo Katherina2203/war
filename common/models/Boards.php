@@ -115,6 +115,15 @@ class Boards extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Outofstock::className(), ['idboart' => 'idboards']);
     }
+    public function getidtheme()
+    {
+        return $this->idtheme;
+    }
+    
+    public function getidunit()
+    {
+        return $this->idthemeunit;
+    }
     
     public function getUsers(){
         return $this->hasOne(Users::className(), ['id' => 'current']);
@@ -155,7 +164,5 @@ class Boards extends \yii\db\ActiveRecord
         ];
     }
     
-    public static function getProject(){
-         
-    }
+
 }

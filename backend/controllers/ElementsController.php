@@ -426,10 +426,10 @@ class ElementsController extends Controller
         
         $model->idelement = $idel;
         $model->idboart = $idboard;
-        $model->idtheme = 5;
-        $model->idthemeunit = 10;
+        $model->idtheme = $modelboard->idtheme;
+        $model->idthemeunit = $modelboard->idunit;
         $model->ref_of_board = $modelspec->ref_of;
-        $model->iduser = Yii::$app->user->identity->surname;
+        $model->iduser = \yii::$app->user->identity->surname;
        
          if ($model->load(Yii::$app->request->post())) {
             
@@ -439,7 +439,7 @@ class ElementsController extends Controller
             try{
                 $valid = $model->validate();
                 
-                Yii::$app->db->createCommand()->update('specification', ['status' => Specification::STATUS_SENT], ['idelement' => $model->elements->idelement])->execute(); //change status to close at chortage 
+                Yii::$app->db->createCommand()->update('specification', ['status' => Specification::STATUS_SENT], ['idelement' => $model->elements->idelements])->execute(); //change status to close at chortage 
                     
                 if ($valid) {
                 // the model was validated, no need to validate it once more
@@ -449,7 +449,7 @@ class ElementsController extends Controller
 
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
-                    return $this->redirect(['view', 'idel' => $model->idelement]);
+                    return $this->redirect(['view', 'id' => $model->idelement]);
                 } else {
                     $transaction->rollBack();
                 }  

@@ -6,16 +6,15 @@ use yii\helpers\Html;
 /* @var $model common\models\Outofstock */
 
 $this->title = 'Закрыть недостачу';
-$this->params['breadcrumbs'][] = ['label' => 'Со склада', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Текущие платы', 'url' => ['boards/currentboard']];
+$this->params['breadcrumbs'][] = ['label' => $modelboard->name, 'url' => ['boards/view', ['id' => $model->idboart]]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="outofstock-create">
+<div class="currentboard-closeshortage">
 
     <?= $this->render('_formcloseshortage', [
         'model' => $model,
-      //  'idel' => $model->idelement,
-
-       // 'user' => $user,
+        'modelboard' => $modelboard,
     ]) ?>
 
 </div>
