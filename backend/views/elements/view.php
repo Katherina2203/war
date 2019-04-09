@@ -131,7 +131,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 <div class="col-md-3 request">
                     <h3 class="box-title">Создать заявку быстро</h3>
+                    <span><?= Alert::widget()?></span>
+                    
                     <div class="box-body">
+                        
                         <?php Pjax::begin(['id' => 'quickorder']); ?>
                             <?= $this->render('_formquick', [
                                         'model' => $modelrequests,
