@@ -12,8 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="outofstock-create">
 
     <?= $this->render('_formcloseshortage', [
-        'modelout' => $modelout,
-        'idel' => $model->idelement,
+        'model' => $model,
+      //  'idel' => $model->idelement,
 
        // 'user' => $user,
     ]) ?>

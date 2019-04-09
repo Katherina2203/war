@@ -19,10 +19,12 @@ use common\models\Users;
 
 <div class="elements-createfromstock-form col-lg-6">
 
-    <?php $form = ActiveForm::begin(['id'=>$model->formName(),
+    <?php $form = ActiveForm::begin(
+            /*['id'=>$model->formName(),
                                      'enableClientValidation'=> true,
-                                     'fieldConfig' => ['template' => '{label}{input}{hint}']
-        ]); 
+                                     'fieldConfig' => ['template' => '{label}{input}{hint}'
+                                         ]*/
+        ); 
 
          ?>
 
@@ -46,6 +48,10 @@ use common\models\Users;
         ]);?>
     
     <?= $form->field($model, 'idelement')->textInput(['style'=>'width:100px', 'disabled' => true]) ?>
+     <?= $form->field($model, 'idtheme')->textInput() ?>
+     <?= $form->field($model, 'idthemeunit')->textInput() ?>
+    <?= $form->field($model, 'idboart')->textInput() ?>
+     <?= $form->field($model, 'ref_of_board')->textInput() ?>
 
     <?=
         $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),

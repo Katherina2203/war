@@ -53,7 +53,7 @@ class ElementsController extends Controller
                       //  'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
-                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'createreceipt', 'update', 'viewcat', 'createfromquick'],
+                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'createreceipt', 'update', 'viewcat', 'createfromquick', 'closeshortage'],
                     ],
                     [
                         'allow' => true,
@@ -366,7 +366,7 @@ class ElementsController extends Controller
         $model->idelement = $idel;
         $model->iduser = $iduser;
         $user = new Users();
-        $user->id = $iduser;
+      $user->id = $iduser;
        
         $element = new Elements();
         $element->idelements = $idel;
@@ -418,10 +418,19 @@ class ElementsController extends Controller
     }
     
     
-    public function actionCloseshortage($idel)
+    public function actionCloseshortage($idel, $idboard)
     {   
         $model = new Outofstock();
+        $modelspec = new Specification();
+        $modelboard = Boards::findOne($idboard);
         
+        $model->idelement = $idel;
+        $model->idboart = $idboard;
+        $model->idtheme = 5;
+        $model->idthemeunit = 10;
+        $model->ref_of_board = $modelspec->ref_of;
+        $model->iduser = Yii::$app->user->identity->surname;
+       
          if ($model->load(Yii::$app->request->post())) {
             
             $transaction = $model->getDb()->beginTransaction(//Yii::$app->db->beginTransaction(
@@ -429,16 +438,18 @@ class ElementsController extends Controller
                     );
             try{
                 $valid = $model->validate();
-               
-                 Yii::$app->db->createCommand()->update('shortages', ['status' => Requests::REQUEST_DONE], ['idrequest' => $model->requests->idrequest])->execute(); //change status to close at chortage 
+                
+                Yii::$app->db->createCommand()->update('specification', ['status' => Specification::STATUS_SENT], ['idelement' => $model->elements->idelement])->execute(); //change status to close at chortage 
                     
                 if ($valid) {
                 // the model was validated, no need to validate it once more
                     $model->save(false);
+                    
+                    
 
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
-                    return $this->redirect(['viewfrom', 'idel' => $model->idelement]);
+                    return $this->redirect(['view', 'idel' => $model->idelement]);
                 } else {
                     $transaction->rollBack();
                 }  
@@ -448,10 +459,10 @@ class ElementsController extends Controller
             }
            
         } else {
-            return $this->render('close', [
+            return $this->render('closeshortageform', [
                 'model' => $model,
-            
-                
+                'modelspec' => $modelspec,
+                'modelboard' => $modelboard,
             ]);
         }
 

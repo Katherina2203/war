@@ -111,6 +111,11 @@ class Boards extends \yii\db\ActiveRecord
         return $this->hasOne(Themeunits::className(), ['idunit' => 'idthemeunit']);
     }
     
+    public function getOutofstock()
+    {
+        return $this->hasOne(Outofstock::className(), ['idboart' => 'idboards']);
+    }
+    
     public function getUsers(){
         return $this->hasOne(Users::className(), ['id' => 'current']);
     }
@@ -123,7 +128,7 @@ class Boards extends \yii\db\ActiveRecord
         return $this->hasOne(Shortage::className(), ['idboard' => 'idboards']);
     }
     
-     public static function getBoardList($idthemeunit)
+    public static function getBoardList($idthemeunit)
     {
 //        $out = [];
 //        $selected = '';
@@ -150,4 +155,7 @@ class Boards extends \yii\db\ActiveRecord
         ];
     }
     
+    public static function getProject(){
+         
+    }
 }

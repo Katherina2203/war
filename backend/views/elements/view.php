@@ -149,14 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box box-warning">
             <div class="box-header with-border"><h3 class="box-title">История заказа</h3></div>
             <div class="box-body">
-                <div id="infobox">
-                    <div class="pad margin no-print">
-                        <div class="callout callout-warning">
-                            <h4><i class="fa fa-info"></i> Обратите внимание!</h4>
-                                История заявки будет отображаться, когда отдел закупок начнет ее обрабатывать
-                        </div>
-                    </div>
-                </div>
+                
                 <?php Pjax::begin(['id' => 'historyorder']); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProviderpur,
@@ -230,6 +223,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 ])?>
                 <?php Pjax::end(); ?>
             </div>
+            <div class="box-footer">
+                <div class="callout callout-warning">
+                    <i class="fa fa-info"></i> Обратите внимание!
+                    История заявки будет отображаться, когда отдел закупок начнет ее обрабатывать
+                </div>
+           </div>
         </div>
         </div> 
         <div class='col-sm-4'>
