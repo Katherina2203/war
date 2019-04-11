@@ -6,25 +6,20 @@ use kartik\export\ExportMenu;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\widgets\Pjax;
-use yii\bootstrap\Modal;
 
 use common\models\Category;
-use common\models\Elements;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\elementsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Номенклатура Товаров';
+$this->title = 'Номенклатура';
 $this->params['breadcrumbs'][] = $this->title;
 
 $gridColumns = [
    ['class' => 'kartik\grid\SerialColumn'],
     'idelements', 
     'box',
-    [
-      'attribute' => 'name',
-      'label' => 'ValueManufacturerPartNumber', 
-    ],
+    
     [
       'attribute' => 'nominal',
       'label' => 'ValueDescription', 
@@ -37,7 +32,7 @@ $gridColumns = [
     ],
     [
         'attribute' => 'active',
-        'value' => function($data){
+         'value' => function($data){
                     if($data->active == 1){
                         return 'Актуально';
                     }elseif($data->active == 2){
@@ -51,22 +46,25 @@ $gridColumns = [
 
 ?>
 <div class="elements-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+
     <p>
-        <?php echo Html::a('Создать новый товар', ['create'], ['class' => 'btn btn-success']) ?>
-      
-       
+        <?= Html::a('Создать новый товар', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <div class="search-form">
-        <div class="box box-solid bg-gray-light" style="background: #fff;">
-            <div class="box-body">
-                <span>Поиск по:</span>
-                <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-            </div>
-        </div>
-    </div>
-   
 <?php Pjax::begin(['id' => 'elements']); ?>  
-    <?= GridView::widget([
+    <?= 
+    ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns,
+    'fontAwesome' => true,
+    'dropdownOptions' => [
+        'label' => 'Export All',
+        'class' => 'btn btn-default'
+        ]
+    ]) . "<hr>\n".
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'pjax' => true,
@@ -78,7 +76,7 @@ $gridColumns = [
         'columns' => $gridColumns,
         'resizableColumns'=>true,
       //  'fontAwesome' => true,
-
+        'columns' => $gridColumns,
         // 'floatHeader' => true,
         'tableOptions' => [
             'class' => 'table table-striped table-bordered'
@@ -97,10 +95,10 @@ $gridColumns = [
                 },
             ],*/
          //   ['class' => 'yii\grid\SerialColumn'],
-            [
+[
                 'attribute' => 'image',
                 'label' => 'Image',
-                'format' => 'raw',
+               'format' => 'raw',
                 'contentOptions' =>['class' => 'table_class','style'=>'display:block;'],
                 'value' => function ($model) {
                   //  if($data->image){
@@ -128,19 +126,14 @@ $gridColumns = [
                     return Html::a($model->name, ['view', 'id' => $model->idelements]);
                 },
             ],
-
+                        
             'nominal',
             [
                 'attribute' => 'quantity',
-                'label' => 'Onstock',
                 'format' => 'raw',
-                'value' => function($data, $index){
+                'value' => function($data){
+                    return '<strong>'.$data->quantity.'</strong>';
                     
-                    if ($data->quantity == '0'){
-                        return '<center><strong>' . $data->quantity.'</strong></center>'. '<br/><center><small>Will be: '. $index . '</small></center>';
-                    }else{
-                        return '<center><strong>' . $data->quantity.'</strong></center>';
-                    }  
                 },
                 'contentOptions'=>['style'=>'width: 50px;'],
             ],
@@ -150,9 +143,10 @@ $gridColumns = [
                   //  return empty($model->idproduce) ? '-' : $model->produce->manufacture;
                      return $model->produce->manufacture;
                 },*/
+                
                 'value' => 'produce.manufacture',
                 'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModel, 'idproduce', ArrayHelper::map(\common\models\Produce::find()->select(['idpr', 'manufacture'])->indexBy('idpr')->all(), 'idpr', 'manufacture'),['class'=>'form-control','prompt' => 'Выберите производител']),
+             //   'filter' => Html::activeDropDownList($searchModel, 'idproduce', ArrayHelper::map(\common\models\Produce::find()->select(['idpr', 'manufacture'])->indexBy('idpr')->all(), 'idpr', 'manufacture'),['class'=>'form-control','prompt' => 'Выберите производител']),
             ],
             [
                 'attribute' => 'idcategory',
@@ -161,16 +155,21 @@ $gridColumns = [
                 },*/
                 'value' => 'category.name',
                 'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModel, 'idcategory', Category::getHierarchy(), (['class'=>'form-control','prompt' => 'Выберите категорию'])),
+               // 'filter' => Html::activeDropDownList($searchModel, 'idcategory', Category::getHierarchy(), (['class'=>'form-control','prompt' => 'Выберите категорию'])),
+              
                 'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],
             ],
+            /*[
+                'attribute' => 'created_at',
+               // 'format' => ['date', 'php:Y-m-d']
+            ],*/
             [
                 'attribute' => 'active',
                 'format' => 'raw',
                 'value' => function($data){
-                    if($data->active == '1'){
+                    if($data->active == 1){
                         return '<span class="label label-success">Актуально</span>';
-                    }elseif($data->active == '2'){
+                    }elseif($data->active == 2){
                         return '<span class="label label-danger">Устарело</span>';
                     }
                    
@@ -180,8 +179,11 @@ $gridColumns = [
             ],
             [
             'class' => 'yii\grid\ActionColumn',
+       
             'contentOptions' => ['style' => 'width:45px;'],
-            'template' => '{update} {delete} {prices} {accounts} {viewfrom} {createfromquick}',
+            'template' => '{view} {update} {delete} {prices} {accounts} {viewfrom}',
+           
+            
             'buttons' => [
                 'prices' => function ($url,$model,$key) {
                   $url = Url::to(['viewprice', 'idel' => $key]);
@@ -201,13 +203,6 @@ $gridColumns = [
                             ['title' => 'Посмотреть что взято со склада']
                             );
                 },
-                'createfromquick' => function ($url,$model,$key) {
-                  $url = Url::to(['createfromquick', 'idel' => $key, 'iduser' => yii::$app->user->identity->id]);
-                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url,
-                            ['title' => 'взять со склада быстро']
-                            );
-                },
-                        
             'urlCreator' => function ($action, $model, $key, $index) {
                  if ($action === 'receipt') {
                      $url = yii::$app->controller->createUrl('receipt'); 
@@ -218,11 +213,6 @@ $gridColumns = [
                 return $url;}
                 
                 if ($action === 'fromstock'){
-                     $url ='fromstock/create?idelements='.$model->idelements;
-                     return $url;
-                }
-                
-                if ($action === 'createfromquick'){
                      $url ='fromstock/create?idelements='.$model->idelements;
                      return $url;
                 }

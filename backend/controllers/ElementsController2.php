@@ -31,8 +31,9 @@ use common\models\Users;
 use common\models\Returnitem;
 use common\models\Purchaseorder;
 use common\models\Produce;
-use common\models\Shortage;
+use common\models\Specification;
 use common\models\Boards;
+
 
 /**
  * ElementsController implements the CRUD actions for Elements model.
@@ -53,7 +54,7 @@ class ElementsController extends Controller
                       //  'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
-                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'createreceipt', 'update', 'viewcat', 'createfromquick'],
+                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'createreceipt', 'update', 'viewcat', 'createfromquick', 'closeshortage'],
                     ],
                     [
                         'allow' => true,
@@ -123,7 +124,7 @@ class ElementsController extends Controller
      */
     public function actionView($id)
     {
-      //  $model = new Elements();
+       //  $model = new Elements();
         $model = Elements::findOne($id);
        //show prices
         $modelprice = new Prices();
@@ -134,6 +135,37 @@ class ElementsController extends Controller
             'query' => $query,
         ]);
         //end show prices
+        
+        $queryacc = Accounts::find()->where(['idelem' => $id])->orderBy('date_receive DESC')->limit(10);
+        $dataProvideracc = new ActiveDataProvider([
+            'query' => $queryacc,
+        ]);
+        
+        $querypur = Purchaseorder::find()->where(['idelement' => $id])->orderBy('created_at DESC')->limit(5);
+    //    $countQuery = clone $querypur;
+     //   $pages = new Pagination(['totalCount' => $countQuery->count()]);
+        $dataProviderpur = new ActiveDataProvider([
+            'query' => $querypur,
+        ]);  /*in future point the limit of requests..E.x. last 5 orders */
+        
+        $searchModelout = new OutofstockSearch();
+        $queryout = Outofstock::find()->where(['idelement' => $id])->orderBy('date DESC');//
+        $dataProviderout = new ActiveDataProvider([
+            'query' => $queryout,
+        ]);
+        
+        $searchModelreceipt = new \backend\models\ReturnitemSearch();
+        $queryreceipt = Returnitem::find()->where(['idelement' => $id])->orderBy('created_at DESC');
+        $dataProviderreceipt = new ActiveDataProvider([
+            'query' => $queryreceipt,
+        ]);
+        
+        //view specification
+        $modelSpecification = new Specification();
+        $querySpecification = Specification::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
+        $dataProviderSpecification = new ActiveDataProvider([
+            'query' => $querySpecification,
+        ]);
         
         //requests
         $modelrequests = new Requests();
@@ -160,58 +192,24 @@ class ElementsController extends Controller
                         'updated_by' => yii::$app->user->identity->id,
                         ])->execute();
                 }
-            if($modelrequests->save(false)) {
+            if($modelrequests->save()) {
                 Yii::$app->session->setFlash('success', 'Товар успешно отправлен в заявку!');
                 return $this->redirect(['elements/view', 'id' => $model->idelements]);
             }
-            /*else{
-                Yii::$app->session->setFlash('error', 'Возникла ошибка при создании заявки');
-            }*/
         }
         // end requests
-        
-        $queryacc = Accounts::find()->where(['idelem' => $id])->orderBy('date_receive DESC')->limit(10);
-        $dataProvideracc = new ActiveDataProvider([
-            'query' => $queryacc,
-        ]);
-        
-        $querypur = Purchaseorder::find()->where(['idelement' => $id])->orderBy('created_at DESC')->limit(5);
-    //    $countQuery = clone $querypur;
-     //   $pages = new Pagination(['totalCount' => $countQuery->count()]);
-        $dataProviderpur = new ActiveDataProvider([
-            'query' => $querypur,
-        ]);  /*in future point the limit of requests..E.x. last 5 orders */
-        
-        $searchModelout = new OutofstockSearch();
-        $queryout = Outofstock::find()->where(['idelement' => $id])->orderBy('date DESC');//
-        $dataProviderout = new ActiveDataProvider([
-            'query' => $queryout,
-        ]);
-        
-        $searchModelreceipt = new \backend\models\ReturnitemSearch();
-        $queryreceipt = Returnitem::find()->where(['idelement' => $id])->orderBy('created_at DESC');
-        $dataProviderreceipt = new ActiveDataProvider([
-            'query' => $queryreceipt,
-        ]);
-        
-        $modelShortage = new Shortage();
-        $queryShortage = Shortage::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
-        $dataProviderShortage = new ActiveDataProvider([
-            'query' => $queryShortage,
-        ]);
-        
+
         return $this->render('view', [
-         //   'pages' => $pages,
             'model' => $this->findModel($id),
             'searchModel2' => $searchModel2,
             'dataProvider2' => $dataProvider2,
             'modelprice' => $modelprice,
             'modelrequests' => $modelrequests,
-            'modelShortage' => $modelShortage,
+            'modelSpecification' => $modelSpecification,
             'dataProvideracc' => $dataProvideracc,
             'dataProviderpur' => $dataProviderpur,
             'dataProviderout' => $dataProviderout,
-            'dataProviderShortage' => $dataProviderShortage,
+            'dataProviderSpecification' => $dataProviderSpecification,
             'searchModelout' => $searchModelout,
             'searchModelreceipt' => $searchModelreceipt,
             'dataProviderreceipt' => $dataProviderreceipt,
@@ -366,7 +364,8 @@ class ElementsController extends Controller
         $model->idelement = $idel;
         $model->iduser = $iduser;
         $user = new Users();
-        $user->id = $iduser;
+      $user->id = $iduser;
+       
         $element = new Elements();
         $element->idelements = $idel;
         
@@ -416,15 +415,71 @@ class ElementsController extends Controller
         }
     }
     
+    
+    public function actionCloseshortage($idel, $idboard)
+    {   
+        $model = new Outofstock();
+        $modelspec = new Specification();
+        $modelboard = Boards::findOne($idboard);
+        
+        $model->idelement = $idel;
+        $model->idboart = $idboard;
+        $model->idtheme = $modelboard->idtheme;
+        $model->idthemeunit = $modelboard->idunit;
+        $model->ref_of_board = $modelspec->ref_of;
+        $model->iduser = \yii::$app->user->identity->surname;
+       
+         if ($model->load(Yii::$app->request->post())) {
+            
+            $transaction = $model->getDb()->beginTransaction(//Yii::$app->db->beginTransaction(
+                 //   Transaction::SERIALIZABLE
+                    );
+            try{
+                $valid = $model->validate();
+                //check quantity 
+               // if($model->$modelspec){
+                    
+           //     }
+                
+                Yii::$app->db->createCommand()->update('specification', ['status' => Specification::STATUS_SENT], ['idelement' => $model->elements->idelements])->execute(); //change status to close at chortage 
+                    
+                if ($valid) {
+                // the model was validated, no need to validate it once more
+                    $model->save(false);
+                    
+                    
+
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
+                    return $this->redirect(['view', 'id' => $model->idelement]);
+                } else {
+                    $transaction->rollBack();
+                }  
+                }catch (ErrorException $e) {
+                    $transaction->rollBack();
+                    echo $e->getMessage();
+            }
+           
+        } else {
+            return $this->render('closeshortageform', [
+                'model' => $model,
+                'modelspec' => $modelspec,
+                'modelboard' => $modelboard,
+            ]);
+        }
+
+    }
+         
+    
      public function actionCreatefromquick($idel, $iduser)
     {
         $model = new Outofstock();
+        
         $model->idelement = $idel;
         $model->iduser = $iduser;
       //  $user = new Users();
       //  $user->id = $iduser;
-        $element = new Elements();
-        $element->idelements = $idel;
+  
         
         $board = new Boards();
         $board->idtheme = $model->idtheme;
@@ -463,7 +518,7 @@ class ElementsController extends Controller
             return $this->render('createfromquick', [
                 'model' => $model,
              //   'user' => $user,
-                'element' => $element,
+              
                 'board' => $board,
             ]);
         }

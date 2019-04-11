@@ -22,16 +22,17 @@ use common\models\Users;
     <div class="box">
         <div class="box-body">
     <?php Pjax::begin(['id' => 'closeshortage']); ?>
-    <?php $form = ActiveForm::begin(['id'=>$model->formName(),
+    <?php $form = ActiveForm::begin(
+          /*  ['id'=>$model->formName(),
                                      'enableClientValidation'=> true,
-                                     'fieldConfig' => ['template' => '{label}{input}{hint}']
-        ]); 
+                                     'fieldConfig' => ['template' => '{label}{input}{hint}']*/
+        ); 
 
          ?>
 
     <?= $form->field($model, 'quantity')->textInput(['style'=>'width:150px']) ?>
     
-    <?= $form->field($model, 'ref_of_board')->textInput() ?>
+    <?php /* $form->field($model, 'ref_of_board')->textInput() */?>
 
     <?= $form->field($model, 'date')->widget(DatePicker::className(), [
                                     'options' => [ 
@@ -54,8 +55,6 @@ use common\models\Users;
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
-
    <?php ActiveForm::end(); ?>
 
     <?php Pjax::end(); ?>

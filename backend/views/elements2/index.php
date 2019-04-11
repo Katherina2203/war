@@ -101,7 +101,7 @@ $gridColumns = [
                 'attribute' => 'image',
                 'label' => 'Image',
                 'format' => 'raw',
-                'contentOptions' =>['class' => 'table_class','style'=>'display:block;'],
+                'contentOptions' =>['class' => 'table_class','style'=>'display:block; width:60px;'],
                 'value' => function ($model) {
                   //  if($data->image){
                          return Html::img(Yii::getAlias('@web').'/images/' . $model->image,//$data['image'],
@@ -144,6 +144,15 @@ $gridColumns = [
                 },
                 'contentOptions'=>['style'=>'width: 50px;'],
             ],
+        /*    [
+                'attribute' => 'idelements',
+                'label' => 'UnitPrice',
+                'format' => 'raw',
+                'value' => function($data){
+                   // return $data::getPrice() . '<br/>'. $data=1;
+                    return $data = '15.5USD'  . '<br/>'. $data=1;
+                }
+            ], */           
             [
                 'attribute' => 'idproduce',
              /*   'value' => function ($model) {

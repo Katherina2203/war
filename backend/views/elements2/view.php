@@ -131,8 +131,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 <div class="col-md-3 request">
                     <h3 class="box-title">Создать заявку быстро</h3>
+                            <span><?= Alert::widget()?></span>
                     <div class="box-body">
-                        <?php Pjax::begin(['id' => 'quickorder']); ?>
+                         <?php Pjax::begin(['id' => 'quickorder']); ?>
                             <?= $this->render('_formquick', [
                                         'model' => $modelrequests,
                             ]) ?>
@@ -149,15 +150,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box box-warning">
             <div class="box-header with-border"><h3 class="box-title">История заказа</h3></div>
             <div class="box-body">
-                <div id="infobox">
-                    <div class="pad margin no-print">
-                        <div class="callout callout-warning">
-                            <h4><i class="fa fa-info"></i> Обратите внимание!</h4>
-                                История заявки будет отображаться, когда отдел закупок начнет ее обрабатывать
-                        </div>
-                    </div>
-                </div>
-                <?php Pjax::begin(['id' => 'historyorder']); ?>
+                
+
                 <?= GridView::widget([
                     'dataProvider' => $dataProviderpur,
                    // 'filterModel' => $searchModelout,
@@ -228,15 +222,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ],
                 ])?>
-                <?php Pjax::end(); ?>
+     
             </div>
+            <div class="box-footer">
+                <div class="callout callout-warning">
+                    <i class="fa fa-info"></i> Обратите внимание!
+                    История заявки будет отображаться, когда отдел закупок начнет ее обрабатывать
+                </div>
+           </div>
         </div>
         </div> 
         <div class='col-sm-4'>
             <div class="box box-danger">
                 <div class="box-header with-border"><h3 class="box-title">Недостачи по платам</h3></div>
                 <div class="box-body">
-                    
+                    <?php Pjax::begin(); ?>
+                                <?= $this->render('_shortageby', [
+                                            'model' => $modelShortage,
+                                            'dataProviderShortage'=>$dataProviderShortage,
+                                           // 'searchModelTheme'=>$searchModelBoard
+                                ]) ?>
+                    <?php Pjax::end(); ?>
                 </div>
             </div>
     </div> 
@@ -422,12 +428,12 @@ $this->params['breadcrumbs'][] = $this->title;
          //   'idtheme',
             [
                 'attribute' => 'idtheme',
+                'format' => 'raw',
                 'value' => function($data){
-                //    return $data->themes->ThemList;
-                return empty($data->idtheme) ? '-' : $data->themes->name;
+                    return empty($data->idtheme) ? '-' : $data->themes->name;
                 },
-                'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModelout, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->where(['status' => 'active'])->all(), 'idtheme', 'ThemList'),['class'=>'form-control','prompt' => 'Выберите проект']),
+                
+               // 'filter' => Html::activeDropDownList($searchModelout, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->where(['status' => 'active'])->all(), 'idtheme', 'ThemList'),['class'=>'form-control','prompt' => 'Выберите проект']),
             ],
             [
                 'attribute' => 'idthemeunit',
@@ -435,7 +441,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($data){
                     return empty($data->idthemeunit) ? '-' : $data->themeunits->nameunit;
                 },
-                'format' => 'text',
+                'format' => 'raw',
                 'filter' => Html::activeDropDownList($searchModelout, 'idthemeunit', ArrayHelper::map(\common\models\Themeunits::find()->select(['idunit', 'nameunit'])->all(), 'idunit', 'UnitsListId'),['class'=>'form-control','prompt' => 'Выберите модуль']),
             ], 
             [

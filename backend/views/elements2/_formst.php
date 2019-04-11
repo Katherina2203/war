@@ -27,12 +27,12 @@ use common\models\Users;
         $themes = Themes::find()->where(['status' => 'active'])->all();
         $themeList = ArrayHelper::map($themes,'idtheme', 'name');
        
-        //units
-        $units = Themeunits::find()->where(['idtheme' => 'themes.idtheme'])->all();
+   /*     //units
+        $units = Themeunits::find()->where(['idtheme' => 'themes.idtheme'])->andWhere(['status' => 'active'])->all();
         $unitsList = ArrayHelper::map($units, 'idunit', 'nameunit');
         //boards
         $boards = Boards::find()->where(['discontinued' => '1'])->all();
-        $boardsList = ArrayHelper::map($boards, 'idboards', 'BoardnameId');
+        $boardsList = ArrayHelper::map($boards, 'idboards', 'BoardnameId');*/
          ?>
 
     <?= $form->field($model, 'quantity')->textInput(['style'=>'width:150px']) ?>

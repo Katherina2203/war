@@ -134,13 +134,8 @@ $gridColumns = [
                 'attribute' => 'quantity',
                 'label' => 'Onstock',
                 'format' => 'raw',
-                'value' => function($data, $index){
-                    
-                    if ($data->quantity == '0'){
-                        return '<center><strong>' . $data->quantity.'</strong></center>'. '<br/><center><small>Will be: '. $index . '</small></center>';
-                    }else{
-                        return '<center><strong>' . $data->quantity.'</strong></center>';
-                    }  
+                'value' => function($data){
+                    return '<center><strong>' . $data->quantity.'</strong></center>';
                 },
                 'contentOptions'=>['style'=>'width: 50px;'],
             ],
@@ -181,7 +176,7 @@ $gridColumns = [
             [
             'class' => 'yii\grid\ActionColumn',
             'contentOptions' => ['style' => 'width:45px;'],
-            'template' => '{update} {delete} {prices} {accounts} {viewfrom} {createfromquick}',
+            'template' => '{view} {update} {delete} {prices} {accounts} {viewfrom} {createfromquick}',
             'buttons' => [
                 'prices' => function ($url,$model,$key) {
                   $url = Url::to(['viewprice', 'idel' => $key]);
