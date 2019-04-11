@@ -33,6 +33,7 @@ use common\models\Purchaseorder;
 use common\models\Produce;
 use common\models\Shortage;
 use common\models\Boards;
+use common\models\Specification;
 
 /**
  * ElementsController implements the CRUD actions for Elements model.
@@ -135,6 +136,13 @@ class ElementsController extends Controller
         ]);
         //end show prices
         
+        //view specification
+        $modelSpecification = new Specification();
+        $querySpecification = Specification::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
+        $dataProviderSpecification = new ActiveDataProvider([
+            'query' => $querySpecification,
+        ]);
+        
         //requests
         $modelrequests = new Requests();
         $modelrequests->idtype = '1';
@@ -194,12 +202,7 @@ class ElementsController extends Controller
             'query' => $queryreceipt,
         ]);
         
-        $modelShortage = new Shortage();
-        $queryShortage = Shortage::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
-        $dataProviderShortage = new ActiveDataProvider([
-            'query' => $queryShortage,
-        ]);
-        
+      
         return $this->render('view', [
          //   'pages' => $pages,
             'model' => $this->findModel($id),
@@ -207,11 +210,11 @@ class ElementsController extends Controller
             'dataProvider2' => $dataProvider2,
             'modelprice' => $modelprice,
             'modelrequests' => $modelrequests,
-            'modelShortage' => $modelShortage,
+            'modelSpecification' => $modelSpecification,
             'dataProvideracc' => $dataProvideracc,
             'dataProviderpur' => $dataProviderpur,
             'dataProviderout' => $dataProviderout,
-            'dataProviderShortage' => $dataProviderShortage,
+            'dataProviderSpecification' => $dataProviderSpecification,
             'searchModelout' => $searchModelout,
             'searchModelreceipt' => $searchModelreceipt,
             'dataProviderreceipt' => $dataProviderreceipt,

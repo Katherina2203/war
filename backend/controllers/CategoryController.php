@@ -50,24 +50,25 @@ class CategoryController extends Controller
         $searchModel = new CategorySearch();
 
     //    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $queryParent = Category::find()->where(['parent' => FALSE])->groupBy('idcategory'); //->orderBy('idcategory DESC')
-        //$pages = new Pagination(['totalCount' => $queryParent->count()]);
+        $queryParent = Category::find()->where(['parent' => FALSE]); //->orderBy('idcategory DESC')
+        $pages = new Pagination(['totalCount' => $queryParent->count()]);
         
         $dataProviderParent = new ActiveDataProvider([
-            'query'=> $queryParent//->offset($pages->offset)//->limit($pages->limit),
+            'query'=> $queryParent->offset($pages->offset)->limit($pages->limit),
                         ]);
         
-      /*  $dataProviderChild = new ActiveDataProvider([
+        $dataProviderChild = new ActiveDataProvider([
                             'query'=> Category::find()->where("parent=:parent", [":parent"=>$model->idcategory])
                                     ->orderBy('name ASC') //, [":parent"=>$model->idcategory = 1]  ->groupBy('idcategory')
-                        ]); */
+                        ]); 
 
         return $this->render('index', [
             'model' => $model,
-          //  'pages' => $pages,
+            'pages' => $pages,
             'searchModel' => $searchModel,
+         //   'dataProvider' => $dataProvider,
             'dataProviderParent' => $dataProviderParent,
-        //    'dataProviderChild' => $dataProviderChild,
+            'dataProviderChild' => $dataProviderChild,
         ]);
     }
     

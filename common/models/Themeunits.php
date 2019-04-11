@@ -124,7 +124,7 @@ class Themeunits extends \yii\db\ActiveRecord
         $data = Themeunits::find()
                 ->select(['idunit as id', 'nameunit as name'])
                 ->where(['idtheme' => $idtheme])
-                ->andWhere(['status' => 'active'])
+             //     ->andWhere(['!=', 'status', 'Deleted'])
                 ->asArray()
                 ->all();
         $value = (count($data) == 0) ? ['' => ''] : $data;

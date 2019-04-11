@@ -80,7 +80,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'pageSummary'=>'Page Summary',
                 'pageSummaryOptions'=>['class'=>'text-right text-warning'],
             ],
-                        'quantity',
             [
                 'attribute' => 'current',
                 'label' => 'Ответственный',

@@ -81,14 +81,7 @@ class Requests extends \yii\db\ActiveRecord
           //  ['status', 'default', 'value' => self::REQUEST_NOACTIVE],
           //  ['status', 'in', 'range' => [self::REQUEST_ACTIVE, self::REQUEST_CANCEL]],
             [['name', 'description', 'status'], 'string', 'max' => 255],
-            [['note'], 'string', 'max' => 128],
-        ];
-    }
-    
-    public function scenarios()
-    {
-        return [
-            'default' => ['img', '!thumb'],
+            [['note'], 'string', 'max' => 64],
         ];
     }
     /**

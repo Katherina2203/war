@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-//kartik\detail\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Payer */
@@ -13,6 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="payer-view">
 
+    <h1><?= Html::encode($this->title) ?></h1>
+
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->idpayer], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->idpayer], [
@@ -22,54 +23,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?php echo Html::a('Create new', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="box box-success">
-                <?= DetailView::widget([
-                    'model' => $model,
-                    'attributes' => [
-                        'idpayer',
-                        [
-                            'attribute' => 'name',
-                            'format' => 'raw',
-                            //'label' => '<span class="fa fa-book"></span> Book Details',
-                            'value' => function($data){
-                               // return '<h2>'. $data->name . '</h2>';
-                                return '<h3>' . $data->name . '</h3>';
-                            }
-                        ],
-                        [
-                            'attribute' => 'contact',
-                            'label' => '<span class="fa fa-user"></span>',
-                        ],
-                        [
-                            'attribute' =>  'phone',
-                            'label' => '<span class="fa fa-phone"></span>',
-                        ],
-                        [
-                            'attribute' =>  'email',
-                            'label' => '<span class="fa fa-envelope"></span>',
-                            'format' => 'raw',
-                            'value' => function($data){
-                                return $data->email;
-                            }
-                           // 'email:email',
-                        ],
-                        [
-                            'attribute' =>  'address',
-                            'label' => '<span class="fa fa-maps"></span>',
-                            'format' => 'raw',
-                            'value' => function($data){
-                                return Html::encode($data->address);
-                            },
-                            
-                        ],
-                       
-                    ],
-                ]) ?>
-            </div>
-        </div>
-    </div>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'idpayer',
+            'name',
+        ],
+    ]) ?>
+
 </div>

@@ -56,34 +56,34 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php echo Html::a('Создать category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     
-  
-                    <?php 
-                        $columns = 3;
-                        $cl = 12 / $columns;
-                        echo ListView::widget([
+    <div class="row">
+        <div class="col-md-6">
+                    <?= ListView::widget([
                             'dataProvider' =>  $dataProviderParent,
-                         //   'layout'       => '{items}{pager}',
-                            'options' => ['class' => 'list-wrapper'],
-                            'itemOptions'  => ['class' => "col-sm-$cl"],
-                            'beforeItem'   => function ($model, $key, $index, $widget) use ($columns) {
-                                if ( $index % $columns == 0 ) {
-                                    return "<div class='row'>";
-                                }
-                            },
+                            'options' => [
+                                'tag' => 'div',
+                                'class' => 'list-wrapper',
+                                'id' => 'list-wrapper',
+                            ],
+                        //    'layout' => "{pager}\n{items}\n{summary}",
                             'itemView' => function ($model, $key, $index, $widget) {
                                 return $this->render('_categorylist',['model' => $model]);
+
+                                // or just do some echo
+                                // return $model->title . ' posted by ' . $model->author;
                             },
-                           'afterItem' => function ($model, $key, $index, $widget) use ($columns) {
-                                if ( $index != 0 && $index % ($columns - 1) == 0 ) {
-                                    return "</div>";
-                                }
-                            }
-                            ]);
-                            if ($dataProviderParent->totalCount % $columns != 0) {
-                                echo "</div>";
-                            }
+                            'itemOptions' => [
+                                'tag' => false,
+                            ],
+                            'pager' => [
+                                    'pagination' => $pages,
+                            
+                            ],
+                            'emptyText' => '<p>Список пуст</p>',
+                            'summary' => 'Показано {count} из {totalCount}',
+                        ]);
                         ?>
                  
-      
- 
+        </div>
+    </div>
 </div>

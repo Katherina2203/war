@@ -83,7 +83,7 @@ class Outofstock extends \yii\db\ActiveRecord
         return $this->hasOne(Boards::className(), ['idboards' => 'idboart']);
     }
     
-    public function getElements()
+     public function getElements()
     {
         return $this->hasOne(Elements::className(), ['idelements' => 'idelement']);
     }

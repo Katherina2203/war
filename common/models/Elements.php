@@ -228,15 +228,4 @@ class Elements extends \yii\db\ActiveRecord
         return $this->name . ', ' . $this->nominal;
     }
     
-    public function getPrice(){
-        $model = Elements::find('idelements')->one();
-     //   $idel = $model->idelements;
-        $modelprice = Prices::find()->where(['idel' => $model->idelements])->orderBy('created_at DESC')->limit(1);
-         
-       
-        $dataprice = $modelprice->unitPrice . ' / ' . $modelprice->forUP;
-
-        return $dataprice;
-    }
-    
 }

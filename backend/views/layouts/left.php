@@ -165,7 +165,11 @@ echo dmstr\widgets\Menu::widget([
                          //   ['label' => 'Цены', 'url' => ['prices/index']],
                            // ['label' => 'Новые заявки', 'url' => ['prices/index']], //для отдела снабжения
                          //   ['label' => 'Текущее состояние заявок', 'url' => ['prices/index']], //для отдела снабжения
-                           
+                            [
+                                'label' => 'Типы заявок',
+                                'url' => ['/typerequest/index'],
+                                'visible' => yii::$app->user->can('admin'), 
+                            ],
                         ]
                     ],
                     [
@@ -287,11 +291,7 @@ echo dmstr\widgets\Menu::widget([
                                 'label' => 'Валют',
                                 'url' => ['/currency/index']
                             ],
-                            [
-                                'label' => 'Типы заявок',
-                                'url' => ['/typerequest/index'],
-                                'visible' => yii::$app->user->can('admin'), 
-                            ],
+                           
                        ]
                     ],
                     [               
