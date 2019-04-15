@@ -143,49 +143,12 @@ class ElementsController extends Controller
             'query' => $querySpecification,
         ]);
         
-        //requests
-        $modelrequests = new Requests();
-        $modelrequests->idtype = '1';
-        $modelrequests->status = '0';
-        $modelrequests->iduser = yii::$app->user->identity->id;
-       // if(\yii::$app->request->isAjax && $modelrequests->load(\yii::$app->request->post())){      
-        if($modelrequests->load(\yii::$app->request->post())){      
-           // \yii::$app->response->format = Response::FORMAT_JSON;
-            $modelrequests->name = $model->name;
-            $modelrequests->description = $model->nominal;
-            $modelrequests->idproduce = $model->idproduce;
-            $modelrequests->estimated_category = $model->idcategory;
-            $modelrequests->estimated_idel = $model->idelements;
-           // $result = ['success' => true, 'message' => 'Заявка успешно создана!'];
-                if($modelrequests->idboard !=NULL){
-                    //create shortage
-                    Yii::$app->db->createCommand()->insert('shortage', [
-                        'idboard' => $modelrequests->idboard, 
-                        'idelement' => $model->idelements, 
-                        'quantity' => $modelrequests->quantity, 
-                        'status' => Shortage::STATUS_ACTIVE,
-                        'created_by' => yii::$app->user->identity->id,
-                        'updated_by' => yii::$app->user->identity->id,
-                        ])->execute();
-                }
-            if($modelrequests->save(false)) {
-                Yii::$app->session->setFlash('success', 'Товар успешно отправлен в заявку!');
-                return $this->redirect(['elements/view', 'id' => $model->idelements]);
-            }
-            /*else{
-                Yii::$app->session->setFlash('error', 'Возникла ошибка при создании заявки');
-            }*/
-        }
-        // end requests
-        
-        $queryacc = Accounts::find()->where(['idelem' => $id])->orderBy('date_receive DESC')->limit(10);
+         $queryacc = Accounts::find()->where(['idelem' => $id])->orderBy('date_receive DESC')->limit(10);
         $dataProvideracc = new ActiveDataProvider([
             'query' => $queryacc,
         ]);
         
         $querypur = Purchaseorder::find()->where(['idelement' => $id])->orderBy('created_at DESC')->limit(5);
-    //    $countQuery = clone $querypur;
-     //   $pages = new Pagination(['totalCount' => $countQuery->count()]);
         $dataProviderpur = new ActiveDataProvider([
             'query' => $querypur,
         ]);  /*in future point the limit of requests..E.x. last 5 orders */
@@ -202,23 +165,70 @@ class ElementsController extends Controller
             'query' => $queryreceipt,
         ]);
         
-      
-        return $this->render('view', [
-         //   'pages' => $pages,
-            'model' => $this->findModel($id),
-            'searchModel2' => $searchModel2,
-            'dataProvider2' => $dataProvider2,
-            'modelprice' => $modelprice,
-            'modelrequests' => $modelrequests,
-            'modelSpecification' => $modelSpecification,
-            'dataProvideracc' => $dataProvideracc,
-            'dataProviderpur' => $dataProviderpur,
-            'dataProviderout' => $dataProviderout,
-            'dataProviderSpecification' => $dataProviderSpecification,
-            'searchModelout' => $searchModelout,
-            'searchModelreceipt' => $searchModelreceipt,
-            'dataProviderreceipt' => $dataProviderreceipt,
-        ]);
+        
+        //requests
+        $modelrequests = new Requests();
+        $modelrequests->idtype = '1';
+        $modelrequests->status = '0';
+        $modelrequests->iduser = yii::$app->user->identity->id;
+       // if(\yii::$app->request->isAjax && $modelrequests->load(\yii::$app->request->post())){      
+        if($modelrequests->load(\yii::$app->request->post())){    
+            $transaction = \Yii::$app->db->beginTransaction();
+                $modelrequests->name = $model->name;
+                $modelrequests->description = $model->nominal;
+                $modelrequests->idproduce = $model->idproduce;
+                $modelrequests->estimated_category = $model->idcategory;
+                $modelrequests->estimated_idel = $model->idelements;
+                
+                try{
+                $valid = $modelrequests->validate(); 
+
+                if($modelrequests->idboard != NULL){
+                    //create shortage
+                    Yii::$app->db->createCommand()->insert('specification', [
+                        'idboard' => $modelrequests->idboard, 
+                        'idelement' => $model->idelements, 
+                        'quantity' => $modelrequests->quantity, 
+                        'status' => Specification::STATUS_ACTIVE,
+                        'created_by' => yii::$app->user->identity->id,
+                        'updated_by' => yii::$app->user->identity->id,
+                        ])->execute();
+                }
+            
+                if ($valid) {
+                    $modelrequests->save(false);
+
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Товар успешно отправлен в заявку!');
+                    return $this->redirect(['elements/view', 'id' => $model->idelements]);
+                        } else {
+                        $transaction->rollBack();
+                        Yii::$app->session->setFlash('error', 'Возникла ошибка при создании заявки');
+                    }  
+                }catch (ErrorException $e) {
+                    $transaction->rollBack();
+                    echo $e->getMessage();
+                }
+        }else{
+        // end requests
+
+            return $this->render('view', [
+             //   'pages' => $pages,
+                'model' => $this->findModel($id),
+                'searchModel2' => $searchModel2,
+                'dataProvider2' => $dataProvider2,
+                'modelprice' => $modelprice,
+                'modelrequests' => $modelrequests,
+                'modelSpecification' => $modelSpecification,
+                'dataProvideracc' => $dataProvideracc,
+                'dataProviderpur' => $dataProviderpur,
+                'dataProviderout' => $dataProviderout,
+                'dataProviderSpecification' => $dataProviderSpecification,
+                'searchModelout' => $searchModelout,
+                'searchModelreceipt' => $searchModelreceipt,
+                'dataProviderreceipt' => $dataProviderreceipt,
+            ]);
+        }
     }
     
     public function actionViewcat($idcategory){

@@ -131,6 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 <div class="col-md-3 request">
                     <h3 class="box-title">Создать заявку быстро</h3>
+                    <span><?= Alert::widget()?></span>
                     <div class="box-body">
                         <?php Pjax::begin(['id' => 'quickorder']); ?>
                             <?= $this->render('_formquick', [
@@ -235,7 +236,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class='col-sm-4'>
             <div class="box box-danger">
                 <div class="box-header with-border"><h3 class="box-title">Недостачи по платам</h3></div>
-                <span><?= Alert::widget()?></span>
+               
                 <div class="box-body">
                     <?php Pjax::begin(['id' => 'shortages']); ?>
                                 <?= $this->render('_specificationby', [
