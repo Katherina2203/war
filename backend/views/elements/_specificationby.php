@@ -22,7 +22,7 @@ use yii\widgets\Pjax;
                             ', <span style="color:lightgrey">' . $specification->boards->themes->name . '</span>' . 
                             '<br/><span>'. $specification->ref_of . '</span>';
                     echo '<span class="label label-danger pull-right">'. $specification->quantity. '</span>';
-                    echo '<span class="label pull-right">'. html::a('Взять со склада', ['elements/closeshortage', 'idel' => $specification->idelement, 'idboard' => $specification->idboard]). '</span>';
+                    echo '<span class="label pull-right">'. html::a('Закрыть недостачу', ['elements/closeshortage', 'idel' => $specification->idelement, 'idboard' => $specification->idboard]). '</span>';
                     echo '</li>';
   }?>
        </ul>

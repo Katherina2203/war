@@ -15,6 +15,7 @@ use yii\helpers\Html;
 use yii\db\Expression;
 use yii\filters\AccessControl;
 
+
 use common\models\Elements;
 use backend\models\ElementsSearch;
 use common\models\Prices;
@@ -31,7 +32,7 @@ use common\models\Users;
 use common\models\Returnitem;
 use common\models\Purchaseorder;
 use common\models\Produce;
-use common\models\Shortage;
+//use common\models\Shortage;
 use common\models\Boards;
 use common\models\Specification;
 
@@ -54,7 +55,7 @@ class ElementsController extends Controller
                       //  'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
-                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'createreceipt', 'update', 'viewcat', 'createfromquick'],
+                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'createreceipt', 'update', 'viewcat', 'createfromquick', 'closeshortage'],
                     ],
                     [
                         'allow' => true,
@@ -559,6 +560,62 @@ class ElementsController extends Controller
       //       throw new NotFoundHttpException('Данная позиция устарела. Поищите аналог.');
       //  }
        
+    }
+    
+    public function actionCloseshortage($idel, $idboard)
+    {
+        //$modelspecif = new Specification();
+        $modelspecif = Specification::findOne($idel, $idboard);
+      //  $modelspecif->idboard = $modelspecif->boards->idboards;
+
+        //$unit = Specification::getboards()->idthemeunit;
+        //$theme = Specification::getboards()->idtheme;
+        
+       // $model = Elements::findOne($idel);
+       /* $modelboard = new Boards();
+        $modelboard->idboards = $idboard;
+        $idtheme = $modelboard->idtheme;
+        $idunit = $modelboard->idthemeunit;*/
+                
+        $modelout = new Outofstock();
+        $modelout->idelement = $idel;
+        $modelout->iduser = yii::$app->user->identity->id;
+       
+        $modelout->idboart = $idboard; 
+        $modelout->idthemeunit = $modelout->boards->idthemeunit;//$idunit;
+        $modelout->idtheme = $modelout->boards->idtheme;// $idtheme;
+       
+         
+        if ($modelout->load(Yii::$app->request->post())) {
+    
+            $transaction = $modelout->getDb()->beginTransaction();
+            try{
+                
+                $valid = $modelout->validate(); 
+                
+                 Yii::$app->db->createCommand()->update('specification', ['status' => Specification::STATUS_ACTIVE],['idboard' => $modelout->idboart])->execute();
+                    
+                    if ($valid) {
+                        $modelout->save(false);
+
+                        $transaction->commit();
+                            Yii::$app->session->setFlash('success', 'Недостача успешно закрыта по плате'. $modelout->idboart);
+                          return $this->redirect(['boards/view', 'id' => $idboard]); //here will use id of board
+                    } else {
+                       $transaction->rollBack();
+                    }  
+                }catch (ErrorException $e) {
+                    $transaction->rollBack();
+                    echo $e->getMessage();
+                }
+        }else{
+               return $this->render('closeshortage', [
+                 //   'model' => $model,
+                  //  'modelboard' => $modelboard,
+                    'modelout' => $modelout,
+                    'modelspecif' => $modelspecif,
+            ]);
+        }
     }
     
     public function actionCreateprice($idel)

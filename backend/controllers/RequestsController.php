@@ -301,6 +301,28 @@ class RequestsController extends Controller
         }
     }
    
+    public function actionCreateintheme($id, $idtheme)
+    {
+        $model = $this->findModel($id);
+        $model->idproject = $idtheme;
+        $modelTheme = new Themes();
+        $modelTheme->idtheme = $idtheme;
+        
+        if($model->load(Yii::$app->request->post())){
+           
+            if($model->save(false)){
+             
+                Yii::$app->session->setFlash('success', 'Заявка успешно сохранена для проекта:' . $modelTheme->idtheme->name);
+                return $this->redirect(['themes/units', 'idtheme'=>$idtheme]);
+            }
+        }else{
+        
+         return $this->render('createintheme', [
+                'model' => $model,
+                'modelTheme' => $modelTheme,
+            ]);
+        }
+    }
     
     public function actionCreatequick($iduser)
     {
