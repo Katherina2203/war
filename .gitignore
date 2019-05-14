@@ -1,1 +1,14 @@
 /nbproject/private/
+/backend/controllers/*.old
+/backend/views/elements/*.old
+/backend/web/assets/e6f2df3d/css/kv-detail-view.css
+/backend/web/assets/e6f2df3d/css/kv-detail-view.min.css
+/backend/web/assets/e6f2df3d/img/loading.gif
+/backend/web/assets/e6f2df3d/js/kv-detail-view.js
+/backend/web/assets/e6f2df3d/js/kv-detail-view.min.js
+/common/models/Elements.php.old
+/common/models/Outofstock.php.old
+/nbproject.old/private/config.properties
+/nbproject.old/private/private.properties
+/nbproject.old/project.properties
+/nbproject.old/project.xml

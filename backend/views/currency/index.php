@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\TypeRequestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Type Requests');
+$this->title = Yii::t('app', 'Currency');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="type-request-index">
@@ -16,20 +16,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Type Request'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create currency'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
 
-            'idtype',
+            'idcurrency',
             [
-                'attribute' => 'name',
+                'attribute' => 'currency',
                 'format' => 'raw',
-                'value' => function($data){
-                    return html::a($data->name, ['requests/index']);
-                }
+               
             ],
             
 

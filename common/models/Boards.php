@@ -76,9 +76,9 @@ class Boards extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idtheme', 'idthemeunit'], 'integer'],
-            [['name', 'current', 'date_added', 'discontinued'], 'required'],
-            [['date_added'], 'safe'],
+            [['idtheme', 'idthemeunit', 'quantity'], 'integer'],
+            [['name', 'current', 'date_added', 'discontinued', 'quantity'], 'required'],
+            [['date_added', 'quantity'], 'safe'],
             [['discontinued'], 'string'],
             [['name', 'current'], 'string', 'max' => 60],
         ];
@@ -95,6 +95,7 @@ class Boards extends \yii\db\ActiveRecord
             'idthemeunit' => 'Модуль',
             'name' => 'Название',
             'current' => 'Ответственный',
+            'quantity' => 'Количество',
             'date_added' => 'Дата создания',
             'discontinued' => 'Актуальность',
         ];
@@ -110,6 +111,20 @@ class Boards extends \yii\db\ActiveRecord
         return $this->hasOne(Themeunits::className(), ['idunit' => 'idthemeunit']);
     }
     
+    public function getOutofstock()
+    {
+        return $this->hasOne(Outofstock::className(), ['idboart' => 'idboards']);
+    }
+    public function getidtheme()
+    {
+        return $this->idtheme;
+    }
+    
+    public function getidunit()
+    {
+        return $this->idthemeunit;
+    }
+    
     public function getUsers(){
         return $this->hasOne(Users::className(), ['id' => 'current']);
     }
@@ -122,13 +137,14 @@ class Boards extends \yii\db\ActiveRecord
         return $this->hasOne(Shortage::className(), ['idboard' => 'idboards']);
     }
     
-     public static function getBoardList($idthemeunit)
+    public static function getBoardList($idthemeunit)
     {
 //        $out = [];
 //        $selected = '';
         $data = Boards::find()
                 //->where(['idtheme' => $idtheme])
                 ->where(['idthemeunit' => $idthemeunit])
+                ->andWhere(['discontinued' => '1'])
                 ->select(['idboards as id', 'CONCAT(idboards, "  ", name) as name'])
                 ->asArray()
                 ->all();
@@ -148,4 +164,5 @@ class Boards extends \yii\db\ActiveRecord
         ];
     }
     
+
 }
