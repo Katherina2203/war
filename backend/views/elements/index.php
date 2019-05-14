@@ -150,7 +150,10 @@ $gridColumns = [
                   //  return empty($model->idproduce) ? '-' : $model->produce->manufacture;
                      return $model->produce->manufacture;
                 },*/
-                'value' => 'produce.manufacture',
+               // 'value' => 'produce.manufacture',
+                'value' => function($data){
+                    return html::a($data->produce->manufacture, ['index', '']);
+                },
                 'format' => 'text',
                 'filter' => Html::activeDropDownList($searchModel, 'idproduce', ArrayHelper::map(\common\models\Produce::find()->select(['idpr', 'manufacture'])->indexBy('idpr')->all(), 'idpr', 'manufacture'),['class'=>'form-control','prompt' => 'Выберите производител']),
             ],

@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
          <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Позицию', ['create'], [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-success']) ?>
     </p>
+     <span><?= Alert::widget()?></span>
 <div class="row">
     <div class="col-md-10">
         <div class="box box-success">
@@ -129,7 +130,7 @@ $this->params['breadcrumbs'][] = $this->title;
                              ]) ?>
                       </div>
                     </div>
-                <div class="col-md-3 request">
+                <div class="col-md-3 fastrequest">
                     <h3 class="box-title">Создать заявку быстро</h3>
                     <span><?= Alert::widget()?></span>
                     <div class="box-body">
