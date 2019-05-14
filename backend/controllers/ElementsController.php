@@ -564,23 +564,11 @@ class ElementsController extends Controller
     
     public function actionCloseshortage($idel, $idboard)
     {
-        //$modelspecif = new Specification();
         $modelspecif = Specification::findOne($idel, $idboard);
-      //  $modelspecif->idboard = $modelspecif->boards->idboards;
-
-        //$unit = Specification::getboards()->idthemeunit;
-        //$theme = Specification::getboards()->idtheme;
-        
-       // $model = Elements::findOne($idel);
-       /* $modelboard = new Boards();
-        $modelboard->idboards = $idboard;
-        $idtheme = $modelboard->idtheme;
-        $idunit = $modelboard->idthemeunit;*/
-                
+      
         $modelout = new Outofstock();
         $modelout->idelement = $idel;
         $modelout->iduser = yii::$app->user->identity->id;
-       
         $modelout->idboart = $idboard; 
         $modelout->idthemeunit = $modelout->boards->idthemeunit;//$idunit;
         $modelout->idtheme = $modelout->boards->idtheme;// $idtheme;
@@ -610,8 +598,6 @@ class ElementsController extends Controller
                 }
         }else{
                return $this->render('closeshortage', [
-                 //   'model' => $model,
-                  //  'modelboard' => $modelboard,
                     'modelout' => $modelout,
                     'modelspecif' => $modelspecif,
             ]);
