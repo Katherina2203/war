@@ -40,7 +40,6 @@ return [
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
-            //'defaultRoles' => ['geust','admin'],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -110,7 +109,7 @@ return [
             'translations' => [
                 'app*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                   // 'sourceLanguage' => 'en',
+                  //  'sourceLanguage' => 'en',
                     'basePath' => '@common/messages',
                     'fileMap' => [
                         'app' => 'app.php',
