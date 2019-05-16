@@ -10,8 +10,8 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
+    'language' => 'ru',
     'sourceLanguage' => 'en',
-    'language' => 'en',
     'bootstrap' => ['log'],
     'components' => [
         'user' => [
@@ -63,15 +63,14 @@ return [
             'class' => 'codemix\localeurls\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => true,
-            'languages' => ['en-US', 'en', 'ru'],
-
+            'languages' => ['en-GB', 'en', 'ru', 'ru-RU'],
             'rules' => [
                 '/' => 'site/index',
                 '<action:contact|about|login|logout>' => 'site/<action>',
                 '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
                 '<controller:\w+>/<id:\d+>'=>'<controller>/view',
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
-            
+
             ],
         ],
         'request' => [
@@ -105,15 +104,18 @@ return [
         ],  
         'i18n' => [
             'translations' => [
-                'app*' => [
+                'app' => [
+                    'class' => 'yii\i18n\DBMessageSource',
                    // 'class' => 'yii\i18n\PhpMessageSource',
-                    'class' => 'yii\i18n\DbMessageSource',
-                  //  'db' => 'db',
-                    'sourceLanguage' => 'en',
-                    'cachingDuration' => 86400,
-                    'enableCaching' => true,
-                //    'basePath' => '@common/messages',
-                /*    'fileMap' => [
+                    'db' => 'db',
+                //    'sourceMessageTable' => '{{%source_message}}',
+                  //  'messageTable' => '{{%message}}',
+                 
+                    'sourceLanguage' => 'en-US',
+                //    'cachingDuration' => 86400,
+                   // 'enableCaching' => true,
+                 /*   'basePath' => '@common/messages',
+                 'fileMap' => [
                         'app' => 'app.php',
                         'app/error' => 'error.php',
                     ]*/
