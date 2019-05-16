@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Boards;
+use app\models\SpecificationTemplate;
 
 /**
- * BoardsSearch represents the model behind the search form about `common\models\Boards`.
+ * SpecificationTemplateSearch represents the model behind the search form about `app\models\SpecificationTemplate`.
  */
-class BoardsSearch extends Boards
+class SpecificationTemplateSearch extends SpecificationTemplate
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class BoardsSearch extends Boards
     public function rules()
     {
         return [
-            [['idboards', 'idtheme', 'idthemeunit', 'quantity'], 'integer'],
-            [['name', 'current', 'date_added', 'discontinued'], 'safe'],
+            [['idspt', 'idelement', 'quantity'], 'integer'],
+            [['ref_of_board'], 'safe'],
         ];
     }
 
@@ -41,13 +41,12 @@ class BoardsSearch extends Boards
      */
     public function search($params)
     {
-        $query = Boards::find()->with(['themes', 'themeunits'])->orderBy('created_at DESC');
+        $query = SpecificationTemplate::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['date_added'=>SORT_DESC]]
         ]);
 
         $this->load($params);
@@ -60,16 +59,12 @@ class BoardsSearch extends Boards
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idboards' => $this->idboards,
-            'idtheme' => $this->idtheme,
-            'idthemeunit' => $this->idthemeunit,
+            'idspt' => $this->idspt,
+            'idelement' => $this->idelement,
             'quantity' => $this->quantity,
-            'date_added' => $this->date_added,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'current', $this->current])
-            ->andFilterWhere(['like', 'discontinued', $this->discontinued]);
+        $query->andFilterWhere(['like', 'ref_of_board', $this->ref_of_board]);
 
         return $dataProvider;
     }

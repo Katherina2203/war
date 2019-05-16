@@ -1,21 +1,18 @@
 <?php
-<<<<<<< HEAD
 
-=======
->>>>>>> bc6c7bf5061e4bba03592a08321fb9125ade3b5c
 namespace backend\controllers;
 
 use Yii;
-use common\models\TypeRequest;
-use backend\models\TypeRequestSearch;
+use app\models\Specification;
+use backend\models\SpecificationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TypeRequestController implements the CRUD actions for TypeRequest model.
+ * SpecificationController implements the CRUD actions for Specification model.
  */
-class TyperequestController extends Controller
+class SpecificationController extends Controller
 {
     /**
      * @inheritdoc
@@ -33,12 +30,12 @@ class TyperequestController extends Controller
     }
 
     /**
-     * Lists all TypeRequest models.
+     * Lists all Specification models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TypeRequestSearch();
+        $searchModel = new SpecificationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +45,7 @@ class TyperequestController extends Controller
     }
 
     /**
-     * Displays a single TypeRequest model.
+     * Displays a single Specification model.
      * @param integer $id
      * @return mixed
      */
@@ -60,16 +57,16 @@ class TyperequestController extends Controller
     }
 
     /**
-     * Creates a new TypeRequest model.
+     * Creates a new Specification model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new TypeRequest();
+        $model = new Specification();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idtype]);
+            return $this->redirect(['view', 'id' => $model->idspec]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -78,7 +75,7 @@ class TyperequestController extends Controller
     }
 
     /**
-     * Updates an existing TypeRequest model.
+     * Updates an existing Specification model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -88,7 +85,7 @@ class TyperequestController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idtype]);
+            return $this->redirect(['view', 'id' => $model->idspec]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -97,7 +94,7 @@ class TyperequestController extends Controller
     }
 
     /**
-     * Deletes an existing TypeRequest model.
+     * Deletes an existing Specification model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +107,15 @@ class TyperequestController extends Controller
     }
 
     /**
-     * Finds the TypeRequest model based on its primary key value.
+     * Finds the Specification model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return TypeRequest the loaded model
+     * @return Specification the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TypeRequest::findOne($id)) !== null) {
+        if (($model = Specification::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

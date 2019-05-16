@@ -68,8 +68,10 @@ use common\models\TypeRequest;
                 'allowClear' => true
             ],
          ]);?>
+            
+            <?= $form->field($model, 'idboard')->textInput()?>
         </div> 
-          <?= $form->field($model, 'idboard')->textInput() ?>
+          
     </div>
     
     <?=$form->field($model, 'required_date')->widget(

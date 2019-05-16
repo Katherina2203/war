@@ -28,7 +28,7 @@ use common\models\Users;
         $themeList = ArrayHelper::map($themes,'idtheme', 'name');
        
         //units
-        $units = Themeunits::find()->where(['idtheme' => 'themes.idtheme'])->all();
+        $units = Themeunits::find()->where(['idtheme' => 'themes.idtheme'])->andWhere(['status' => 'active'])->all();
         $unitsList = ArrayHelper::map($units, 'idunit', 'nameunit');
         //boards
         $boards = Boards::find()->where(['discontinued' => '1'])->all();

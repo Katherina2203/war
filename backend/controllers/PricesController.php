@@ -184,6 +184,8 @@ class PricesController extends Controller
             ]);
         }
     }
+    
+   
 
     /**
      * Deletes an existing Prices model.

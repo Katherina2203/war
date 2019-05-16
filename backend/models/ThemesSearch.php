@@ -20,7 +20,7 @@ class ThemesSearch extends Themes
     {
         return [
             [['idtheme'], 'integer'],
-            [['projectnumber', 'name', 'full_name', 'customer', 'description', 'subcontractor', 'quantity', 'date', 'status'], 'safe'],
+            [['projectnumber', 'designnumber', 'name', 'full_name', 'customer', 'description', 'subcontractor', 'quantity', 'date', 'status'], 'safe'],
         ];
     }
 
@@ -71,6 +71,7 @@ class ThemesSearch extends Themes
         $query->andFilterWhere([
             'idtheme'=>$this->idtheme,
             'projectnumber'=>$this->projectnumber,
+            'designnumber'=>$this->designnumber,
             'name'=>$this->name,
             'customer'=>$this->customer,
             'date'=>$this->date,

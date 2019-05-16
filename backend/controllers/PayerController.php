@@ -8,7 +8,7 @@ use backend\models\PayerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\filters\AccessControl;
 /**
  * PayerController implements the CRUD actions for Payer model.
  */
@@ -20,6 +20,23 @@ class PayerController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view','create'],
+                'rules' => [
+                    [
+                      //  'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['index', 'view'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'actions' => ['view', 'index', 'create', 'update'],
+                    //    'roles' => ['updateOwnPost'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -29,6 +46,18 @@ class PayerController extends Controller
         ];
     }
 
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
     /**
      * Lists all Payer models.
      * @return mixed

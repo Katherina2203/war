@@ -22,7 +22,7 @@ class Boards extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'boards';
+        return '{{%boards}}';
     }
 
     /**
@@ -31,8 +31,8 @@ class Boards extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idtheme', 'idthemeunit'], 'integer'],
-            [['name', 'current', 'date_added', 'discontinued'], 'required'],
+            [['idtheme', 'idthemeunit', 'quantity'], 'integer'],
+            [['name', 'current', 'date_added', 'discontinued', 'quantity'], 'required'],
             [['date_added'], 'safe'],
             [['discontinued'], 'string'],
             [['name', 'current'], 'string', 'max' => 60],
@@ -50,6 +50,7 @@ class Boards extends \yii\db\ActiveRecord
             'idthemeunit' => 'Idthemeunit',
             'name' => 'Name',
             'current' => 'Current',
+            
             'date_added' => 'Date Added',
             'discontinued' => 'Discontinued',
         ];
