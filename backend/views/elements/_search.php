@@ -22,7 +22,7 @@ $getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufactu
         </div>
         <div class="col col-md-4">
             <?= $form->field($model, 'idcategory')->dropDownList($getcategory,
-                    ['prompt'=>'Выберите категорию'])?>
+                    ['prompt' => yii::t('app', 'Choose category')])?>
         </div>
     </div>
     <div class="row">
@@ -32,7 +32,7 @@ $getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufactu
         </div>
         <div class="col col-md-4">
             <?php  echo $form->field($model, 'idproduce')->dropDownList($getproduce,
-                    ['prompt'=>'Выберите производителя']) ?>
+                    ['prompt' => yii::t('app', 'Choose manufacturer')]) ?>
         </div>
     </div>
 

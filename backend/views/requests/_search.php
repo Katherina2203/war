@@ -20,13 +20,13 @@ $getProject = ArrayHelper::map(\common\models\Themes::find()->select(['name', 'i
 
    
     
-    <?= $form->field($model, 'name')->textInput(['placeholder' => 'Search by name']) ?>
+    <?= $form->field($model, 'name')->textInput(['placeholder' => yii::t('app', 'Search by name')]) ?>
     
-    <?= $form->field($model, 'description')->textInput(['placeholder' => 'Search by description']) ?>
+    <?= $form->field($model, 'description')->textInput(['placeholder' => yii::t('app', 'Search by description')]) ?>
     <div class="row">
         <div class="col col-md-4">
             <?= $form->field($model, 'idproject')->dropDownList($getProject,
-                ['prompt'=>'Выберите проект'])  ?>
+                ['prompt'=> yii::t('app', 'Choose project')])  ?>
         </div>
         <div class="col col-md-4">
             <?= $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(common\models\Users::find()->select(['id', 'surname'])->all(), 'id', 'surname'),

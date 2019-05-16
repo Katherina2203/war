@@ -14,7 +14,7 @@ use common\models\Elements;
 /* @var $searchModel backend\models\elementsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Номенклатура Товаров';
+$this->title = yii::t('app', 'Elements');
 $this->params['breadcrumbs'][] = $this->title;
 
 $gridColumns = [
@@ -52,14 +52,14 @@ $gridColumns = [
 ?>
 <div class="elements-index">
     <p>
-        <?php echo Html::a('Создать новый товар', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a(yii::t('app', 'Create new element'), ['create'], ['class' => 'btn btn-success']) ?>
       
        
     </p>
     <div class="search-form">
         <div class="box box-solid bg-gray-light" style="background: #fff;">
             <div class="box-body">
-                <span>Поиск по:</span>
+                <span><?= yii::t('app', 'Search by')?>:</span>
                 <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             </div>
         </div>
@@ -154,8 +154,9 @@ $gridColumns = [
                 'value' => function($data){
                     return html::a($data->produce->manufacture, ['index', '']);
                 },
-                'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModel, 'idproduce', ArrayHelper::map(\common\models\Produce::find()->select(['idpr', 'manufacture'])->indexBy('idpr')->all(), 'idpr', 'manufacture'),['class'=>'form-control','prompt' => 'Выберите производител']),
+                'format' => 'raw',
+                'filter' => Html::activeDropDownList($searchModel, 'idproduce', ArrayHelper::map(\common\models\Produce::find()->select(['idpr', 'manufacture'])->indexBy('idpr')->all(), 'idpr', 'manufacture'),
+                        ['class'=>'form-control','prompt' => yii::t('app', 'Choose manufacturer')]),
             ],
             [
                 'attribute' => 'idcategory',
@@ -163,8 +164,8 @@ $gridColumns = [
                     return empty($model->idcategory) ? '-' : $model->category->name;
                 },*/
                 'value' => 'category.name',
-                'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModel, 'idcategory', Category::getHierarchy(), (['class'=>'form-control','prompt' => 'Выберите категорию'])),
+                'format' => 'raw',
+                'filter' => Html::activeDropDownList($searchModel, 'idcategory', Category::getHierarchy(), (['class'=>'form-control','prompt' => yii::t('app', 'Choose category')])),
                 'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],
             ],
             [

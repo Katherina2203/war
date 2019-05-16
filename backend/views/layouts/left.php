@@ -191,18 +191,18 @@ echo dmstr\widgets\Menu::widget([
                     ['label' => yii::t('app', 'Elements'), 'icon' => 'fa fa-bars', 'url' => ['/elements/index']],
                     ['label' => yii::t('app', 'Categories'), 'url' => ['/category/index']],
                     [               
-                        'label' => 'Номенклатура tools',
+                        'label' => 'Sked tools',
                         'items' => [
                             [
-                              'label' => 'Последние поступления',
+                              'label' => yii::t('app', 'Recent receipts'),
                               'url' => ['/receipt/lastreceive']
                             ],
                             [
-                              'label' => 'Получение на склад',
+                              'label' => yii::t('app', 'Receipt to the warehouse'),
                               'url' => ['/receipt/index']
                             ],
                             [
-                              'label' => 'Возврат товара',
+                              'label' => yii::t('app', 'Returns on stock'),
                               'url' => ['/returnitem/index']
                             ],
                            //параметры для поиска, свойства к категориям
@@ -213,7 +213,7 @@ echo dmstr\widgets\Menu::widget([
                         'label' => yii::t('app', 'Projects'),
                         'items' => [
                             [
-                                'label' => 'Список Текущих проектов',
+                                'label' => yii::t('app', 'Current projects'),
                                 'url' => ['/themes/indexshort']
                             ],
                             [
@@ -245,10 +245,8 @@ echo dmstr\widgets\Menu::widget([
                         ]
                      ],
                   
-                    ['label' => 'Перечени на платы', 'url' => ['/themes/boardscost']],
+                    ['label' => yii::t('app', 'BOM'), 'url' => ['/themes/boardscost']],
                    
-                  
-               //     ['label' => 'Matherials', 'url' => ['matherials/index']],
                     [
                         'label' => yii::t('app', 'Take from stock'), 
                         'icon' => 'fa fa-external-link',

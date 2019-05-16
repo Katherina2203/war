@@ -37,23 +37,23 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
     <div class="search-form">
         <div class="box box-solid bg-gray-light" style="background: #fff;">
             <div class="box-body">
-                <span>Поиск по:</span>
+                <span><?= yii::t('app', 'Search by')?>:</span>
                 <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             </div>
         </div>
     </div>
 
-    <p><?= Html::button('Создать заявку +', ['value' => Url::to(['create', 'iduser' => yii::$app->user->identity->id]), 'class' => 'btn btn-success', 'id' => 'modalButtonRequest']) ?>
+    <p><?= Html::button(yii::t('app', 'Create request').'+', ['value' => Url::to(['create', 'iduser' => yii::$app->user->identity->id]), 'class' => 'btn btn-success', 'id' => 'modalButtonRequest']) ?>
         <?php echo Html::tag('span',
                 Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create', 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-success']),
                     [
-                        'title'=> yii::t('app', 'Создать заявку'),
+                        'title'=> yii::t('app', 'Create request'),
                         'data-toggle'=>'tooltip',
                         'style'=>' cursor:pointer;color:red'
                     ]);?>
         
         <?php Modal::begin([
-                'header' => '<b>' . Yii::t('app', 'Create new Request') . '</b>',
+                'header' => '<b>' . Yii::t('app', 'Create request') . '</b>',
                 'id' => 'modalRequest',
                 'size' => 'modal-lg',
                 'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE]
