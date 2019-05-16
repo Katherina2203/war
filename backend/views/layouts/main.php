@@ -9,8 +9,8 @@ dmstr\web\AdminLteAsset::register($this);
 backend\assets\AppAsset::register($this);
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
    // $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/bower/bootstrap/dist');
-    $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
-    ?>
+$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
+?>
     <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">

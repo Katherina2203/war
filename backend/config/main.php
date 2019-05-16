@@ -60,13 +60,11 @@ return [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
-           // 'class' => 'yii\web\UrlManager',
+            'class' => 'codemix\localeurls\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => true,
-           
-           // 'class'=>'frontend\components\LangUrlManager',
-            'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['en', 'ru'],
+            'languages' => ['en-US', 'en', 'ru'],
+
             'rules' => [
                 '/' => 'site/index',
                 '<action:contact|about|login|logout>' => 'site/<action>',
@@ -108,13 +106,17 @@ return [
         'i18n' => [
             'translations' => [
                 'app*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                  //  'sourceLanguage' => 'en',
-                    'basePath' => '@common/messages',
-                    'fileMap' => [
+                   // 'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => 'yii\i18n\DbMessageSource',
+                  //  'db' => 'db',
+                    'sourceLanguage' => 'en',
+                    'cachingDuration' => 86400,
+                    'enableCaching' => true,
+                //    'basePath' => '@common/messages',
+                /*    'fileMap' => [
                         'app' => 'app.php',
                         'app/error' => 'error.php',
-                    ]
+                    ]*/
                 ],
             ],
         ],

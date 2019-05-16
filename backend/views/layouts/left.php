@@ -142,7 +142,7 @@ echo dmstr\widgets\Menu::widget([
                                 'visible' => yii::$app->user->can('admin') or yii::$app->user->can('Purchasegroup'),
                             ],
                             [
-                                'label' => 'Изменить статус',
+                                'label' => yii::t('app', 'Change status'),
                                 'url' => ['/requests/changestatus', 'iduser' => Yii::$app->user->isGuest ? 'guest' : yii::$app->user->identity->id],
                                 'visible' => yii::$app->user->can('admin') or yii::$app->user->can('Purchasegroup'),
                             ],
@@ -173,7 +173,7 @@ echo dmstr\widgets\Menu::widget([
                         ]
                     ],
                     [
-                        'label' => 'Счета',
+                        'label' => Yii::t('app', 'Invoices'),
                         'icon' => 'fa fa-abacus',
                        'url' => ['/paymentinvoice/index'],
                         /*    'items' => [
@@ -192,7 +192,7 @@ echo dmstr\widgets\Menu::widget([
                                   ],
                             ]*/
                     ],
-                    ['label' => 'Номенклатура товаров', 'icon' => 'fa fa-bars', 'url' => ['/elements/index']],
+                    ['label' => yii::t('app', 'Elements'), 'icon' => 'fa fa-bars', 'url' => ['/elements/index']],
                     ['label' => 'Категории товаров', 'url' => ['/category/index']],
                     [               
                         'label' => 'Номенклатура tools',
@@ -331,7 +331,7 @@ echo dmstr\widgets\Menu::widget([
                             ],
                             [
                                 'label' => Yii::t('app', 'Source Message'),
-                                'url' => ['/SourceMessage/index']
+                                'url' => ['/sourcemessage/index']
                             ],
                         ]
                     ],

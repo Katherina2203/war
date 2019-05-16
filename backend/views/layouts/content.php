@@ -26,7 +26,7 @@ use dmstr\widgets\Alert;
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-right">&copy; Microwave Electronics department <?= date('Y') ?></p>
+        <p class="pull-right">&copy; <?= yii::t('app', 'Microwave Electronics department') ;?>  <?= date('Y') ?></p>
     </div>
 </footer>
 
