@@ -105,15 +105,16 @@ return [
         'i18n' => [
             'translations' => [
                 'app' => [
-                    'class' => 'yii\i18n\DBMessageSource',
+                    'class' => 'yii\i18n\DbMessageSource',
                    // 'class' => 'yii\i18n\PhpMessageSource',
                     'db' => 'db',
                 //    'sourceMessageTable' => '{{%source_message}}',
                   //  'messageTable' => '{{%message}}',
                  
                     'sourceLanguage' => 'en-US',
-                //    'cachingDuration' => 86400,
-                   // 'enableCaching' => true,
+                    'forceTranslation'   => TRUE,
+                    'cachingDuration'    => 86400,
+                    'enableCaching'      => FALSE,
                  /*   'basePath' => '@common/messages',
                  'fileMap' => [
                         'app' => 'app.php',

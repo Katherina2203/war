@@ -189,7 +189,7 @@ echo dmstr\widgets\Menu::widget([
                             ]*/
                     ],
                     ['label' => yii::t('app', 'Elements'), 'icon' => 'fa fa-bars', 'url' => ['/elements/index']],
-                    ['label' => 'Категории товаров', 'url' => ['/category/index']],
+                    ['label' => yii::t('app', 'Categories'), 'url' => ['/category/index']],
                     [               
                         'label' => 'Номенклатура tools',
                         'items' => [
@@ -210,14 +210,14 @@ echo dmstr\widgets\Menu::widget([
                     ],
                     
                     [
-                        'label' => 'Проекты',
+                        'label' => yii::t('app', 'Projects'),
                         'items' => [
                             [
                                 'label' => 'Список Текущих проектов',
                                 'url' => ['/themes/indexshort']
                             ],
                             [
-                                'label' => 'Список Всех проектов',
+                                'label' => yii::t('app', 'All projects'),
                                 'url' => ['/themes/index'],
                                 'visible' => yii::$app->user->can('admin') or yii::$app->user->can('manager'), 
                             ],
@@ -226,7 +226,7 @@ echo dmstr\widgets\Menu::widget([
                              'url' => ['/themeunits/index']
                             ],
                             [
-                               'label' => 'Список Текущих плат',
+                               'label' => yii::t('app', 'Current boards'),
                                 'url' => ['/boards/currentboard']
                             ],
                             [
@@ -234,11 +234,11 @@ echo dmstr\widgets\Menu::widget([
                                 'url' => ['/shortage']
                             ],
                             [
-                               'label' => 'Список Всех плат',
+                               'label' => yii::t('app', 'All boards'),
                              'url' => ['/boards/index']
                             ],
                             [
-                                'label' => 'Мои платы',
+                                'label' => yii::t('app', 'My boards'),
                                 'url' => ['/boards/myboards', 'iduser' => Yii::$app->user->isGuest ? 'guest' : yii::$app->user->identity->id],
                              //???   'visible' => yii::$app->user->can('admin'), 
                             ],
@@ -250,52 +250,52 @@ echo dmstr\widgets\Menu::widget([
                   
                //     ['label' => 'Matherials', 'url' => ['matherials/index']],
                     [
-                        'label' => 'Взять со склада', 
+                        'label' => yii::t('app', 'Take from stock'), 
                         'icon' => 'fa fa-external-link',
                         'url' => ['/outofstock/index', 
                         'iduser' => Yii::$app->user->isGuest ? 'guest' : yii::$app->user->identity->id],
                     ], 
                     [
-                        'label' => 'Объявления', 
+                        'label' => yii::t('app', 'Announcements'), 
                         'url' => ['/adverts/index'], 
                         'visible' => yii::$app->user->can('admin') or yii::$app->user->can('head'), 
                     ],
                     [
-                        'label' => 'Список',
+                        'label' => yii::t('app', 'Lists'),
                         'items' => [
                             [
-                                'label' => 'Производителей',
+                                'label' => yii::t('app', 'Manufacturers'),
                                 'url' => ['/produce/index']
                             ],
                             [
-                                'label' => 'Поставщиков',
+                                'label' => yii::t('app', 'Suppliers'),
                                 'icon' => 'fa fa-address-book-o',
                                 'url' => ['/supplier/index']
                             ],
                             [
-                                'label' => 'Сотрудники',
+                                'label' => yii::t('app', 'Co-workers'),
                                 'icon' => 'fa fa-users',
                                 'url' => ['/users/index'],
                                 'visible' => yii::$app->user->can('admin'), 
                             ],
                             [
-                                'label' => 'Плательщики',
+                                'label' => yii::t('app', 'Payers'),
                                 'icon' => 'fa fa-tty',
                                 'url' => ['/payer/index']
                             ],
                             [
-                                'label' => 'Валют',
+                                'label' => yii::t('app', 'Currency'),
                                 'url' => ['/currency/index']
                             ],
                             [
-                                'label' => 'Типы заявок',
+                                'label' => yii::t('app', 'Types of requests'),
                                 'url' => ['/typerequest/index'],
                                 'visible' => yii::$app->user->can('admin'), 
                             ],
                        ]
                     ],
                     [               
-                        'label' => 'Users tools',
+                        'label' => yii::t('app', 'Users tools'),
                         'items' => [
                             [
                                 'label' => 'RBAC-Права доступа',
@@ -309,7 +309,7 @@ echo dmstr\widgets\Menu::widget([
                         'items' => [
                             
                             [
-                                'label' => 'Attributes',
+                                'label' => yii::t('app', 'Attribute'),
                                 'url' => ['/attributes/index']
                             ],
                             [
@@ -317,7 +317,7 @@ echo dmstr\widgets\Menu::widget([
                                 'url' => ['/ElementsCases/index']
                             ],
                             [
-                                'label' => 'Корпуса',
+                                'label' => yii::t('app', 'Case'),
                                 'url' => ['/cases/index']
                             ],
                         ]
