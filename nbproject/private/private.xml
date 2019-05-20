@@ -1,17 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/xampp/htdocs/war/backend/views/layouts/content.php</file>
-            <file>file:/C:/xampp/htdocs/war/common/messages/ru/app.php</file>
-            <file>file:/C:/xampp/htdocs/war/backend/config/main.php</file>
-            <file>file:/C:/xampp/htdocs/war/backend/controllers/SiteController.php</file>
-            <file>file:/C:/xampp/htdocs/war/common/models/Specification.php</file>
-            <file>file:/C:/xampp/htdocs/war/common/widgets/LanguageSelector.php</file>
-            <file>file:/C:/xampp/htdocs/war/backend/views/elements/closeshortage.php</file>
-            <file>file:/C:/xampp/htdocs/war/backend/views/layouts/header.php</file>
-            <file>file:/C:/xampp/htdocs/war/backend/controllers/RequestsController.php</file>
-        </group>
-    </open-files>
 </project-private>

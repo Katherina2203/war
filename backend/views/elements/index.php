@@ -152,7 +152,7 @@ $gridColumns = [
                 },*/
                // 'value' => 'produce.manufacture',
                 'value' => function($data){
-                    return html::a($data->produce->manufacture, ['index', '']);
+                    return  empty($data->idproduce) ? '-' : HTML::a($data->produce->manufacture, ['produce/viewitem', 'id' => $data->idproduce]);
                 },
                 'format' => 'raw',
                 'filter' => Html::activeDropDownList($searchModel, 'idproduce', ArrayHelper::map(\common\models\Produce::find()->select(['idpr', 'manufacture'])->indexBy('idpr')->all(), 'idpr', 'manufacture'),

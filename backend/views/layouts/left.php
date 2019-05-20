@@ -248,7 +248,7 @@ echo dmstr\widgets\Menu::widget([
                     ['label' => yii::t('app', 'BOM'), 'url' => ['/themes/boardscost']],
                    
                     [
-                        'label' => yii::t('app', 'Take from stock'), 
+                        'label' => yii::t('app', 'Withdraw'), 
                         'icon' => 'fa fa-external-link',
                         'url' => ['/outofstock/index', 
                         'iduser' => Yii::$app->user->isGuest ? 'guest' : yii::$app->user->identity->id],
@@ -296,7 +296,7 @@ echo dmstr\widgets\Menu::widget([
                         'label' => yii::t('app', 'Users tools'),
                         'items' => [
                             [
-                                'label' => 'RBAC-Права доступа',
+                                'label' => 'RBAC-access rules',
                                 'url' => ['/rbac/default/index'],
                                 'visible' => yii::$app->user->can('admin'), 
                             ],
