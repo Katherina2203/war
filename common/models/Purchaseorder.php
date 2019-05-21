@@ -20,7 +20,7 @@ class Purchaseorder extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'purchaseorder';
+        return '{{%purchaseorder}}';
     }
 
     public function behaviors() {
@@ -57,6 +57,11 @@ class Purchaseorder extends \yii\db\ActiveRecord
            // 'idinvoice' => 'Счет',
           //  'delivery' => 'Согласованная поставка'
         ];
+    }
+    
+    public function getId()
+    {
+        return $this->idpo;
     }
     
     public function getElements() {

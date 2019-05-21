@@ -1,8 +1,5 @@
 <?php
-<<<<<<< HEAD
 
-=======
->>>>>>> bc6c7bf5061e4bba03592a08321fb9125ade3b5c
 namespace backend\controllers;
 
 use Yii;

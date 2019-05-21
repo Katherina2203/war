@@ -104,8 +104,10 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="row">
-             <p>
+                <p>
                     <?= Html::a('Добавить товар в счет', ['accounts/createitem', 'idinvoice' => $modelpay->idpaymenti], ['class' => 'btn btn-success']) ?>
+
+                    <?= Html::a(yii::t('app', 'Add fast into invoice'), ['accounts/additemquick', 'idel' => $model->idelem], ['class' => 'btn btn-warning']) ?>
                 </p>
             <div class="col-xs-12">
                 <?php Pjax::begin(); ?><?= GridView::widget([

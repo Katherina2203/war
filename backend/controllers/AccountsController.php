@@ -18,6 +18,7 @@ use common\models\Elements;
 use backend\models\ElementsSearch;
 use common\models\Prices;
 use common\models\Purchaseorder;
+use common\models\Paymentinvoice;
 
 /**
  * AccountsController implements the CRUD actions for Accounts model.
@@ -252,24 +253,56 @@ class AccountsController extends Controller
         }
     }
     
-    public function actionAddtoinvoice($idel, $idprice)
+    public function actionAdditemquick($idel)
     {
         $model = new Accounts();
-        $modelpr = new Prices();
+        $modelpay = new Paymentinvoice();
         $model->idelem = $idel;
-        $model->idprice = $idprice;
+        $model->idinvoice = $modelpay->idpaymenti;
         
-        if ($model->load(Yii::$app->request->post()) && $modelpr->save()) {
-            Yii::$app->session->setFlash('success', 'Данная позиция успешно добавлена в счет!');
-            return $this->redirect(['paymentinvoice/itemsin', 'id' => $model->idinvoice]);
-        }else {
-            return $this->render('addtoinvoice', [
+       // $model->status = Accounts::ACCOUNTS_ORDERED;
+        
+        $modelpr = new Prices();
+        $modelpr->idsup = $modelpay->idsupplier;
+                
+        if ($model->load(Yii::$app->request->post()) && $modelpr->load(Yii::$app->request->post())) {
+      
+          //  $modelord->idelement =  $modelreq->estimated_idel;
+            
+            $transaction = $model->getDb()->beginTransaction(
+                 //   Transaction::SERIALIZABLE
+                    );
+            try{
+              //  $valid = $modelpr->validate();
+              //  $valid = $model->validate() && $valid;
+                $valid = yii\base\Model::validateMultiple($modelpr) && $valid;
+  
+                
+                 Yii::$app->db->createCommand()->update('requests', ['status' => Accounts::REQUEST_ACTIVE],['idrequest' => $model->idrequest])->execute();
+                 
+                if ($valid) {
+                    $modelpr->save();
+                    
+                    $model->save();
+                    
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Данная позиция успешно добавлена в счет!');
+                    return $this->redirect(['accounts/viewitem', 'idpo' => $model->idpo]);
+                }else {
+                    $transaction->rollBack();
+                }  
+            }catch (ErrorException $e) {
+                    $transaction->rollBack();
+                    echo $e->getMessage();
+            }
+           
+        } else {
+            return $this->render('additemquick', [
                 'model' => $model,
-                //'modelpr' => $modelpr,
+                'modelpr' => $modelpr,
+                'modelpay' => $modelpay
             ]);
         }
-        
-       
     }
 
     /**

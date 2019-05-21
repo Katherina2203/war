@@ -9,13 +9,29 @@ use common\models\Status;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="accounts-form">
-
+<div class="addtoinvoice-form">
+  <div class="box box-solid bg-gray-light" style="background: #fff;">
+      
+        <div class="box-body">
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'idelem')->textInput() ?>
+    <?= $form->field($model, 'idelem')->textInput(['disabled' => true]) ?>
 
-    <?= $form->field($model, 'idprice')->textInput() ?>
+        <?= $form->field($model, 'idprice')->textInput() ?>
+      
+        <?= $form->field($modelpr, 'idsup')->textInput()  ?>
+
+        <?= $form->field($modelpr, 'unitPrice')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($modelpr, 'forUP')->textInput(['maxlength' => true]) ?>
+    
+        <?= $form->field($modelpr, 'idcurrency')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($modelpr, 'pdv')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($modelpr, 'usd')->textInput(['maxlength' => true]) ?>
+            
+
 
     <?= $form->field($model, 'quantity')->textInput(['style' => 'width: 150px;']) ?>
     
@@ -46,9 +62,11 @@ use common\models\Status;
     <?=  $form->field($model, 'status')->radioList([ '2' => ' Заказано', '3' => ' На складе'], ['prompt' => '']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
+      </div>
+      
+  </div>
 </div>
