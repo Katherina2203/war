@@ -198,7 +198,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'date_receive',
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{editinvoice} {receipt} {changeprice}',
+                            'template' => '{view} {editinvoice} {deletefrom} {receipt} {changeprice}',
                             'controller' => 'accounts',
                             'buttons' => [
                                 'deletefrom' => function ($url,$model,$key) {
@@ -219,7 +219,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $url = Url::to(['prices/changeprice', 'idpr' => $model->idprice, 'idel' => $model->idelem]);
                                     return $model->status == '2' ? Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url,['title' => 'Изменить цену в счете'])
                                     : '';
-                                }, 
+                                },       
                             ],
                         ],
                 ],
@@ -238,7 +238,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
                 <div class="col-xs-6">
                     <p>Сумма с НДС: 
-                  <strong><?= 1.2*TotalColumn::pageTotal($dataProvider->models,'amount')?><strong>
+                        <strong><?php // new yii\db\Expression(1.2*TotalColumn::pageTotal($dataProvider->models,'amount')) ?><strong>
                     
                     </p>
                     

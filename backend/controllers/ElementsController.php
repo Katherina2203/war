@@ -532,7 +532,7 @@ class ElementsController extends Controller
     {
         $model = new Requests();
         $model->idtype = '1';
-        $model->status = '0';
+        $model->status = Requests::REQUEST_NOACTIVE; //0
         $model->iduser = $iduser;
         
         $modelel = Elements::findOne($idel);

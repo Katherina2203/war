@@ -147,6 +147,15 @@ class PaymentinvoiceController extends Controller
         }
     }
     
+    public function actionAddfast()
+    {
+        $model = new Paymentinvoice();
+        
+        return $this->render('addfast', [
+                'model' => $model,
+            ]);
+    }
+    
     
 
     /**
