@@ -259,22 +259,26 @@ class AccountsController extends Controller
         $modelpay = new Paymentinvoice();
         $model->idelem = $idel;
         $model->idinvoice = $modelpay->idpaymenti;
+        $model->status = Accounts::ACCOUNTS_ORDERED;
         
        // $model->status = Accounts::ACCOUNTS_ORDERED;
         
         $modelpr = new Prices();
         $modelpr->idsup = $modelpay->idsupplier;
+        //defaul values for create new price
+        $modelpr->usd = '26.4';
+        $modelpr->pdv = '20%';
+        $modelpr->forUP = '1';
+        $modelpr->idcurrency = '1';
                 
         if ($model->load(Yii::$app->request->post()) && $modelpr->load(Yii::$app->request->post())) {
-      
-          //  $modelord->idelement =  $modelreq->estimated_idel;
-            
+
             $transaction = $model->getDb()->beginTransaction(
                  //   Transaction::SERIALIZABLE
                     );
             try{
               //  $valid = $modelpr->validate();
-              //  $valid = $model->validate() && $valid;
+             //  $valid = $model->validate() && $valid;
                 $valid = yii\base\Model::validateMultiple($modelpr) && $valid;
   
                 

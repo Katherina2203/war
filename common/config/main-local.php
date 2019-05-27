@@ -3,7 +3,7 @@ return [
     'components' => [
        'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=webauth',
+            'dsn' => 'mysql:host=localhost;dbname=webauth2',
             'username' => 'root', //katya
             'password' => '',//katya_lqsym
             'charset' => 'utf8',
