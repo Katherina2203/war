@@ -9,8 +9,10 @@
             <file>file:/D:/xampp/htdocs/war/backend/views/accounts/_formaddfast.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/paymentinvoice/itemsin.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/controllers/PricesController.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/prices/_formadditem.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/elements/view.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/requests/_form.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/prices/createitem.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/controllers/AccountsController.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/elements/_formprice.php</file>
         </group>

@@ -11,6 +11,9 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
 use yii\filters\AccessControl;
+use yii\web\Response;
+use yii\helpers\Json;
+use yii\base\Model;
 
 use \common\models\Receipt;
 use backend\models\ReceiptSearch;
@@ -264,34 +267,44 @@ class AccountsController extends Controller
        // $model->status = Accounts::ACCOUNTS_ORDERED;
         
         $modelpr = new Prices();
+        $modelpr->idel = $idel;
         $modelpr->idsup = $modelpay->idsupplier;
         //defaul values for create new price
         $modelpr->usd = '26.4';
         $modelpr->pdv = '20%';
         $modelpr->forUP = '1';
         $modelpr->idcurrency = '1';
-                
-        if ($model->load(Yii::$app->request->post()) && $modelpr->load(Yii::$app->request->post())) {
-
+       
+           
+        
+        if ($model->load(Yii::$app->request->post()) && $modelpr->load(Yii::$app->request->post())) { ///*Yii::$app->request->isAjax*/
+             $modelpr->idel = $model->idelem;
+            $modelpr->idpr = $model->idprice;
+            
             $transaction = $model->getDb()->beginTransaction(
                  //   Transaction::SERIALIZABLE
                     );
             try{
-              //  $valid = $modelpr->validate();
-             //  $valid = $model->validate() && $valid;
-                $valid = yii\base\Model::validateMultiple($modelpr) && $valid;
+              //  $valid = $model->validate();
+
+               // $valid = Model::validateMultiple($modelpr) && $valid;
+                
   
                 
-                 Yii::$app->db->createCommand()->update('requests', ['status' => Accounts::REQUEST_ACTIVE],['idrequest' => $model->idrequest])->execute();
+             //   Yii::$app->db->createCommand()->update('accounts', ['status' => Accounts::ACCOUNTS_ORDERED],['idelem' => $idel])->execute();
                  
-                if ($valid) {
+                if ($model->validate() && $modelpr->validate()) {
                     $modelpr->save();
-                    
                     $model->save();
                     
+              
                     $transaction->commit();
+                    
+               //      Yii::$app->response->format = Response::FORMAT_JSON;
                     Yii::$app->session->setFlash('success', 'Данная позиция успешно добавлена в счет!');
-                    return $this->redirect(['accounts/viewitem', 'idpo' => $model->idpo]);
+                    return //Json::encode(array( 'status' => 'success', 'type' => 'success', 'message' => 'Contact created successfully.'));
+                    
+                    $this->redirect(['accounts/viewitem', 'idpo' => $model->idpo]);
                 }else {
                     $transaction->rollBack();
                 }  
@@ -301,12 +314,13 @@ class AccountsController extends Controller
             }
            
         } else {
-            return $this->render('additemquick', [
+           var_dump($modelpr->getErrors());
+            return $this->render('additemquick', [ //_formaddfast
                 'model' => $model,
                 'modelpr' => $modelpr,
                 'modelpay' => $modelpay
             ]);
-        }
+        }  
     }
 
     /**
