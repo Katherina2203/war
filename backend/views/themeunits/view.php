@@ -10,10 +10,12 @@ $this->title = $model->idunit;
 $this->params['breadcrumbs'][] = ['label' => 'Themeunits', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+ <div class="row"><div class="col-md-6">
+         
 <div class="themeunits-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    <div class="box box-solid box-default">
+        <div class="box-header with-border"><h3 class="box-title">Модули проекта -  <?php echo $model->themes->name; ?></h3></div>
+                <div class="box-body">
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->idunit], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->idunit], [
@@ -29,11 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'idunit',
-            'idtheme',
+            [
+                'attribute' => 'idtheme',
+                'value' => function($data){
+                    return $data->themes->name;
+                }
+            ],
+            
             'nameunit',
             'quantity_required',
             'created_at',
         ],
     ]) ?>
-
+         </div> </div>
+    </div>
 </div>
+</div></div>

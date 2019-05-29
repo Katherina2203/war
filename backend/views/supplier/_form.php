@@ -18,21 +18,24 @@ use yii\widgets\Pjax;
     });'
     );
 ?>
+<div class="row"><div class="col-md-6">
+    <div class="supplier-form">
+        <div class="box box-solid">
+            <div class="box-body">
+            <?php Pjax::begin(['id'=>'new_supplier']) ?>
+                <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true]]); ?>
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'address')->textInput(['rows' => 2]) ?>
+                    <?= $form->field($model, 'manager')->textInput()->hint('Please enter name') ?>
+                    <?= $form->field($model, 'phone')->textInput() ?>
+                    <?= $form->field($model, 'website')->textInput() ?>
 
-<div class="supplier-form">
-     <div class="col-md-6 request">
-    <?php Pjax::begin(['id'=>'new_supplier']) ?>
-        <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true]]); ?>
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($model, 'address')->textInput(['rows' => 2]) ?>
-            <?= $form->field($model, 'manager')->textInput()->hint('Please enter name') ?>
-            <?= $form->field($model, 'phone')->textInput() ?>
-            <?= $form->field($model, 'website')->textInput() ?>
-
-        <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                <div class="form-group">
+                    <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                </div>
+                <?php ActiveForm::end(); ?>
+             <?php Pjax::end() ?>
+            </div>
         </div>
-        <?php ActiveForm::end(); ?>
-     <?php Pjax::end() ?>
-     </div>
-</div>
+    </div>
+</div></div>

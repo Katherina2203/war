@@ -278,7 +278,7 @@ class AccountsController extends Controller
            
         
         if ($model->load(Yii::$app->request->post()) && $modelpr->load(Yii::$app->request->post())) { ///*Yii::$app->request->isAjax*/
-             $modelpr->idel = $model->idelem;
+            $modelpr->idel = $model->idelem;
             $modelpr->idpr = $model->idprice;
             
             $transaction = $model->getDb()->beginTransaction(
