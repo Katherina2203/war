@@ -10,11 +10,13 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 
+
 use common\models\Accounts;
 use backend\models\AccountsSearch;
 use common\models\Paymentinvoice;
 use backend\models\PaymentinvoiceSearch;
 use common\models\Prices;
+use backend\models\RequestsByIdSearch;
 /**
  * PaymentinvoiceController implements the CRUD actions for Paymentinvoice model.
  */
@@ -102,6 +104,16 @@ class PaymentinvoiceController extends Controller
 
     public function actionItemsin($idinvoice)
     {
+        $modelpay = Paymentinvoice::findOne($idinvoice);
+        if(is_null($modelpay)) {
+            return Yii::$app->getResponse()->redirect(['paymentinvoice/index']);
+        }
+       
+        $modelRequestsByIdSearch = new RequestsByIdSearch();
+        $modelRequestsByIdSearch->idinvoice = $idinvoice;
+        $modelRequestsByIdSearch->search();
+       
+
         $model = new Accounts();
         $searchModel = new AccountsSearch();
         $model->idinvoice = $idinvoice;
@@ -114,13 +126,13 @@ class PaymentinvoiceController extends Controller
             ],
         ]);
         
-        $modelpay = Paymentinvoice::findOne($idinvoice);
         
         return $this->render('itemsin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider, 
             'model' =>$model,
-            'modelpay' => $modelpay
+            'modelpay' => $modelpay,
+            'modelRequestsByIdSearch' => $modelRequestsByIdSearch,
         ]);
     }
     

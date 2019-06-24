@@ -22,6 +22,8 @@ use backend\models\ElementsSearch;
 use common\models\Prices;
 use common\models\Purchaseorder;
 use common\models\Paymentinvoice;
+use common\models\Requests;
+use backend\models\RequestsByIdSearch;
 
 /**
  * AccountsController implements the CRUD actions for Accounts model.
@@ -256,6 +258,58 @@ class AccountsController extends Controller
         }
     }
     
+    public function actionAddrequest($idinvoice, $idrequest)
+    {
+        
+        //checking valid Paymentinvoice Id
+        $modelPaymentinvoice = Paymentinvoice::findOne($idinvoice);
+        if(is_null($modelPaymentinvoice)) {
+            return Yii::$app->getResponse()->redirect(['paymentinvoice/index']);
+        }
+        
+        //checking valid Request Id
+        $modelRequests = Requests::findOne($idrequest);
+        if(is_null($modelRequests)) {
+            return Yii::$app->getResponse()->redirect(['paymentinvoice/index']);
+        }
+        
+        $modelPrices = new Prices(['scenario' => Prices::SCENARIO_REQUEST_BY_ID]);
+        $modelPrices->idel = $modelRequests->estimated_idel;
+        $modelPrices->idsup = $modelPaymentinvoice->supplier->idsupplier;
+        //defaul values for create new price
+        $modelPrices->usd = '26.4';
+        $modelPrices->pdv = '20%';
+        $modelPrices->forUP = '1';
+        $modelPrices->idcurrency = '1';
+        
+
+        $modelAccounts = new Accounts(['scenario' => Accounts::SCENARIO_REQUEST_BY_ID]);
+        $modelAccounts->idinvoice = $modelPaymentinvoice->idpaymenti;
+        $modelAccounts->idelem = $modelRequests->estimated_idel;
+        $modelAccounts->status = Accounts::ACCOUNTS_ORDERED;
+        $modelAccounts->delivery = '2-3 weeks';
+
+        
+        if ($modelPrices->load(Yii::$app->request->post()) && $modelAccounts->load(Yii::$app->request->post()) && $modelPrices->validate() && $modelAccounts->validate()) {
+            if ($modelPrices->save(false)) {
+                $modelAccounts->idprice = $modelPrices->idpr;
+                $modelAccounts->save(false);
+            }
+        }
+
+        
+       
+        return $this->render('addrequest', [
+            'modelAccounts' => $modelAccounts,
+            'modelPaymentinvoice' => $modelPaymentinvoice,
+            'modelRequests' => $modelRequests,
+            'modelPrices' => $modelPrices,
+//            'modelSupplier' => $modelPaymentinvoice->supplier,
+
+
+        ]);
+    }
+
     public function actionAdditemquick($idel)
     {
         $model = new Accounts();
@@ -276,11 +330,10 @@ class AccountsController extends Controller
         $modelpr->idcurrency = '1';
        
            
-        
         if ($model->load(Yii::$app->request->post()) && $modelpr->load(Yii::$app->request->post())) { ///*Yii::$app->request->isAjax*/
              $modelpr->idel = $model->idelem;
             $modelpr->idpr = $model->idprice;
-            
+
             $transaction = $model->getDb()->beginTransaction(
                  //   Transaction::SERIALIZABLE
                     );

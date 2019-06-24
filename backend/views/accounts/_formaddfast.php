@@ -15,9 +15,9 @@ use common\models\Currency;
     <div class="box box-solid">
         <div class="box-body">
 
-    <?php $form = ActiveForm::begin([ 
-                   'id' => 'form-add-intoinvoice', 
-                    'enableAjaxValidation' => true, 
+    <?php $form = ActiveForm::begin([
+                   'id' => 'form-add-intoinvoice',
+                    'enableAjaxValidation' => true,
                  //   'validationUrl' => Yii::$app->urlManager->createUrl('contacts/contacts/contact-validate')
                 ]); ?>
 

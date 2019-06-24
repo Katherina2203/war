@@ -25,6 +25,7 @@ class Accounts extends \yii\db\ActiveRecord
     const ACCOUNTS_ORDERED = 2;  //ordered
     const ACCOUNTS_ONSTOCK = 3;  //receive onstock
     const ACCOUNTS_CANCEL = 4;  //cancel
+    const SCENARIO_REQUEST_BY_ID = "request_by_id";
     /**
      * @inheritdoc
      */
@@ -81,7 +82,23 @@ class Accounts extends \yii\db\ActiveRecord
             [['quantity','status'], 'string', 'max' => 48],
             [['delivery'], 'string', 'max' => 10],
            // [['amount'], 'number', 'min'=>0,],
+          
+            //SCENARIO_REQUEST_BY_ID rules
+            [['idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive'], 'required', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive'], 'trim', 'on' => self::SCENARIO_REQUEST_BY_ID],
+//            [['date_receive'], 'date', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['amount', 'quantity'], 'double', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['idelem', 'idinvoice',], 'integer', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['delivery'], 'string', 'on' => self::SCENARIO_REQUEST_BY_ID, 'max' => 10],
         ];
+    }
+
+    public function scenarios() {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_REQUEST_BY_ID] = [
+            'idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive',
+        ];
+        return $scenarios;
     }
 
     /**

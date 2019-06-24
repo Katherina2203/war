@@ -18,6 +18,8 @@ use Yii;
  */
 class Prices extends \yii\db\ActiveRecord
 {
+    const SCENARIO_REQUEST_BY_ID = "request_by_id";
+
     /**
      * @inheritdoc
      */
@@ -46,7 +48,24 @@ class Prices extends \yii\db\ActiveRecord
             [['unitPrice'], 'string', 'max' => 12],
             [['pdv'], 'string', 'max' => 3],
             [['usd'], 'string', 'max' => 6],
+            [['unitPrice', 'forUP', 'pdv', 'usd', 'idcurrency'], 'required', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['unitPrice', 'forUP', 'pdv', 'usd', 'idcurrency'], 'trim', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['usd', 'unitPrice'], 'double', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['idcurrency'], 'integer', 'on' => self::SCENARIO_REQUEST_BY_ID],
         ];
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_REQUEST_BY_ID] = [
+            'unitPrice', 
+            'forUP', 
+            'idcurrency',
+            'pdv',
+            'usd',
+        ];
+        return $scenarios;
     }
 
     /**

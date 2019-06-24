@@ -107,6 +107,15 @@ $this->params['breadcrumbs'][] = $this->title;
              <p>
                     <?= Html::a('Добавить товар в счет', ['accounts/createitem', 'idinvoice' => $modelpay->idpaymenti], ['class' => 'btn btn-success']) ?>
                 </p>
+            <p>
+                <div style="padding-left: 15px;"><b>Добавить товар в счет через запрос :</b></p></div>
+                <?= $this->render('_formaddrequest', [
+                    'modelRequestsByIdSearch' => $modelRequestsByIdSearch,
+                ]) ?>
+            </p>
+            
+            
+            
             <div class="col-xs-12">
                 <?php Pjax::begin(); ?><?= GridView::widget([
                     'dataProvider' => $dataProvider,
