@@ -21,7 +21,7 @@ class ElementsSearch extends Elements
         return [
             [['idelements', 'quantity', 'created_by' , 'updated_by', 'idcategory'], 'integer'],
             [['box', 'name', 'nominal', 'image', 'active', 'searchstring', 'idproduce'], 'safe'],
-            ['name', 'trim'],
+            [['name', 'searchstring'], 'trim'],
         ];
     }
 

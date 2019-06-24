@@ -28,7 +28,7 @@ $user = new \common\models\Users();
                         'method' => 'get',
                       ]); ?>
                      <?php $searchElements = new ElementsSearch();
-                     echo $form->field($searchElements, 'searchstring', [
+                     echo $form->field($searchElements, 'name', [
                          'template' => '<div class="input-group">{input}<span class="input-group-btn">' .
                              Html::submitButton('Search', ['class' => 'btn btn-default']) .
                              '</span></div>',
