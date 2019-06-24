@@ -85,7 +85,7 @@ class Specification extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idspec' => Yii::t('app', 'Idspec'),
+            'id' => Yii::t('app', 'Idspec'),
             'quantity' => Yii::t('app', 'Quantity'),
             'idelement' => Yii::t('app', 'Idelement'),
             'idboard' => Yii::t('app', 'Idboard'),

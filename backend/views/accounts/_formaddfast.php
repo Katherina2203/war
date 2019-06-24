@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use dosamigos\datepicker\DatePicker;
 use yii\helpers\ArrayHelper;
-use yii\widgets\Pjax;
+
 
 use common\models\Currency;
 /* @var $model common\models\Accounts */

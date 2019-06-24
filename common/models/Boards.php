@@ -115,12 +115,19 @@ class Boards extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Outofstock::className(), ['idboart' => 'idboards']);
     }
-    public function getidtheme()
+    public static function getIdtheme()
     {
-        return $this->idtheme;
+        $idtheme = Boards::find()
+              //  ->select(['idtheme', 'idboards'])
+               // ->where(['idboards' => $idboards])
+                ->Where(['discontinued' => Boards::DISCONTINUED_ACTIVE])
+                ->asArray()
+                ->all();
+            
+        return $idtheme;
     }
-    
-    public function getidunit()
+
+    public function getIdunit()
     {
         return $this->idthemeunit;
     }
@@ -164,5 +171,14 @@ class Boards extends \yii\db\ActiveRecord
         ];
     }
     
+   /* public function getIds(){
+        
+        $data = Boards::find()
+            //    ->where(['idboards' => $idboards])
+                ->Where(['discontinued' => Boards::DISCONTINUED_ACTIVE])
+                ->all();
+        return $data;
+    }
+    */
 
 }

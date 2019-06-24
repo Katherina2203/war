@@ -20,8 +20,15 @@ use \common\models\Produce;
 ?>
 
 <div class="elements-form">
+    <div class="box box-success">
+          <div class="box-header with-border"><h2 class="box-title"><?= Html::encode($this->title) ?></h2></div>
+    <div class="box-body">
 <?php Pjax::begin(['id' => 'new_element']) ?>
-    <?php $form = ActiveForm::begin(['options' => ['enctype'=>'multipart/form-data']]); 
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype'=>'multipart/form-data'],
+            'enableClientValidation' => true,
+            'enableAjaxValidation' => true
+        ]); 
         $produce = Produce::find()->select(['manufacture', 'idpr'])->indexBy('idpr')->column();
         $category = Category::getHierarchy(); // Category::find()->select(['name', 'idcategory'])->indexBy('idcategory')->column();
     ?>
@@ -87,7 +94,7 @@ use \common\models\Produce;
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 
     </div>
-
+</div>
     <?php ActiveForm::end(); ?>
 <?php Pjax::end(); ?>
 </div>

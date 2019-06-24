@@ -245,7 +245,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'dataProviderSpecification'=>$dataProviderSpecification,
                                 ]) ?>
                     <?php Pjax::end(); ?>
-
                 </div>
             </div>
     </div> 
