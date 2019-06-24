@@ -23,9 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a('<i class="fa fa-external-link"></i> Взять со склада', ['createfrom',  'idel' => $element->idelements, 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-success']) ?>
 
         </p>
-      
-           
-  
+
     </div>
      <div class="col-md-4">
       <div class="box">
@@ -33,11 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $element,
             'condensed'=>false,
-            /*   'panel' => [
-                'heading' => $this->title,
-                'type' => DetailView::TYPE_INFO,
-                'toolbar' => false,
-            ],*/
             'hover'=>true,
             'attributes' => [
                 'idelements',
