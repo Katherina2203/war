@@ -331,7 +331,7 @@ class AccountsController extends Controller
        
            
         if ($model->load(Yii::$app->request->post()) && $modelpr->load(Yii::$app->request->post())) { ///*Yii::$app->request->isAjax*/
-             $modelpr->idel = $model->idelem;
+            $modelpr->idel = $model->idelem;
             $modelpr->idpr = $model->idprice;
 
             $transaction = $model->getDb()->beginTransaction(
@@ -339,25 +339,17 @@ class AccountsController extends Controller
                     );
             try{
               //  $valid = $model->validate();
-
                // $valid = Model::validateMultiple($modelpr) && $valid;
-                
-  
-                
              //   Yii::$app->db->createCommand()->update('accounts', ['status' => Accounts::ACCOUNTS_ORDERED],['idelem' => $idel])->execute();
-                 
                 if ($model->validate() && $modelpr->validate()) {
                     $modelpr->save();
                     $model->save();
-                    
-              
+
                     $transaction->commit();
-                    
+                  
                //      Yii::$app->response->format = Response::FORMAT_JSON;
                     Yii::$app->session->setFlash('success', 'Данная позиция успешно добавлена в счет!');
-                    return //Json::encode(array( 'status' => 'success', 'type' => 'success', 'message' => 'Contact created successfully.'));
-                    
-                    $this->redirect(['accounts/viewitem', 'idpo' => $model->idpo]);
+                    return $this->redirect(['accounts/viewitem', 'idpo' => $model->idpo]);
                 }else {
                     $transaction->rollBack();
                 }  
@@ -367,7 +359,7 @@ class AccountsController extends Controller
             }
            
         } else {
-           var_dump($modelpr->getErrors());
+           //  var_dump($modelpr->getErrors());
             return $this->render('additemquick', [ //_formaddfast
                 'model' => $model,
                 'modelpr' => $modelpr,

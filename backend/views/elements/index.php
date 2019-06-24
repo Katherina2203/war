@@ -206,7 +206,7 @@ $gridColumns = [
                             );
                 },
                 'createfromquick' => function ($url,$model,$key) {
-                  $url = Url::to(['createfromquick', 'idel' => $key, 'iduser' => yii::$app->user->identity->id]);
+                  $url = Url::to(['createfromquick', 'idel' => $key]);
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url,
                             ['title' => 'взять со склада быстро']
                             );

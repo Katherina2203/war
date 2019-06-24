@@ -86,7 +86,8 @@ class ThemeunitsController extends Controller
     public function actionCreate()
     {
         $model = new Themeunits();
-
+        $model->status = 'active';
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idunit]);
         } else {

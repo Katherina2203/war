@@ -18,7 +18,7 @@ use yii\widgets\Pjax;
             foreach ($dataProviderSpecification->models as $specification) {
                 
             echo "<li style='padding-bottom: 15px; border-bottom: 1px solid lightgrey'>";
-                    echo Html::a($specification->idspec. '/'.Html::encode($specification->boards->name), Url::to(['specification/index']), ['class' => 'product-title']).
+                    echo Html::a($specification->id. '/'.Html::encode($specification->boards->name), Url::to(['specification/index']), ['class' => 'product-title']).
                             ', <span style="color:lightgrey">' . $specification->boards->themes->name . '</span>' . 
                             '<br/><span>'. $specification->ref_of . '</span>';
                     echo '<span class="label label-danger pull-right">'. $specification->quantity. '</span>';

@@ -100,50 +100,45 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="row">
         <div class="col-md-12">
-            <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
+              <h2 class="box-title">Prices</h2>
+                <?= GridView::widget([
+                        'dataProvider' => $dataProvider,
+                     //  'filterModel' => $searchModel,
+                        'showOnEmpty' => false,
+                        'emptyText' => '<table><tbody></tbody></table>',
+                        'columns' => [
+                            'idpr',
+                            [
+                                'attribute' =>  'unitPrice',
+                                'format' => 'raw',
+                                'value' => function($data){
+                                       return $data->unitPrice. '/'. $data->forUP. ' ' . $data->currency->currency . '<br/><small style="color:grey">+'. $data->pdv . '</small>';
+                                },
+                            ],
+                            'usd',
+                            [
+                                'attribute' => 'idsup',
+                                'value' => 'supplier.name',
+                             //    'filter' => Html::activeDropDownList($searchModel2, 'idsup', ArrayHelper::map(common\models\Supplier::find()->select(['idsupplier', 'name'])->indexBy('idsupplier')->all(), 'idsupplier', 'name'),['class'=>'form-control','prompt' => 'Выберите поставщика']),
+                                'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],
+                            ],
+                           
+                            [ 
+                                'attribute' => 'idcurrency',
+                                'format' => 'raw',
+                                'value' => 'currency.currency',
+                            ],
+                            'pdv',
+                            'usd',
+                            [
+                                'attribute' => 'created_at',
+                                'format' => ['date', 'php:Y-m-d'],
+                            ],
+                                          ['class' => 'yii\grid\ActionColumn'],
 
-                'idpr',
-                //'idel',
-            /*    [
-                    'attribute' =>  'idel',
-                    'label' => 'Название',
-                    'value' => 'elements.name',
-                ],
-                  [
-                    'attribute' =>  'idel',
-                    'label' => 'Описание',
-                    'value' => 'elements.nominal',
-                ],*/
-                [
-                    'attribute' => 'idsup',
-                    'value' => 'supplier.name',
-                    'filter' => Html::activeDropDownList($searchModel, 'idsup', ArrayHelper::map(common\models\Supplier::find()->select(['idsupplier', 'name'])->all(), 'idsupplier', 'name'),['class'=>'form-control','prompt' => 'Выберите поставщика']),
-                ],
-              //  'unitPrice',
-                [
-                    'attribute' =>  'unitPrice',
-                    'value' => function($data){
-                        return $data->unitPrice. '/'. $data->forUP;
-                    },
-                    'format' => 'raw',
-                ],
-
-                [
-                    'attribute' => 'idcurrency',
-                    'format' => 'raw',
-                    'value' => 'currency.currency',
-                ],
-                'pdv',
-                'usd',
-                'created_at',
-
-                    ['class' => 'yii\grid\ActionColumn'],
-                    ],
-            ]); ?>
+                        ], 
+                    ]);
+                ?>    
         </div>
     </div>
 </div>

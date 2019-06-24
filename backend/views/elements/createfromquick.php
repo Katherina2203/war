@@ -12,12 +12,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="fromquick-create">
 
-       <h2 class="box-title"><?= Html::encode($this->title) ?></h2>
+       
     
         <?= $this->render('_formfromquick', [
             'model' => $model,
-            'idel' => $model->idelement,
-            'element' => $element,
+          //  'idel' => $model->idelement,
+         //   'element' => $element,
             'board' => $board,
         ]) ?>
 

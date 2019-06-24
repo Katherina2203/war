@@ -81,6 +81,7 @@ class Accounts extends \yii\db\ActiveRecord
             ['status', 'default', 'value' => self::ACCOUNTS_ORDERED],
             [['quantity','status'], 'string', 'max' => 48],
             [['delivery'], 'string', 'max' => 10],
+          
            // [['amount'], 'number', 'min'=>0,],
           
             //SCENARIO_REQUEST_BY_ID rules
@@ -131,10 +132,6 @@ class Accounts extends \yii\db\ActiveRecord
         return $this->hasOne(Elements::className(), ['idelements' =>'idelem']);
     }
     
-  /*  public function getStatus() {
-        return $this->hasOne(Status::className(), ['idstatus' =>'status']);
-    }*/
-    
     public function getPaymentinvoice(){
         return $this->hasOne(Paymentinvoice::className(), ['idpaymenti' => 'idinvoice']);
               //    ->viaTable('paymentinvoice_accounts', ['idpaymentinvoice' => 'idpaymenti']);
@@ -157,6 +154,7 @@ class Accounts extends \yii\db\ActiveRecord
         return $this->hasMany(Requests::className(), ['idrequest' => 'idrequest'])
                     ->viaTable('purchaseorder', ['idelement' => 'idelem']);
     }
+
    
     public function getSupplier(){
         return $this->hasMany(Supplier::className(), ['idsupplier' => 'idsupplier'])

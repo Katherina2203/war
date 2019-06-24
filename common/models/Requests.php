@@ -240,8 +240,7 @@ class Requests extends \yii\db\ActiveRecord
        return  $this->themes->name;
     } 
     public function getCustomer(){
-        //return $this->themes->select('name')->where(['status' => 'active'])->column();
-       return  $this->users->getUserName();
+        return  $this->users->getUserName();
     } 
     
     

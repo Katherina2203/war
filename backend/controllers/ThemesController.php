@@ -241,7 +241,8 @@ class ThemesController extends Controller
     public function actionCreate()
     {
         $model = new Themes();
-
+        $model->status = 'active';
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idtheme]);
         } else {

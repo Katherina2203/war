@@ -23,12 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h2>Счет № <?= $modelpay->invoice . ' <small>от ' . $modelpay->date_invoice. '</small>' ?></h2>
    
-    <div class="pad margin no-print">
-        <div class="callout callout-info">
-            <h4><i class="fa fa-info"></i> Обратите внимание!</h4>
-            Сумма счета указана без НДС
-        </div>
-    </div>
+
     <section class="invoice">
         <div class="row">
             <div class="col-xs-12">
@@ -129,14 +124,23 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
                         'idord',
+                        [
+                            'attribute' => 'idelem',
+                            'label' => 'Заявка',
+                            'value' => function($data){
+                                return $data->idelem; //requests->idrequest;
+                            }
+                        ],
                         'idelem',
                         [
                             'attribute' => 'idelem',
                             'label' => 'Производитель',
                             'value' => function($data){
-                    return $data->idelem;
+                  //  return $data->idelem;
                                 // return $data->elements->manufacturerName;
-                              //   return $data->produce->manufacture;
+                             //   if (empty($data->elements->manufacturerName)) ? 'not set' : 
+                                      return $data->produce->manufacture;
+                                 
                             },
                             'contentOptions' => ['style' => 'max-width: 240px;white-space: normal'],
                         ],
@@ -149,7 +153,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Html::tag('span', 
                                             Html::a($model->elements->name, ['elements/view', 'id' => $model->idelem]), 
                                             [
-                                                    'title'=> yii::t('app', 'Заказчик'). ': '.$model->idelem.', '. yii::t('app', 'Проект'). ': '. $model->idelem,
+                                                    'title'=> yii::t('app', 'Customer'). ': ' . $model->idelem .', ' . yii::t('app', 'Project') . ': ' . $model->idelem,
                                                     'data-toggle'=>'tooltip',
                                                     'style'=>' cursor:pointer;color:red'//text-decoration: underline;requests->getCustomer()    ...requests->getProject()
                                                 
@@ -181,14 +185,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'amount',
                             'footer' => TotalColumn::pageTotal($dataProvider->models,'amount'),
                         ],
-                        [
+                   /*     [
                          //   'class'=>'kartik\grid\FormulaColumn',
                             'label' => 'sum',
                             'attribute' =>'amount',
                           //  'footer'=>TotalColumn::pageTotal($dataProvider->models,'amount'),  //будет необходимо, когда добавляешь несколько строк с пдв и без
                             'pageSummary'=>true,
                           //  'pageSummaryFunc'=> GridView::F_AVG
-                        ],
+                        ],*/
                         'delivery',
                         [
                             'attribute' => 'status',

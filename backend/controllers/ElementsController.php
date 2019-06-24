@@ -430,37 +430,50 @@ class ElementsController extends Controller
         }
     }
     
-     public function actionCreatefromquick($idel, $iduser)
+     public function actionCreatefromquick($idel)
     {
         $model = new Outofstock();
-        $model->idelement = $idel;
-        $model->iduser = $iduser;
-      //  $user = new Users();
-      //  $user->id = $iduser;
-        $element = new Elements();
-        $element->idelements = $idel;
-        
         $board = new Boards();
-        $board->idtheme = $model->idtheme;
-        $board->idthemeunit = $model->idthemeunit;
+        $element = $this->findModel($idel);
+        $model->idelement = $idel;
         
         if ($model->load(Yii::$app->request->post())) {
-            $board->idtheme = $model->idtheme=12;
-            $board->idthemeunit = $model->idthemeunit=16;
-        
+              // $model->idtheme = Boards::getIdtheme();
+               
+            
+                  //  if($_POST['idboart'])){
+            
+             if(!empty($model->idboart)){ 
+                    
+                        $model->idtheme = 114; //->where(['discontinued' => Boards::DISCONTINUED_ACTIVE])
+                        $model->idthemeunit = 113;
+                    }else{
+                         Yii::$app->session->setFlash('error', 'не указан номер платы');
+                    }
+           // $model->idtheme = $board->themes->idtheme;
+
             $transaction = $model->getDb()->beginTransaction(//Yii::$app->db->beginTransaction(
                  //   Transaction::SERIALIZABLE
                     );
             try{
                 $valid = $model->validate();
-               
-                Yii::$app->db->createCommand()->update('elements', ['quantity' => new Expression('quantity - :modelquantity', [':modelquantity' => $model->quantity])], ['idelements'=> $model->idelement])->execute();
-               
-                
+                if($element->quantity <=0){
+                       Yii::$app->session->setFlash('error', 'на складе нет запрашиваемого количества');
+                        return $this->render('createfromquick', [
+                            'model' => $model,
+                         //   'user' => $user,
+                            'element' => $element,
+                            'board' => $board,
+
+                        ]);
+                }else{
+                      Yii::$app->db->createCommand()->update('elements', ['quantity' => new Expression('quantity - :modelquantity', [':modelquantity' => $model->quantity])], ['idelements'=> $model->idelement])->execute();
+                }
+       
                 
                 if ($valid) {
                 // the model was validated, no need to validate it once more
-                    $model->save(false);
+                    $model->save();
 
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
@@ -474,11 +487,13 @@ class ElementsController extends Controller
             }
            
         } else {
+           // var_dump($model->getErrors());
             return $this->render('createfromquick', [
                 'model' => $model,
              //   'user' => $user,
                 'element' => $element,
                 'board' => $board,
+              
             ]);
         }
     }

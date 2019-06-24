@@ -63,15 +63,23 @@ class PricesController extends Controller
         $searchRequest = new RequestsSearch();
         $modelacc = new Accounts();
         //вывести кнопку добавить позицию в счет , добавить счет
+        
+         $query = Prices::find()->where(['idel' => $id])->orderBy('created_at DESC');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
             'modelacc' => $modelacc,
             'searchRequest' => $searchRequest,
+             'dataProvider' => $dataProvider,
         ]);
     }
     
     public function actionViewprice($idel)
     {
+        $model = $this->findModel($idel);
         $searchModel = new PricesSearch();
         
         $query = Prices::find()->where(['idel' => $idel])->orderBy('created_at DESC');
@@ -83,7 +91,7 @@ class PricesController extends Controller
         $modelacc = new Accounts();
         //вывести кнопку добавить позицию в счет , добавить счет
         return $this->render('viewprice', [
-            'model' => $this->findModel($idel),
+            'model' => $model,
             'modelacc' => $modelacc,
             'searchRequest' => $searchRequest,
             'searchModel' => $searchModel,

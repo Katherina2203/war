@@ -45,6 +45,9 @@ class Outofstock extends \yii\db\ActiveRecord
             [['idelement', 'iduser', 'quantity',  'idtheme', 'idboart', 'ref_of_board'], 'required'], 
             [['idelement', 'iduser', 'quantity', 'idtheme', 'idthemeunit', 'idboart', 'idprice'], 'integer'],
             [['quantity'], 'safe'],
+            ['idtheme', 'required', 'message' => 'Please enter a project'],
+            ['idthemeunit', 'required', 'message' => 'Please enter a unit'],
+            ['idboart', 'required', 'message' => 'Please enter a board'],
             [['ref_of_board'], 'string', 'max' => 64],
         ];
     }
