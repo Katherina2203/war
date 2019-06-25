@@ -306,7 +306,7 @@ class ElementsController extends Controller
         
         Yii::$app->params['uploadPath'] = \yii::$app->basePath . 'frontend/images/';
         //$dir = Yii::getAlias('@frontend/images/') ;
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
            
             $image = UploadedFile::getInstance($model, 'image');
             
@@ -416,7 +416,7 @@ class ElementsController extends Controller
         
         
         
-        if ($model->load(Yii::$app->request->post())) { //Yii::$app->request->isAjax &&
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) { //Yii::$app->request->isAjax &&
          //   Yii::$app->response->format = Response::FORMAT_JSON;
               // $model->idtheme = Boards::getIdtheme();
                

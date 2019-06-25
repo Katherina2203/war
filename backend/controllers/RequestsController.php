@@ -273,7 +273,7 @@ class RequestsController extends Controller
         $model->status = '0';
         $model->idtype = '1';
             
-        if($model->load(Yii::$app->request->post())){
+        if($model->load(Yii::$app->request->post()) && $model->validate()){
         
             $img = UploadedFile::getInstance($model, 'img');
          

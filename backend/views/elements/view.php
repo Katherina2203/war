@@ -390,7 +390,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'showOnEmpty' => false,
                     'emptyText' => '<table><tbody></tbody></table>',
                     'columns' => [
-                      //  'idreturn',
+                        'idreturn',
                         'quantity',
                         'created_at',
                     ],

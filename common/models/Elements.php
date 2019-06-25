@@ -94,6 +94,7 @@ class Elements extends \yii\db\ActiveRecord
             ['idproduce', 'required', 'message' => 'Please choose a produce'],
             ['active', 'default', 'value' => self::ELEMENT_ACTIVE],
          //   [['box'], 'string', 'max' => 20],
+            [['name', 'nominal'], 'trim'],
             [['name', 'nominal'], 'string', 'max' => 82],
             [['image', 'quantity'], 'safe' ], //'on' => ['upload', 'update']
             [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, gif, jpg, jpeg', 'maxSize' => 1024 * 1024 * 2],
