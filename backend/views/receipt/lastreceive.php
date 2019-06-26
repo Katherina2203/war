@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '#Заявки',
                 'format' => 'raw',
                 'value' => function($data){
-                        return Html::a($data->requests->idrequest, ['requests/view', 'id' => $data->requests->idrequest]);
+                      //  return Html::a($data->requests->idrequest, ['requests/view', 'id' => $data->requests->idrequest]);
                 },
             ],
             [

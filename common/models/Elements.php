@@ -87,12 +87,14 @@ class Elements extends \yii\db\ActiveRecord
         return [
             [['box', 'name', 'nominal', 'idcategory', 'idproduce'], 'required'],
             [['quantity', 'idproduce', 'idcategory', 'created_by' , 'updated_by'], 'integer'],
-            ['box', 'required', 'message' => 'Please choose a category'],
+            ['box', 'required'],
+        //    ['box', 'required', 'message' => 'Can not be blank'],
           //  [['name', 'nominal'], 'string', 'max' => 20],
             ['idcategory', 'required', 'message' => 'Please choose a category'],
             ['idproduce', 'required', 'message' => 'Please choose a produce'],
             ['active', 'default', 'value' => self::ELEMENT_ACTIVE],
          //   [['box'], 'string', 'max' => 20],
+            [['name', 'nominal'], 'trim'],
             [['name', 'nominal'], 'string', 'max' => 82],
             [['image', 'quantity'], 'safe' ], //'on' => ['upload', 'update']
             [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, gif, jpg, jpeg', 'maxSize' => 1024 * 1024 * 2],

@@ -306,13 +306,14 @@ class ElementsController extends Controller
         
         Yii::$app->params['uploadPath'] = \yii::$app->basePath . 'frontend/images/';
         //$dir = Yii::getAlias('@frontend/images/') ;
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
            
             $image = UploadedFile::getInstance($model, 'image');
             
             if ($image && $image->tempName) {
                 $model->image = $image;
          
+        
                 if ($model->image && $model->validate(['image'])){
                     $dir = Yii::getAlias('@frontend/'). 'images/';
                     $imagePath = $model->image->baseName .  '.' . $model->image->extension;
@@ -321,7 +322,7 @@ class ElementsController extends Controller
                    // $model->image = 'images/' .  $imagePath;        //{$model->id}/{$model->media_file->name}
                 } 
             }
-        
+           
             if($model->save()){
                 Yii::$app->session->setFlash('success', 'Товар успешно добавлен');
                 return $this->redirect(['view', 'id' => $model->idelements]);
@@ -331,31 +332,6 @@ class ElementsController extends Controller
                 'model' => $model,
             ]);
         }
-        
-
-       /* $model = new Elements();
-
-        \yii::$app->params['uploadPath'] = Yii::$app->basePath . '/images/';
-        
-        if ($model->load(\yii::$app->request->post())) {
-            $image = UploadedFile::getInstance($model,'image');
-            $ext = end((explode(".", $image->name)));
-            $model->photo = time().$model->id.".{$ext}"; 
-           // $image->saveAs(\yii::$app->basePath.'/web/images/');
-
-            //$model->image= $image->name;
-           // $path = Yii::$app->basePath.'/web/images/' . $model->image;  
-            $path = Yii::$app->params['uploadPath'] . $model->image;
-            if($model->save()){
-            $image->saveAs($path);
-
-            return $this->redirect(['view', 'id' => $model->idelements]);
-            }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }*/
     }
     
     public function actionCreateproduce()
@@ -436,27 +412,36 @@ class ElementsController extends Controller
         $board = new Boards();
         $element = $this->findModel($idel);
         $model->idelement = $idel;
+        $idb = $board->idboards;
         
-        if ($model->load(Yii::$app->request->post())) {
+        
+        
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) { //Yii::$app->request->isAjax &&
+         //   Yii::$app->response->format = Response::FORMAT_JSON;
               // $model->idtheme = Boards::getIdtheme();
                
             
                   //  if($_POST['idboart'])){
-            
-             if(!empty($model->idboart)){ 
+        if(!empty($model->idboart)){ 
                     
                         $model->idtheme = 114; //->where(['discontinued' => Boards::DISCONTINUED_ACTIVE])
                         $model->idthemeunit = 113;
                     }else{
                          Yii::$app->session->setFlash('error', 'не указан номер платы');
                     }
+                    
+            
            // $model->idtheme = $board->themes->idtheme;
 
-            $transaction = $model->getDb()->beginTransaction(//Yii::$app->db->beginTransaction(
+            $transaction = $model->getDb()->beginTransaction(
                  //   Transaction::SERIALIZABLE
                     );
             try{
                 $valid = $model->validate();
+                
+                
+                    
+                    
                 if($element->quantity <=0){
                        Yii::$app->session->setFlash('error', 'на складе нет запрашиваемого количества');
                         return $this->render('createfromquick', [
@@ -473,7 +458,7 @@ class ElementsController extends Controller
                 
                 if ($valid) {
                 // the model was validated, no need to validate it once more
-                    $model->save();
+                    $model->save(false);
 
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
