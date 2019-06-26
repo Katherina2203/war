@@ -23,6 +23,7 @@ class RequestsSearch extends Requests
         return [
             [['idrequest', 'idproduce', 'iduser', 'quantity', 'idproject', 'idsupplier', 'estimated_executor', 'created_by', 'edited_by', 'estimated_category', 'estimated_idel', 'idtype'], 'integer'],
             [['name', 'description', 'required_date', 'img', 'created_at', 'updated_at', 'note', 'status'], 'safe'],
+            [['name'], 'trim'],
         ];
     }
 

@@ -1,17 +1,29 @@
 <?php
 namespace backend\components;
 
-class TotalColumn {
+use Yii;
+
+class Amounts {
     
-    public static function getAmount($provider, $unitPrice, $forUp)
-    {
-        $sum = 0;
+    //to do функция не работает
+//    public static function getAmount($provider, $unitPrice, $forUp)
+//    {
+//        $sum = 0;
+//        
+//        foreach($provider as $item){
+//            $sum = ($quantity * $unitPrice) / $forUp;
+//        }
+//        
+//        return $sum;
+//    }
+//    
+    public static function checkAmount ($modelPrices, $modelAccounts) {
         
-        foreach($provider as $item){
-            $sum = ($quantity * $unitPrice) / $forUp;
-        }
-        
-        return $sum;
+        //amount from string to float value
+        $dPriceAmound = round(($modelPrices->unitPrice / $modelPrices->forUP) * $modelAccounts->quantity, 2);
+        $dAccountAmount = floatval($modelAccounts->amount);
+
+        return ($dAccountAmount == $dPriceAmound);
     }
 }
 

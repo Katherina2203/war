@@ -24,6 +24,7 @@ use common\models\Purchaseorder;
 use common\models\Paymentinvoice;
 use common\models\Requests;
 use backend\models\RequestsByIdSearch;
+use backend\components\Amounts;
 
 /**
  * AccountsController implements the CRUD actions for Accounts model.
@@ -258,25 +259,49 @@ class AccountsController extends Controller
         }
     }
     
+    public function actionAddtoinvoice($idel, $idprice)
+    {
+        $model = new Accounts();
+        $modelpr = new Prices();
+        $model->idelem = $idel;
+        $model->idprice = $idprice;
+        
+        if ($model->load(Yii::$app->request->post()) && $modelpr->save()) {
+            Yii::$app->session->setFlash('success', 'Данная позиция успешно добавлена в счет!');
+            return $this->redirect(['paymentinvoice/itemsin', 'id' => $model->idinvoice]);
+        }else {
+            return $this->render('addtoinvoice', [
+                'model' => $model,
+                //'modelpr' => $modelpr,
+            ]);
+        }
+        
+       
+    }
+	
     public function actionAddrequest($idinvoice, $idrequest)
     {
         
-        //checking valid Paymentinvoice Id
+        //checking a valid Paymentinvoice Id
         $modelPaymentinvoice = Paymentinvoice::findOne($idinvoice);
         if(is_null($modelPaymentinvoice)) {
             return Yii::$app->getResponse()->redirect(['paymentinvoice/index']);
         }
         
-        //checking valid Request Id
+        //checking a valid Request Id
         $modelRequests = Requests::findOne($idrequest);
         if(is_null($modelRequests)) {
             return Yii::$app->getResponse()->redirect(['paymentinvoice/index']);
+        }
+        //checking if a request has an Element Id
+        if(is_null($modelRequests->estimated_idel)) {
+            return Yii::$app->getResponse()->redirect(['processingrequest/additem', 'idrequest' => $modelRequests->idrequest]);
         }
         
         $modelPrices = new Prices(['scenario' => Prices::SCENARIO_REQUEST_BY_ID]);
         $modelPrices->idel = $modelRequests->estimated_idel;
         $modelPrices->idsup = $modelPaymentinvoice->supplier->idsupplier;
-        //defaul values for create new price
+        //defaul values for creating new price
         $modelPrices->usd = '26.4';
         $modelPrices->pdv = '20%';
         $modelPrices->forUP = '1';
@@ -287,17 +312,32 @@ class AccountsController extends Controller
         $modelAccounts->idinvoice = $modelPaymentinvoice->idpaymenti;
         $modelAccounts->idelem = $modelRequests->estimated_idel;
         $modelAccounts->status = Accounts::ACCOUNTS_ORDERED;
-        $modelAccounts->delivery = '2-3 weeks';
+        $modelAccounts->delivery = '1 week';
 
         
         if ($modelPrices->load(Yii::$app->request->post()) && $modelAccounts->load(Yii::$app->request->post()) && $modelPrices->validate() && $modelAccounts->validate()) {
             if ($modelPrices->save(false)) {
+                
                 $modelAccounts->idprice = $modelPrices->idpr;
                 $modelAccounts->save(false);
+                
+                //making a record in purchaseorder table
+                $modelPurchaseorder = new Purchaseorder();
+                $modelPurchaseorder->idrequest = $modelRequests->idrequest;
+                $modelPurchaseorder->idelement = $modelRequests->estimated_idel;
+                $modelPurchaseorder->quantity = $modelAccounts->quantity;
+                $modelPurchaseorder->date = $modelAccounts->date_receive;
+                $modelPurchaseorder->save();
+                
+                if (Amounts::checkAmount($modelPrices, $modelAccounts)) {
+                    Yii::$app->session->setFlash('success', 'Данная позиция успешно добавлена в счет!');
+                } else {
+                    Yii::$app->session->setFlash('warning', 'Данная позиция успешно добавлена в счет! Но общая сумма не совпадает с расчетной.');
+                }
+                
+                return $this->redirect(['paymentinvoice/itemsin', 'idinvoice' => $modelPaymentinvoice->idpaymenti]);
             }
         }
-
-        
        
         return $this->render('addrequest', [
             'modelAccounts' => $modelAccounts,
