@@ -73,9 +73,11 @@ class Requests extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'iduser', 'quantity', 'idproject', 'idtype'], 'required'],
+            [['iduser', 'quantity', 'idproject'], 'required'],
             [['idproduce', 'iduser',  'idproject', 'idboard', 'idsupplier', 'estimated_executor', 'created_by', 'edited_by', 'estimated_category', 'idtype', 'estimated_idel'], 'integer'],
-            [['required_date', 'img'], 'safe'],
+            [['quantity', 'idboard', 'note', 'required_date'], 'trim'],
+            [['quantity'], 'double'],
+//            [['img'], 'safe'],
             [['img'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, gif, jpg, jpeg','maxSize' => 1024 * 1024 * 2],
           //  [['img'], 'file', 'maxSize'=>'100000'],
           //  ['status', 'default', 'value' => self::REQUEST_NOACTIVE],
@@ -85,12 +87,12 @@ class Requests extends \yii\db\ActiveRecord
         ];
     }
     
-    public function scenarios()
-    {
-        return [
-            'default' => ['img', '!thumb'],
-        ];
-    }
+//    public function scenarios()
+//    {
+//        return [
+//            'default' => ['img', '!thumb'],
+//        ];
+//    }
     /**
      * @inheritdoc
      */

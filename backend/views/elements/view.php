@@ -20,20 +20,20 @@ $this->params['breadcrumbs'][] = ['label' => 'Товары', 'url' => ['index']]
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php
-    $this->registerJs(
-        '$("document").ready(function(){
-            $("#quickorder").on("pjax:end", function() {
-            $.pjax.reload({container:"#historyorder"});  //Reload GridView
-            });
-            
-            if ($.pjax.("#historyorder").val() != empty ) { 
-                $("#infobox").hide();
-            } else {
-                $("#infobox").show();
-       
-        });
-        });'
-    );
+//    $this->registerJs(
+//        '$("document").ready(function(){
+//            $("#quickorder").on("pjax:end", function() {
+//            $.pjax.reload({container:"#historyorder"});  //Reload GridView
+//            });
+//            
+//            if ($.pjax.("#historyorder").val() != empty ) { 
+//                $("#infobox").hide();
+//            } else {
+//                $("#infobox").show();
+//       
+//        });
+//        });'
+//    );
 ?>
 
 <div class="elements-view">
@@ -134,11 +134,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     <h3 class="box-title">Создать заявку быстро</h3>
                     <span><?= Alert::widget()?></span>
                     <div class="box-body">
-                        <?php Pjax::begin(['id' => 'quickorder']); ?>
+                        <?php 
+//                        Pjax::begin(['id' => 'quickorder']); 
+                        ?>
                             <?= $this->render('_formquick', [
                                         'model' => $modelrequests,
                             ]) ?>
-                        <?php Pjax::end(); ?>
+                        <?php 
+//                        Pjax::end(); 
+                        ?>
                     </div>
                 </div>
             </div><!-- /end .box-body -->
@@ -160,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <?php Pjax::begin(['id' => 'historyorder']); ?>
-                <?= GridView::widget([
+                <?php echo GridView::widget([
                     'dataProvider' => $dataProviderpur,
                    // 'filterModel' => $searchModelout,
                     'showOnEmpty' => false,
@@ -193,7 +197,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'idrequest',
                             'label' => 'Проект',
                             'value' => function($data){
-                                return $data->requests->themes->name;
+                                return is_null($data->requests->themes) ? "" : $data->requests->themes->name;
                             },
                         ],
                         [
@@ -229,7 +233,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'filter' => ['0'=> 'Не обработано', '1' => 'Активна','2' => 'Отменено','3' => 'Выполнено']
                         ],
                     ],
-                ])?>
+                ]);
+                                    ?>
                 <?php Pjax::end(); ?>
             </div>
         </div>

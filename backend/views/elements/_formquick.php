@@ -16,9 +16,11 @@ use dosamigos\datepicker\DatePicker;
 
 <div class="requestquick-response"></div>
 <div class="requestquick-form">
-<?php Pjax::begin(['id' => 'quickorder']); ?>
+<?php
+// Pjax::begin(['id' => 'quickorder']);
+?>
     <?php $form = ActiveForm::begin(
-            ['options' => ['data-pjax' => true]]
+            ['id' => 'make-request'] //, 'options' => ['data-pjax' => true]
             ); ?>
             <?= $form->field($model, 'idproject')->dropDownList(ArrayHelper::map(common\models\Themes::find()
                 ->select(['name', 'idtheme'])
@@ -54,5 +56,6 @@ use dosamigos\datepicker\DatePicker;
                         ?>
         </div>
     <?php ActiveForm::end(); ?>
-<?php Pjax::end() ?>
+<?php //Pjax::end() 
+        ?>
 </div>
