@@ -128,8 +128,11 @@ $gridColumns = [
                     return Html::a($model->name, ['view', 'id' => $model->idelements]);
                 },
             ],
-
-            'nominal',
+            [
+                'attribute' => 'nominal',
+                 'contentOptions'=>['style'=>'word-wrap: break-word'],
+            ],
+            
             [
                 'attribute' => 'quantity',
                 'label' => 'Onstock',
@@ -157,6 +160,8 @@ $gridColumns = [
                 'format' => 'raw',
                 'filter' => Html::activeDropDownList($searchModel, 'idproduce', ArrayHelper::map(\common\models\Produce::find()->select(['idpr', 'manufacture'])->indexBy('idpr')->all(), 'idpr', 'manufacture'),
                         ['class'=>'form-control','prompt' => yii::t('app', 'Choose manufacturer')]),
+                 'contentOptions'=>['style' => 'word-wrap: break-word'],
+
             ],
             [
                 'attribute' => 'idcategory',

@@ -264,6 +264,8 @@ $this->params['breadcrumbs'][] = $this->title;
                       //  'filterModel' => $searchModel2,
                         'showOnEmpty' => false,
                         'emptyText' => '<table><tbody></tbody></table>',
+                     
+
                         'columns' => [
                             'idpr',
                             [
@@ -415,6 +417,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterModel' => $searchModelout,
                 'showOnEmpty' => false,
                 'emptyText' => '<table><tbody></tbody></table>',
+                'class' => 'kartik\grid\EditableColumn',
+                  
                 'columns' => [
                     'idofstock',
           //  'idelement',
@@ -437,18 +441,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idtheme',
                 'value' => function($data){
                 //    return $data->themes->ThemList;
-                return empty($data->idtheme) ? '-' : $data->themes->name;
+                  // return is_null($data->idtheme) ? '-' : $data->themes->name;
                 },
-                'format' => 'text',
+                'format' => 'raw',
                 'filter' => Html::activeDropDownList($searchModelout, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->where(['status' => 'active'])->all(), 'idtheme', 'ThemList'),['class'=>'form-control','prompt' => 'Выберите проект']),
             ],
             [
                 'attribute' => 'idthemeunit',
               //  'value' => 'themeunits.UnitsListId',
                 'value' => function($data){
-                    return empty($data->idthemeunit) ? '-' : $data->themeunits->nameunit;
+                  //  return empty($data->idthemeunit) ? '-' : $data->themeunits->nameunit;
                 },
-                'format' => 'text',
+                'format' => 'raw',
                 'filter' => Html::activeDropDownList($searchModelout, 'idthemeunit', ArrayHelper::map(\common\models\Themeunits::find()->select(['idunit', 'nameunit'])->all(), 'idunit', 'UnitsListId'),['class'=>'form-control','prompt' => 'Выберите модуль']),
             ], 
             [
