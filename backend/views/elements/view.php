@@ -280,7 +280,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'idsup',
                                 'value' => 'supplier.name',
                              //    'filter' => Html::activeDropDownList($searchModel2, 'idsup', ArrayHelper::map(common\models\Supplier::find()->select(['idsupplier', 'name'])->indexBy('idsupplier')->all(), 'idsupplier', 'name'),['class'=>'form-control','prompt' => 'Выберите поставщика']),
-                                'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],
+                              /*  'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],*/
                             ],
                             [
                                 'attribute' => 'created_at',
