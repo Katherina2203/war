@@ -255,7 +255,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div> 
 </div>
 <div class="row">
-    <div class='col-sm-4'>
+    <div class='col-md-4'>
             <div class="box">
                 <div class="box-header with-border"><h3 class="box-title">Цена</h3></div>
                  <div class="box-body">
