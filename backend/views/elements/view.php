@@ -255,7 +255,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div> 
 </div>
 <div class="row">
-        <div class='col-sm-4'>
+    <div class='col-sm-4'>
             <div class="box">
                 <div class="box-header with-border"><h3 class="box-title">Цена</h3></div>
                  <div class="box-body">
@@ -292,10 +292,9 @@ $this->params['breadcrumbs'][] = $this->title;
                    ?>    
                 </div>
             </div>
-        </div>
+    </div>
       
-        
-        <div class="col-md-7">
+    <div class="col-md-8">
             <div class="box box-info">
               <div class="box-header with-border"><h3 class="box-title">Поступление на склад</h3></div>
              <div class="box-body">
@@ -382,9 +381,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
             </div>
           </div>
-        </div>
-
     </div>
+</div>
 
 <div class="row">
     <div class='col-sm-6'>

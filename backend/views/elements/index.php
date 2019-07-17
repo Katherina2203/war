@@ -115,11 +115,11 @@ $gridColumns = [
             ],
             [
                 'attribute' => 'idelements', 
-                //'filter' => false,
+                'contentOptions'=>['style'=>'width: 40px;'],
             ],
             [
                 'attribute' =>  'box',
-                'contentOptions'=>['style'=>'width: 80px;'],
+                'contentOptions'=>['style'=>'width: 60px;'],
             ],
             [
                'attribute'=>'name',
@@ -171,7 +171,7 @@ $gridColumns = [
                 'value' => 'category.name',
                 'format' => 'raw',
                 'filter' => Html::activeDropDownList($searchModel, 'idcategory', Category::getHierarchy(), (['class'=>'form-control','prompt' => yii::t('app', 'Choose category')])),
-                'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],
+                'contentOptions' => ['style' => 'max-width: 90px;white-space: normal, word-wrap: break-word'],
             ],
             [
                 'attribute' => 'active',
