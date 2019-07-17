@@ -26,6 +26,7 @@ use common\models\Themes;
             ->dropDownList($themeList, ['id' => 'idtheme'],['prompt'=>''] )
                     
     ?>
+    <?= $form->field($model, 'status')->radioList(['active' => 'Active', 'close' => 'Close']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

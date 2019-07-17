@@ -18,6 +18,8 @@ use yii\behaviors\BlameableBehavior;
 class Themeunits extends \yii\db\ActiveRecord
 {
     public $boards_count;
+
+    const UNIT_ACTIVE = 'active';
     /**
      * @inheritdoc
      */
@@ -72,6 +74,7 @@ class Themeunits extends \yii\db\ActiveRecord
             [['quantity_required'], 'required', 'message' => 'Please enter a quanity'],
             [['idtheme', 'quantity_required', 'created_by' , 'edited_by'], 'integer'],
             [['nameunit'], 'string', 'max' => 128],
+            [['status'], 'default', 'value' => self::UNIT_ACTIVE],
         ];
     }
 
