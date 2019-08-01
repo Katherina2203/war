@@ -3,8 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Accounts;
-use backend\models\AccountsSearch;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,17 +13,22 @@ use yii\filters\AccessControl;
 use yii\web\Response;
 use yii\helpers\Json;
 use yii\base\Model;
+use yii\base\ErrorException;
 
-use \common\models\Receipt;
-use backend\models\ReceiptSearch;
+use common\models\Accounts;
+use common\models\Receipt;
 use common\models\Elements;
-use backend\models\ElementsSearch;
 use common\models\Prices;
 use common\models\Purchaseorder;
 use common\models\Paymentinvoice;
 use common\models\Requests;
+use common\models\AccountsRequests;
+use backend\models\AccountsSearch;
+use backend\models\ReceiptSearch;
+use backend\models\ElementsSearch;
 use backend\models\RequestsByIdSearch;
 use backend\components\Amounts;
+
 
 /**
  * AccountsController implements the CRUD actions for Accounts model.
@@ -285,24 +289,31 @@ class AccountsController extends Controller
         //checking a valid Paymentinvoice Id
         $modelPaymentinvoice = Paymentinvoice::findOne($idinvoice);
         if(is_null($modelPaymentinvoice)) {
-            return Yii::$app->getResponse()->redirect(['paymentinvoice/index']);
+            return $this->redirect(['paymentinvoice/index']);
         }
         
         //checking a valid Request Id
         $modelRequests = Requests::findOne($idrequest);
         if(is_null($modelRequests)) {
-            return Yii::$app->getResponse()->redirect(['paymentinvoice/index']);
+            return $this->redirect(['paymentinvoice/index']);
         }
+        
         //checking if a request has an Element Id
         if(is_null($modelRequests->estimated_idel)) {
-            return Yii::$app->getResponse()->redirect(['processingrequest/additem', 'idrequest' => $modelRequests->idrequest]);
+            $modelElements = Elements::find()->where(['name' => $modelRequests->name])->limit(1)->one();
+            if(!is_null($modelElements)) {
+                $modelRequests->estimated_idel = $modelElements->idelements;
+            }
+//            return $this->redirect(['processingrequest/additem', 'idrequest' => $modelRequests->idrequest]);
         }
+        
+        
         
         $modelPrices = new Prices(['scenario' => Prices::SCENARIO_REQUEST_BY_ID]);
         $modelPrices->idel = $modelRequests->estimated_idel;
-        $modelPrices->idsup = $modelPaymentinvoice->supplier->idsupplier;
+        $modelPrices->idsup = $modelPaymentinvoice->idsupplier;
         //defaul values for creating new price
-        $modelPrices->usd = '26.4';
+        $modelPrices->usd = '25.65';
         $modelPrices->pdv = '20%';
         $modelPrices->forUP = '1';
         $modelPrices->idcurrency = '1';
@@ -314,12 +325,29 @@ class AccountsController extends Controller
         $modelAccounts->status = Accounts::ACCOUNTS_ORDERED;
         $modelAccounts->delivery = '1 week';
 
-        
         if ($modelPrices->load(Yii::$app->request->post()) && $modelAccounts->load(Yii::$app->request->post()) && $modelPrices->validate() && $modelAccounts->validate()) {
-            if ($modelPrices->save(false)) {
-                
+
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
+
+            try {
+                $modelPrices->idel = $modelAccounts->idelem;
+                $modelPrices->save(false);
+
                 $modelAccounts->idprice = $modelPrices->idpr;
                 $modelAccounts->save(false);
+                
+                $modelRequests->status = strval(Requests::REQUEST_ACTIVE);
+                $modelRequests->estimated_idel = $modelAccounts->idelem;
+                $modelRequests->save();
+                
+//Yii::$app->db->createCommand()->update('requests', ['status' => Requests::REQUEST_ACTIVE],['idrequest' => $modelRequests->idrequest])->execute();
+
+                $modelAccountsRequests = new AccountsRequests();
+                $modelAccountsRequests->accounts_id = $modelAccounts->idord;
+                $modelAccountsRequests->requests_id = $modelRequests->idrequest;
+                $modelAccountsRequests->quantity = $modelRequests->quantity;
+                $modelAccountsRequests->save();
                 
                 //making a record in purchaseorder table
                 $modelPurchaseorder = new Purchaseorder();
@@ -328,25 +356,30 @@ class AccountsController extends Controller
                 $modelPurchaseorder->quantity = $modelAccounts->quantity;
                 $modelPurchaseorder->date = $modelAccounts->date_receive;
                 $modelPurchaseorder->save();
-                
+
+                $transaction->commit();
+
                 if (Amounts::checkAmount($modelPrices, $modelAccounts)) {
                     Yii::$app->session->setFlash('success', 'Данная позиция успешно добавлена в счет!');
                 } else {
                     Yii::$app->session->setFlash('warning', 'Данная позиция успешно добавлена в счет! Но общая сумма не совпадает с расчетной.');
                 }
-                
                 return $this->redirect(['paymentinvoice/itemsin', 'idinvoice' => $modelPaymentinvoice->idpaymenti]);
+                
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
             }
-        }
+            
+        } //if ($modelPrices->load(Yii::$app->request->post()) 
        
         return $this->render('addrequest', [
             'modelAccounts' => $modelAccounts,
             'modelPaymentinvoice' => $modelPaymentinvoice,
             'modelRequests' => $modelRequests,
             'modelPrices' => $modelPrices,
-//            'modelSupplier' => $modelPaymentinvoice->supplier,
-
-
         ]);
     }
 

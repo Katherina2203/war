@@ -12,7 +12,7 @@ use common\widgets\LanguageSelector;
 $user = new \common\models\Users();
 ?>
 
-<header class="main-header">
+<header class="main-header" style="overflow: visible;">
 
     <?= Html::a('<span class="logo-mini">MW</span><span class="logo-lg">' . Yii::$app->name . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
 
@@ -37,7 +37,7 @@ $user = new \common\models\Users();
                 <?php ActiveForm::end(); ?>
                     
         </div>
-        <div class="navbar-custom-menu">
+        <div class="navbar-custom-menu" style="float: left; margin-left: 200px;">
         
        
             <ul class="nav navbar-nav">
@@ -102,4 +102,5 @@ $user = new \common\models\Users();
             </ul>
         </div>
     </nav>
+
 </header>

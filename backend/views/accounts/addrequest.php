@@ -31,10 +31,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $form = ActiveForm::begin(['id' => 'add-request',]); ?>
                         
     <?php echo $form->field($modelAccounts, 'idinvoice', ['template' => '{input}',])->input('hidden'); ?>
-    <?php echo $form->field($modelAccounts, 'idelem', ['template' => '{input}',])->input('hidden'); ?>
+    <?php //echo $form->field($modelAccounts, 'idelem', ['template' => '{input}',])->input('hidden');
+    ?>
     <label class="control-label"><?= 'Add the request №' . $modelRequests->idrequest . ' to the invoice №' . $modelPaymentinvoice->invoice . ' of ' . $modelPaymentinvoice->date_invoice ;?></label>
     <div class="form-group" ><b>Supplier: </b><?= $modelPaymentinvoice->supplier->name ;?></div>
-    <div class="form-group" ><?= 'Element (ID ' . $modelRequests->estimated_idel . "): " . '<b>' . $modelRequests->name . '</b>' . ", " . $modelRequests->description ?></div>
+    <div class="row" ><?php //echo '<div class="col-sm-3" style="width: auto;">Element (ID </div>';
+    ?>
+        <div class="col-sm-3" style="width: auto; padding-right: 5px;">Element (ID</div>
+        <div class="col-sm-2" style="width: 60px; padding: 0px;">
+        <?php echo $form->field($modelAccounts, 'idelem', ['template' => '{input}',])->textInput(['maxlength' => 6,]);
+                //echo $modelRequests->estimated_idel ;
+        ?>
+        </div>
+        <?php echo '<div class="col-sm-7" style="width: auto; padding-left: 5px;">' . "): " . '<b>' . $modelRequests->name . '</b>' . ", " . $modelRequests->description . '</div>';
+    ?></div>
         
     <div class="row">
         <div class="col-sm-4">

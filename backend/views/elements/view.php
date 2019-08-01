@@ -19,22 +19,7 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Товары', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php
-//    $this->registerJs(
-//        '$("document").ready(function(){
-//            $("#quickorder").on("pjax:end", function() {
-//            $.pjax.reload({container:"#historyorder"});  //Reload GridView
-//            });
-//            
-//            if ($.pjax.("#historyorder").val() != empty ) { 
-//                $("#infobox").hide();
-//            } else {
-//                $("#infobox").show();
-//       
-//        });
-//        });'
-//    );
-?>
+
 
 <div class="elements-view">
     <p>
@@ -150,6 +135,12 @@ $this->params['breadcrumbs'][] = $this->title;
     </div><!-- /end .col-md-10 -->
 </div><!-- /end .row -->
 
+<?php
+    echo $this->render('_view_requests', [
+        'dataAccountsRequests' => $dataAccountsRequests,
+    ]) 
+?>
+
 <div class="row">
     <div class="col-sm-7">
         <div class="box box-warning">
@@ -254,8 +245,9 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
     </div> 
 </div>
+
 <div class="row">
-    <div class='col-md-4'>
+    <div class='col-sm-4'>
             <div class="box">
                 <div class="box-header with-border"><h3 class="box-title">Цена</h3></div>
                  <div class="box-body">

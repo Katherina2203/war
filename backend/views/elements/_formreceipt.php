@@ -8,7 +8,7 @@ use dosamigos\datepicker\DatePicker;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="receipt-form col-lg-4">
+<div class="receipt-form col-lg-6">
 
     <?php $form = ActiveForm::begin(); ?>
     <?= $form->field($model, 'quantity')->textInput(['style' => 'width: 150px;']) ?>

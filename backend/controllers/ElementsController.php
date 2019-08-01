@@ -35,6 +35,7 @@ use common\models\Produce;
 //use common\models\Shortage;
 use common\models\Boards;
 use common\models\Specification;
+use common\models\AccountsRequests;
 
 /**
  * ElementsController implements the CRUD actions for Elements model.
@@ -143,12 +144,19 @@ class ElementsController extends Controller
             'query' => $querySpecification,
         ]);
         
-         $queryacc = Accounts::find()->where(['idelem' => $id])->orderBy('date_receive DESC')->limit(10);
+        $queryacc = Accounts::find()->where(['idelem' => $id])->orderBy('date_receive DESC')->limit(10);
         $dataProvideracc = new ActiveDataProvider([
             'query' => $queryacc,
         ]);
         
+        
+        $queryar = AccountsRequests::getAccountsRequestsDetails($id);
+        $dataAccountsRequests = new ActiveDataProvider([
+            'query' => $queryar,
+        ]);
+        
         $querypur = Purchaseorder::find()->where(['idelement' => $id])->orderBy('created_at DESC')->limit(5);
+        //echo '<pre>'; var_dump($querypur); echo '</pre>'; die();
         $dataProviderpur = new ActiveDataProvider([
             'query' => $querypur,
         ]);  /*in future point the limit of requests..E.x. last 5 orders */
@@ -228,6 +236,7 @@ class ElementsController extends Controller
             'searchModelout' => $searchModelout,
             'searchModelreceipt' => $searchModelreceipt,
             'dataProviderreceipt' => $dataProviderreceipt,
+            'dataAccountsRequests' => $dataAccountsRequests,
         ]);
     }
     

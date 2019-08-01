@@ -21,9 +21,9 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
 </head>
-<body class="hold-transition skin-blue-light sidebar-mini">
+<body class="hold-transition skin-blue-light sidebar-mini" style="overflow: visible;">
     <?php $this->beginBody() ?>
-    <div class="wrapper">
+    <div class="wrapper" style="display: table; clear: both; overflow: visible; width: auto;">
         <?= $this->render(
             'header.php',
             ['directoryAsset' => $directoryAsset]
