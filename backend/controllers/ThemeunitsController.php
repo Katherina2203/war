@@ -101,6 +101,7 @@ class ThemeunitsController extends Controller
     {
         $model = new Themeunits();
         $model->idtheme = $idtheme;
+        $model->status = Themeunits::UNIT_ACTIVE;
         //$modeltheme = new Themes();
 
         if ($model->load(Yii::$app->request->post())) {
