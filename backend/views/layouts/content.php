@@ -24,7 +24,7 @@ use dmstr\widgets\Alert;
     </section>
 </div>
 
-<footer class="footer" style="display: table; clear: both; width: 100%;">
+<footer class="footer" style="display: table; clear: both; min-width: 100%; width: 100%;">
     <div class="container">
         <p class="pull-right">&copy; <?= yii::t('app', 'Microwave Electronics department') ;?>  <?= date('Y') ?></p>
     </div>
