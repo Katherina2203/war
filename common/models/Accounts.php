@@ -25,7 +25,10 @@ class Accounts extends \yii\db\ActiveRecord
     const ACCOUNTS_ORDERED = 2;  //ordered
     const ACCOUNTS_ONSTOCK = 3;  //receive onstock
     const ACCOUNTS_CANCEL = 4;  //cancel
+    const ACCOUNTS_ONSTOCK_PARTLY = 5;  //partly received
+    
     const SCENARIO_REQUEST_BY_ID = "request_by_id";
+    
     /**
      * @inheritdoc
      */

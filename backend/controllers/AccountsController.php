@@ -279,13 +279,36 @@ class AccountsController extends Controller
                 //'modelpr' => $modelpr,
             ]);
         }
-        
-       
     }
-	
+    
+    public function actionAddToAccount($accounts_id, $requests_id)
+    {        
+        //checking a valid Accounts Id
+        $modelAccounts = Accounts::findOne($accounts_id);
+        if(is_null($modelAccounts)) {
+            return $this->redirect(['paymentinvoice/index']);
+        }
+        
+        //checking a valid Request Id
+        $modelRequests = Requests::findOne($requests_id);
+        if(is_null($modelRequests)) {
+            return $this->redirect(['paymentinvoice/index']);
+        }
+        
+        $modelAccountsRequests = AccountsRequests::find()->where(['accounts_id' => $accounts_id, 'requests_id' => $requests_id])->limit(1)->one();
+        if(is_null($modelAccountsRequests)) {
+            $modelAccountsRequests = new AccountsRequests();
+            $modelAccountsRequests->accounts_id = $accounts_id;
+            $modelAccountsRequests->requests_id = $requests_id;
+            $modelAccountsRequests->quantity = 0;
+            $modelAccountsRequests->save();
+        }
+        
+        return $this->redirect(['accounts/addrequest', 'idinvoice' => $modelAccounts->idinvoice, 'idrequest' => $requests_id]);
+    }
+
     public function actionAddrequest($idinvoice, $idrequest)
     {
-        
         //checking a valid Paymentinvoice Id
         $modelPaymentinvoice = Paymentinvoice::findOne($idinvoice);
         if(is_null($modelPaymentinvoice)) {
@@ -304,10 +327,7 @@ class AccountsController extends Controller
             if(!is_null($modelElements)) {
                 $modelRequests->estimated_idel = $modelElements->idelements;
             }
-//            return $this->redirect(['processingrequest/additem', 'idrequest' => $modelRequests->idrequest]);
         }
-        
-        
         
         $modelPrices = new Prices(['scenario' => Prices::SCENARIO_REQUEST_BY_ID]);
         $modelPrices->idel = $modelRequests->estimated_idel;
@@ -324,6 +344,7 @@ class AccountsController extends Controller
         $modelAccounts->idelem = $modelRequests->estimated_idel;
         $modelAccounts->status = Accounts::ACCOUNTS_ORDERED;
         $modelAccounts->delivery = '1 week';
+        $modelAccounts->date_receive = date('Y-m-d', time() + (86400 * 8));
 
         if ($modelPrices->load(Yii::$app->request->post()) && $modelAccounts->load(Yii::$app->request->post()) && $modelPrices->validate() && $modelAccounts->validate()) {
 
@@ -380,6 +401,13 @@ class AccountsController extends Controller
             'modelPaymentinvoice' => $modelPaymentinvoice,
             'modelRequests' => $modelRequests,
             'modelPrices' => $modelPrices,
+            'providerAccountsForRequest' => new ActiveDataProvider([
+                'query' => AccountsRequests::getAccountsForRequest(
+                    $modelPaymentinvoice->idpaymenti, 
+                    $modelRequests->idrequest, 
+                    $modelRequests->estimated_idel
+                ),
+            ]),
         ]);
     }
 

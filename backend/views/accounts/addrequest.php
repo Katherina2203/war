@@ -20,6 +20,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
+<?php
+    if ($providerAccountsForRequest->getTotalCount()) {
+        echo $this->render('_view_accounts', [
+            'providerAccountsForRequest' => $providerAccountsForRequest,
+            'modelRequests' => $modelRequests,
+        ]);
+    }
+?>
 
 <div class="accounts-create">
     <div class="row">

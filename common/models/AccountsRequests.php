@@ -25,7 +25,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
         // делаем поле зависимости доступным для поиска
         return array_merge(parent::attributes(), [
             'requests_quantity', 
-            'expacted_quantity', 
+            'received_quantity', 
             'requests_status',
             'accounts_id',
             'unit_price',
@@ -38,6 +38,12 @@ class AccountsRequests extends \yii\db\ActiveRecord
             'project_name',
             'board_id',
             'users_name',
+            'delivery',
+            'date_receive',
+            'elements_name',
+            'elements_nominal',
+            
+
         ]);
     }
     
@@ -47,7 +53,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
         SELECT 
             r.idrequest as requests_id, 
             r.quantity as requests_quantity, 
-            FORMAT(ar.quantity, 0) as expacted_quantity, 
+            FORMAT(ar.quantity, 0) as received_quantity, 
             r.status as requests_status,
             ar.accounts_id as accounts_id,
             FORMAT(p.unitPrice, 2) as unit_price,
@@ -74,6 +80,56 @@ class AccountsRequests extends \yii\db\ActiveRecord
         ORDER BY r.created_at DESC
         ";
         return AccountsRequests::findBySql($sSql, ['estimated_idel' => $id]);
-        
     }
+    
+    public static function getAccountsForRequest($invoices_id, $requests_id, $elements_id = null)
+    {
+        $sSql = "
+            SELECT 
+                ar.requests_id as requests_id,
+                ar.accounts_id as accounts_id,
+                FORMAT(p.unitPrice, 2) as unit_price,
+                a.quantity as accounts_quantity,
+                FORMAT(a.amount, 2) as amount,
+                a.status as accounts_status, 
+                a.idelem as elements_id, 
+                a.delivery,
+                a.date_receive,
+                e.name as elements_name
+
+            FROM accounts_requests ar, accounts a, prices p, elements e  
+            WHERE ar.accounts_id = a.idord 
+                AND a.idinvoice = :invoices_id 
+                AND a.idprice = p.idpr 
+                AND e.idelements = a.idelem
+                AND a.status in ('2', '5')
+        ";
+        
+        $aParam = [
+            'requests_id' => $requests_id, 
+            'invoices_id' => $invoices_id,
+        ];
+        
+        if (is_null($elements_id)) {
+            $sSql .= " AND ar.requests_id = :requests_id ";
+        } else {
+            $sSql .= "
+                AND (
+                    ar.requests_id = :requests_id 
+                    OR (
+                        ar.requests_id != :requests_id 
+                        AND e.idelements = :elements_id
+                        AND ar.accounts_id NOT IN (
+                            SELECT accounts_id 
+                            FROM accounts_requests  
+                            WHERE requests_id = :requests_id
+                        ) 
+                    )
+                )";
+            $aParam['elements_id'] = $elements_id;
+        }
+        return AccountsRequests::findBySql($sSql, $aParam);
+    }
+    
+
 }

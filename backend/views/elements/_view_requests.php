@@ -36,8 +36,8 @@ use kartik\grid\GridView;
                             'format' => 'raw',
                         ],
 //                        [
-//                            'attribute' => 'expacted_quantity',
-//                            'label' => 'Непост. кол-во',
+//                            'attribute' => 'received_quantity',
+//                            'label' => 'Поставленное кол-во',
 //                            'format' => 'raw',
 //                        ],
                         [
