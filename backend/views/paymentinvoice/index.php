@@ -25,77 +25,7 @@ $gridColumns = [
 /*$gridColumns = [
     [
         'class'=>'kartik\grid\SerialColumn',
-        'contentOptions'=>['class'=>'kartik-sheet-style'],
-        'width'=>'36px',
-        'header'=>'',
-        'headerOptions'=>['class'=>'kartik-sheet-style']
-    ],
-    [
-        'class'=>'kartik\grid\EditableColumn',
-        'attribute'=>'confirm',
-       // 'pageSummary'=>'Total',
-        'vAlign'=>'middle',
-        'width'=>'210px',
-             'data' => [0 => 'Не подтверждено', 1 => 'Подтверждено', 2 => 'Отмена'],
-        'readonly'=>function($model, $key, $index, $widget) {
-            return (!$model->status); // do not allow editing of inactive records
-        },
-        'editableOptions'=>[
-
-                        'asPopover' => false,
-                        'inputType' => Editable::INPUT_DROPDOWN_LIST,
-                        'data' => [0 => 'Не подтверждено', 1 => 'Подтверждено', 2 => 'Отмена'],
-                        'displayValueConfig'=> [
-                            '0' => '<span style="color: grey"><i class="glyphicon glyphicon-hourglass"></i> Не подтверждено</span>',
-                            '1' => '<i class="glyphicon glyphicon-thumbs-up"></i> Подтверждено',
-                            '2' => '<i class="glyphicon glyphicon-thumbs-down"></i> Отмена',
-
-                        ],
-                    ],
-        ],
-    [
-    'class'=>'kartik\grid\EditableColumn',
-    'attribute'=>'date_payment',    
-    'hAlign'=>'center',
-    'vAlign'=>'middle',
-    'width'=>'9%',
-    'format'=>'date',
-    'xlFormat'=>"mmm\\-dd\\, \\-yyyy",
-    'headerOptions'=>['class'=>'kv-sticky-column'],
-    'contentOptions'=>['class'=>'kv-sticky-column'],
-    'readonly'=>function($model, $key, $index, $widget) {
-        return (!$model->status); // do not allow editing of inactive records
-    },
-    'editableOptions'=>[
-        'header'=>'Publish Date', 
-        'size'=>'md',
-        'inputType'=>\kartik\editable\Editable::INPUT_WIDGET,
-        'widgetClass'=> 'kartik\datecontrol\DateControl',
-        'options'=>[
-            'type'=>\kartik\datecontrol\DateControl::FORMAT_DATE,
-            'displayFormat'=>'dd.MM.yyyy',
-            'saveFormat'=>'php:Y-m-d',
-            'options'=>[
-                'pluginOptions'=>[
-                    'autoclose'=>true
-                ]
-            ]
-        ]
-    ],
-],
-    [
-        'class'=>'kartik\grid\ActionColumn',
-      //  'dropdown'=>$this->dropdown,
-        'dropdownOptions'=>['class'=>'pull-right'],
-        'urlCreator'=>function($action, $model, $key, $index) { return '#'; },
-        'viewOptions'=>['title'=>'This will launch the book details page. Disabled for this demo!', 'data-toggle'=>'tooltip'],
-        'updateOptions'=>['title'=>'This will launch the book update page. Disabled for this demo!', 'data-toggle'=>'tooltip'],
-        'deleteOptions'=>['title'=>'This will launch the book delete action. Disabled for this demo!', 'data-toggle'=>'tooltip'],
-        'headerOptions'=>['class'=>'kartik-sheet-style'],
-    ],
-    [
-        'class' => 'kartik\grid\CheckboxColumn',
-        'headerOptions'=>['class'=>'kartik-sheet-style'],
+     
     ]
 ];
  * */
@@ -148,8 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class'=>'btn btn-success', 
                 'title'=>'Создать счет'])
             ],
-       // '{export}',
-       // '{toggleData}',
+
         ], 
         'rowOptions' => function($model, $key, $index, $grid){
             if($model->date_payment == NULL & $model->confirm == false){ //еще нет оплаты
@@ -204,10 +133,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'invoice',
                 'format' => 'raw',
                 'value' =>function($model){
-                    return Html::a('№ ' . $model->invoice. ' от ' . $model->date_invoice, Url::to(['paymentinvoice/itemsin', 'idinvoice' => $model->idpaymenti]));
+                    return Html::a('№ ' . $model->invoice . 'от ' . $model->date_invoice, ['paymentinvoice/itemsin', 'idinvoice' => $model->idpaymenti]);
                 }
             ],
-          //  'date_invoice',
             [
                 'attribute' => 'idpayer',
                 'format' => 'raw',

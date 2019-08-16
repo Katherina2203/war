@@ -11,11 +11,10 @@ $this->params['breadcrumbs'][] = ['label' => 'unit #', 'url' => ['themes/units',
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="themeunits-createbytheme">
-
-    <?= $this->render('_formbytheme', [
-        'model' => $model,
-    ])
-      ?>
      
+    <?= $this->render('_formbytheme', [
+                'model' => $model,
+            ])
+              ?>
 
 </div>

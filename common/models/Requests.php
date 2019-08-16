@@ -75,7 +75,7 @@ class Requests extends \yii\db\ActiveRecord
         return [
             [['iduser', 'quantity', 'idproject'], 'required'],
             [['idproduce', 'iduser',  'idproject', 'idboard', 'idsupplier', 'estimated_executor', 'created_by', 'edited_by', 'estimated_category', 'idtype', 'estimated_idel'], 'integer'],
-            [['quantity', 'idboard', 'note', 'required_date'], 'trim'],
+            [['quantity', 'note', 'required_date'], 'trim'],
             [['quantity'], 'double'],
 //            [['img'], 'safe'],
             [['img'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, gif, jpg, jpeg','maxSize' => 1024 * 1024 * 2],

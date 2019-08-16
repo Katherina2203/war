@@ -36,9 +36,12 @@ $getProject = ArrayHelper::map(\common\models\Themes::find()->select(['name', 'i
     <?php // $form->field($model, 'idproduce')->dropDownList(ArrayHelper::map(common\models\Produce::find()->select(['manufacture', 'idpr'])->all(), 'idpr', 'manufacture'),   ['prompt'=>'Выберите производителя']); ?>
 
     <?php // echo $form->field($model, 'idproject') ?>
-
-    <?php // echo $form->field($model, 'note') ?>
-
+<div class="row">
+    <div class="col col-md-4">
+    <?= $form->field($model, 'idboard')->textInput(['placeholder' => yii::t('app', 'Search by id pcb')], ['prompt' => 'Выберите заказчика']) ?>
+    </div>
+  </div>
+    
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>

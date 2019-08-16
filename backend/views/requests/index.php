@@ -107,7 +107,6 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                 'attribute' => 'description',
                 'contentOptions' => ['style' => 'max-width: 380px;white-space: normal'],
             ],
-                  
             [
                 'attribute' => 'quantity',
                 'format'=>'raw',
@@ -126,16 +125,11 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                 'attribute' => 'created_at',
                // 'label' => Yii::t('requests/view', 'required'),
                 'format' => ['date', 'php:Y-m-d'],
-              
-               
-               
             ],
             [
                 'attribute' => 'required_date',
                // 'label' => Yii::t('requests/view', 'required'),
                 'format' => ['date', 'php:Y-m-d'],
-               
-               
             ],
             [
                 'attribute' => 'idproject',
@@ -144,7 +138,11 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                 'filter' => Html::activeDropDownList($searchModel, 'iduser', $getProject,['class'=>'form-control','prompt' => 'Выберите проект']),
                 'contentOptions' => ['style' => 'max-width: 150px;white-space: normal'],
             ],
-                   
+            [
+                'attribute' => 'idboard',
+                'value' => 'board.name',
+                'contentOptions' => ['style' => 'max-width: 100px;white-space: normal'],
+            ],        
             [
                 'attribute' => 'note',
                 'contentOptions' => ['style' => 'max-width: 120px;white-space: normal'],

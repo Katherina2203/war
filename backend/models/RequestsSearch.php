@@ -21,7 +21,7 @@ class RequestsSearch extends Requests
     public function rules()
     {
         return [
-            [['idrequest', 'idproduce', 'iduser', 'quantity', 'idproject', 'idsupplier', 'estimated_executor', 'created_by', 'edited_by', 'estimated_category', 'estimated_idel', 'idtype'], 'integer'],
+            [['idrequest', 'idproduce', 'idboard', 'iduser', 'quantity', 'idproject', 'idsupplier', 'estimated_executor', 'created_by', 'edited_by', 'estimated_category', 'estimated_idel', 'idtype'], 'integer'],
             [['name', 'description', 'required_date', 'img', 'created_at', 'updated_at', 'note', 'status'], 'safe'],
             [['name'], 'trim'],
         ];
@@ -64,13 +64,12 @@ class RequestsSearch extends Requests
                     'idrequest',
                     'name',
                     'description',
-                    
                     'idproduce', 
                     'quantity',
                     'iduser',
                     'required_date',
                     'idproject',
-                    //'idboard',
+                    'idboard',
                     'status',
                   //  'note',
                     'created_at' => [
@@ -102,7 +101,7 @@ class RequestsSearch extends Requests
             'iduser' => $this->iduser,
             'quantity' => $this->quantity,
             'idproject' => $this->idproject,
-          //  'idboard' => $this->idboard,
+            'idboard' => $this->idboard,
             'idsupplier' => $this->idsupplier,
             'required_date' => $this->required_date,
             'created_at' => $this->created_at,
@@ -121,6 +120,7 @@ class RequestsSearch extends Requests
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'img', $this->img])
             ->andFilterWhere(['like', 'iduser', $this->iduser])
+            ->andFilterWhere(['like', 'idboard', $this->idboard])
             ->andFilterWhere(['like', 'status', $this->status]);
            // ->andFilterWhere(['like', 'processing_count', $this->processing_count]);
 

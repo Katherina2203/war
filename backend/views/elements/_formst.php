@@ -55,14 +55,14 @@ use common\models\Users;
         $form->field($model, 'idboart')->widget(DepDrop::classname(), [
             'options'=>['id'=>'idboart'],
                 'type' => DepDrop::TYPE_SELECT2,
-            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+                'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
                 'pluginOptions'=>[
                     'depends' => ['idthemeunit'],
 //                    'initDepends' => ['idtheme'],
                     'placeholder'=>'Выберите плату...',
                     'url'=>Url::to(['/outofstock/board']),
                  //   'initialize' => true,
-            ],
+                ],
         ]);
     
     ?>

@@ -1,4 +1,3 @@
-
 <?php
 
 use yii\helpers\Html;
@@ -246,13 +245,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $modelpay->supplier->phone;  ?><br/>
                    <?= $modelpay->supplier->website;  ?><br/>
                 </div>
-           
-            
             
                 <div class="col-xs-6">
                     <p>Сумма с НДС: 
                         <strong><?php // new yii\db\Expression(1.2*TotalColumn::pageTotal($dataProvider->models,'amount')) ?><strong>
-                    
                     </p>
                     
                 </div>
