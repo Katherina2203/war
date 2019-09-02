@@ -12,7 +12,7 @@ use common\widgets\LanguageSelector;
 $user = new \common\models\Users();
 ?>
 
-<header class="main-header" style="overflow: visible;">
+<header class="main-header">
 
     <?= Html::a('<span class="logo-mini">MW</span><span class="logo-lg">' . Yii::$app->name . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
 

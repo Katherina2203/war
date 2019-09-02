@@ -111,7 +111,7 @@ class RequestsSearch extends Requests
             'estimated_executor' => $this->estimated_executor,
             'estimated_category' => $this->estimated_category,
             'estimated_idel' => $this->estimated_idel,
-            'estimated_idel' => $this->estimated_idel,
+          //  'estimated_idel' => $this->estimated_idel,
         ]);
 
         $query

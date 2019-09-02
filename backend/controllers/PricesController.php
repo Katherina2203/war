@@ -140,7 +140,7 @@ class PricesController extends Controller
         $model->idcurrency = '1';
         $model->forUP = '1';
         $model->pdv = '20%';
-        $model->usd = '26.6';
+        $model->usd = '25.33';
 
         if ($model->load(Yii::$app->request->post())) {
             $modelpur->idelement = $model->idel;
