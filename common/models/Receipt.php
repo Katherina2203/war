@@ -66,6 +66,7 @@ class Receipt extends \yii\db\ActiveRecord
         return [
             [['id', 'quantity', 'date_receive'], 'required'],
             [['id', 'quantity', 'idinvoice'], 'integer'],
+            ['quantity', 'compare', 'compareValue' => 0, 'operator' => '>', 'type' => 'number'],
             [['date_receive'], 'safe'],
         ];
     }

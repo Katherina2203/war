@@ -51,6 +51,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
     {
         $sSql = "
         SELECT 
+            ar.id as id,
             r.idrequest as requests_id, 
             r.quantity as requests_quantity, 
             FORMAT(ar.quantity, 0) as received_quantity, 

@@ -18,8 +18,8 @@ use kartik\grid\GridView;
                             'label' => 'Прием товара',
                             'format' => 'raw',
                             'value' => function($data) {
-                                return $data->accounts_status == '2' ? 
-                                    Html::a('<span class="glyphicon glyphicon-plus"></span>', ['createreceipt', 'idord' => $data->accounts_id, 'idel' => $data->elements_id], ['title' => 'Прием товара']) : '';
+                                return in_array($data->accounts_status, ['2', '5']) && in_array($data->requests_status, ['1', '4']) ? 
+                                    Html::a('<span class="glyphicon glyphicon-plus"></span>', ['elements/addreceipt', 'id' => $data->id], ['title' => 'Прием товара']) : '';
                             },
                         ],
                         [
@@ -58,9 +58,12 @@ use kartik\grid\GridView;
                                     case '3': // Выполнено
                                         return '<span class="glyphicon glyphicon-saved" style="color:grey"></span>';
                                         break;
+                                    case '4': // Отменено
+                                        return '<span class="glyphicon glyphicon-import" style="color: #60649f"></span>';
+                                        break;
                                 }
                             },
-                            'filter' => ['0'=> 'Не обработано', '1' => 'Активна','2' => 'Отменено','3' => 'Выполнено']
+                            'filter' => ['0'=> 'Не обработано', '1' => 'Активна','2' => 'Отменено','3' => 'Выполнено','4' => 'Выполнено частично']
                         ],
                                     
                         [
@@ -105,6 +108,9 @@ use kartik\grid\GridView;
                                         break;
                                     case '4': // Отменено
                                         return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d"></span>';
+                                        break;
+                                    case '5': // Отменено
+                                        return '<span class="glyphicon glyphicon-import" style="color: #60649f"></span>';
                                         break;
                                 }
                             },

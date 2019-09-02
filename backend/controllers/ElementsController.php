@@ -56,7 +56,7 @@ class ElementsController extends Controller
                       //  'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
-                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'createreceipt', 'update', 'viewcat', 'createfromquick', 'closeshortage'],
+                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'addreceipt', 'createreceipt', 'update', 'viewcat', 'createfromquick', 'closeshortage'],
                     ],
                     [
                         'allow' => true,
@@ -491,6 +491,75 @@ class ElementsController extends Controller
         }
     }
     
+    public function actionAddreceipt($id)
+    {
+        
+        $modelAccountsRequests = AccountsRequests::findOne($id);
+        $modelRequests = Requests::findOne($modelAccountsRequests->requests_id);
+                
+        $modelReceipt = new Receipt();
+        $modelReceipt->id = $modelRequests->estimated_idel;
+        $modelReceipt->idinvoice = $modelAccountsRequests->accounts_id;
+        $modelReceipt->users_id = yii::$app->user->identity->id;
+        	
+        if ($modelReceipt->load(Yii::$app->request->post()) && $modelReceipt->validate()) {
+
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
+
+            try {
+                //adding element's quantity in elements
+                $modelElements = Elements::findOne($modelRequests->estimated_idel);
+                $modelElements->quantity += $modelReceipt->quantity;
+                $modelElements->save();
+                
+                //adding received quantity and changing account's status
+                $modelAccounts = Accounts::findOne($modelAccountsRequests->accounts_id);
+                $modelAccounts->received_quantity += $modelReceipt->quantity;
+                if ($modelAccounts->received_quantity >= $modelAccounts->quantity) {
+                    $modelAccounts->status = strval(Accounts::ACCOUNTS_ONSTOCK);
+                } elseif ($modelAccounts->received_quantity > 0) {
+                    $modelAccounts->status = strval(Accounts::ACCOUNTS_ONSTOCK_PARTLY);
+                }
+                $modelAccounts->save();
+                
+                //saving before changing request's status
+                $modelAccountsRequests->quantity += $modelReceipt->quantity;
+                $modelAccountsRequests->save();
+                
+                //changing request's status
+                $querySUM = (new \yii\db\Query())
+                    ->select('SUM(quantity) as total_sum')
+                    ->from('accounts_requests')
+                    ->where('requests_id = :requests_id', [':requests_id' => $modelAccountsRequests->requests_id])
+                    ->limit(1)
+                    ->one();
+                Yii::info('<pre>'. print_r($querySUM['total_sum'], true).'</pre>', 'ajax');
+                $modelRequests->status = ($querySUM['total_sum'] >= $modelRequests->quantity) ? strval(Requests::REQUEST_DONE) : strval(Requests::REQUEST_DONE_PARTLY);
+                $modelRequests->save();
+                
+                $modelReceipt->save(false);
+
+                $transaction->commit();
+
+                Yii::$app->session->setFlash('success', 'Товар успешно принят на склад!');
+                return $this->redirect(['elements/view', 'id' => $modelReceipt->id]);
+
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
+	
+        } //if ($modelPrices->load(Yii::$app->request->post()) 
+        
+        return $this->render('addreceipt', [
+            'modelReceipt' => $modelReceipt,
+        ]);
+    }
+
+
     public function actionCreatereceipt($idord, $idel)
     {
         $model = new Receipt();

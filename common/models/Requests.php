@@ -27,6 +27,7 @@ class Requests extends \yii\db\ActiveRecord
     const REQUEST_ACTIVE = 1; //in progress
     const REQUEST_CANCEL = 2; //cancel
     const REQUEST_DONE = 3; //done
+    const REQUEST_DONE_PARTLY = 4; //done
     
     public $processing_count;
     

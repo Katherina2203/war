@@ -367,7 +367,7 @@ class AccountsController extends Controller
                 $modelAccountsRequests = new AccountsRequests();
                 $modelAccountsRequests->accounts_id = $modelAccounts->idord;
                 $modelAccountsRequests->requests_id = $modelRequests->idrequest;
-                $modelAccountsRequests->quantity = $modelRequests->quantity;
+                $modelAccountsRequests->quantity = 0;
                 $modelAccountsRequests->save();
                 
                 //making a record in purchaseorder table
