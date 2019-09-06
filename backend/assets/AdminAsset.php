@@ -8,7 +8,7 @@ class AdminAsset extends AssetBundle
     public $sourcePath = '@vendor/almasaeed2010/adminlte/plugins';
     public $js = [
         'datatables/dataTables.bootstrap.min.js',
-       
+      
         // more plugin Js here
     //     'js/app.min.js'
     ];

@@ -20,7 +20,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'dist/js/adminlte.min.js',
-        'dist/js/myjs.js',
+        'dist/js/main.js',
       //  'js/vue.js',
        // 'dist/js/vuejsscript.js',
     ];

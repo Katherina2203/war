@@ -168,6 +168,10 @@ class Accounts extends \yii\db\ActiveRecord
                     ->viaTable('paymentinvoice', ['idpaymenti' => 'idinvoice']);
     }
   
+    public function getAccountsRequests(){
+        return $this->hasMany(AccountsRequests::className(), ['accounts_id' =>'idord']);
+    }
+    
     public static function getStatuses()
     {
         return [

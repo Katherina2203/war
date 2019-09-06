@@ -4,4 +4,7 @@ $(function(){
             .find('#modalContent')
             .load($(this).attr('value'));
     });
+    
+    //this file don't work
+        
 });

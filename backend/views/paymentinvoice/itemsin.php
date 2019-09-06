@@ -124,10 +124,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'yii\grid\SerialColumn'],
                         'idord',
                         [
-                            'attribute' => 'idelem',
+                            'attribute' => 'requests_id',
                             'label' => 'Заявка',
                             'value' => function($data){
-                                return $data->idelem; //requests->idrequest;
+                                $aRequestID = [];
+                                if (is_array($data->accountsRequests)) {
+                                    foreach ($data->accountsRequests as $modelAccountsRequests) {
+                                        $aRequestID[] = $modelAccountsRequests->requests_id;
+                                    }
+                                    
+                                }
+                                return implode(', ', $aRequestID);
                             }
                         ],
                         'idelem',

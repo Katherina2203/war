@@ -1,5 +1,4 @@
 <?php
-
 namespace backend\assets;
 
 use yii\web\AssetBundle;
@@ -16,7 +15,7 @@ class DashboardAsset extends AssetBundle
      //   'dist/css/skins/_all-skins.min.css',
     ];
     public $js = [
-        'dist/js/myjs.js'
+        
     ];
     public $depends = [
         'yii\web\YiiAsset',

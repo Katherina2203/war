@@ -141,16 +141,3 @@ use common\models\TypeRequest;
 </div>
 </div>
 
-
-<?php $this->registerJs(
-    "$('.expanded_fields').on('click',function(e){
-        e.preventDefault();
-            var x = document.getElementById('toggleFields_expanded');
-            if (x.style.display === 'none') {
-                x.style.display = 'block';
-            } else {
-                x.style.display = 'none';
-            }
-        });
-    "
-);?>
