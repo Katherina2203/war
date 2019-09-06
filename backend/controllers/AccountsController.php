@@ -228,21 +228,29 @@ class AccountsController extends Controller
         $model->idinvoice = $idinvoice;
         $model->delivery = '1 week';
         $model->date_receive = $modelpurchase->date;
+        
+        $modelAccountsRequests = new AccountsRequests();
        
         $modelel = new Elements();
 
         if ($model->load(Yii::$app->request->post())) {
             $model->status = '2';
             $modelpurchase->idelement = $model->idelem;
+            $bResult = $model->save(false);
             
-           if($model->save(false)){
+            $modelAccountsRequests->requests_id = intval($_POST['AccountsRequests']['requests_id']);
+            $modelAccountsRequests->accounts_id = $model->idord;
+            $modelAccountsRequests->save();
+            
+            if($bResult){
                 Yii::$app->session->setFlash('success', 'Товар успешно добавлен в счет!');
                 return $this->redirect(['paymentinvoice/itemsin', 'idinvoice' => $model->idinvoice]);
-           }
+            }
         } else {
             return $this->render('createitem', [
                 'model' => $model,
                 'modelpurchase' => $modelpurchase,
+                'modelAccountsRequests' => $modelAccountsRequests,
             ]);
         }
     }

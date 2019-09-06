@@ -17,8 +17,8 @@ use kartik\grid\GridView;
                             'attribute' => 'elements_id',
                             'label' => 'Прием товара',
                             'format' => 'raw',
-                            'value' => function($data) {
-                                return in_array($data->accounts_status, ['2', '5']) && in_array($data->requests_status, ['1', '4']) ? 
+                            'value' => function($data) {//&& in_array($data->requests_status, ['1', '4'])
+                                return in_array($data->accounts_status, ['2', '5'])  ? 
                                     Html::a('<span class="glyphicon glyphicon-plus"></span>', ['elements/addreceipt', 'id' => $data->id], ['title' => 'Прием товара']) : '';
                             },
                         ],

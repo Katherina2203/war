@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <div class="prices-add">
     <p>
-        <?= Html::a(yii::t('app', 'Add price'), ['prices/createitem', 'idelement' => $model->idelement], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(yii::t('app', 'Add price'), ['prices/createitem', 'idelement' => $model->idelement, 'idrequest' => $model->idrequest], ['class' => 'btn btn-success']) ?>
     </p>
     <p>
         <?= Html::a(yii::t('app', 'Add fast into invoice'), ['accounts/additemquick', 'idel' => $model->idelement], ['class' => 'btn btn-warning']) ?>

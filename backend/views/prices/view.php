@@ -57,6 +57,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => '<strong>'. $model->idel. '</strong>'. ', ' . ArrayHelper::getValue($model, 'elements.fulname'),
             ],
             [
+                'attribute' => 'idrequest',
+                'format' => 'html',
+                'value' => '<strong>'. $idrequest. '</strong>'. '',
+            ],
+            [
                 'attribute' => 'idsup',
                 'value' => yii\helpers\ArrayHelper::getValue($model, 'supplier.name'),
             ],

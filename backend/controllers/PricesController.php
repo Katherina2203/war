@@ -58,7 +58,7 @@ class PricesController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id, $idrequest)
     {
         $searchRequest = new RequestsSearch();
         $modelacc = new Accounts();
@@ -74,6 +74,7 @@ class PricesController extends Controller
             'modelacc' => $modelacc,
             'searchRequest' => $searchRequest,
              'dataProvider' => $dataProvider,
+            'idrequest' => $idrequest,
         ]);
     }
     
@@ -132,7 +133,7 @@ class PricesController extends Controller
         }
     }
     
-     public function actionCreateitem($idelement)
+     public function actionCreateitem($idelement, $idrequest)
     {
         $model = new Prices();
         $model->idel = $idelement;
@@ -141,11 +142,13 @@ class PricesController extends Controller
         $model->forUP = '1';
         $model->pdv = '20%';
         $model->usd = '25.33';
+        $modelpur->idrequest = $idrequest;
+        
 
         if ($model->load(Yii::$app->request->post())) {
             $modelpur->idelement = $model->idel;
             $model->save();
-            return $this->redirect(['view', 'id' => $model->idpr]);
+            return $this->redirect(['view', 'id' => $model->idpr, 'idrequest' => $idrequest]);
         } else {
             return $this->render('createitem', [
                 'model' => $model,

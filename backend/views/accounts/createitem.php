@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $this->render('_formitem', [
             'model' => $model,
             'modelpurchase' => $modelpurchase,
+            'modelAccountsRequests' => $modelAccountsRequests,
             //  'modelorder' => $modelorder,
             //  'dataProvider' => $dataProvider
         ]) ?>

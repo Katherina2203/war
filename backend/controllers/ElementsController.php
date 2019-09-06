@@ -528,13 +528,14 @@ class ElementsController extends Controller
                 $modelAccountsRequests->save();
                 
                 //changing request's status
+                //getting a sum of all accounts of this request
                 $querySUM = (new \yii\db\Query())
                     ->select('SUM(quantity) as total_sum')
                     ->from('accounts_requests')
                     ->where('requests_id = :requests_id', [':requests_id' => $modelAccountsRequests->requests_id])
                     ->limit(1)
                     ->one();
-                Yii::info('<pre>'. print_r($querySUM['total_sum'], true).'</pre>', 'ajax');
+                
                 $modelRequests->status = ($querySUM['total_sum'] >= $modelRequests->quantity) ? strval(Requests::REQUEST_DONE) : strval(Requests::REQUEST_DONE_PARTLY);
                 $modelRequests->save();
                 

@@ -19,6 +19,8 @@ use common\models\Currency;
                 <?php $form = ActiveForm::begin(); ?>
 
                 <?= $form->field($model, 'idel')->TextInput(['maxlength' => true, 'disabled'=>'disabled']) ?>
+                
+                <?= $form->field($modelpur, 'idrequest')->TextInput(['maxlength' => true, 'disabled'=>'disabled']) ?>
 
                 <?= $form->field($model, 'idsup')->dropDownList(ArrayHelper::map(Supplier::find()->all(), 'idsupplier', 'name')) ?>
 

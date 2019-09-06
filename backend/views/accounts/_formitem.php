@@ -40,6 +40,8 @@ use common\models\Requests;
              ->column();
     ?>
 
+    <?= $form->field($modelAccountsRequests, 'requests_id')->textInput() ?>
+    
     <?= $form->field($model, 'idelem')->textInput() ?>
 
    
