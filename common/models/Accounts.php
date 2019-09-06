@@ -157,6 +157,10 @@ class Accounts extends \yii\db\ActiveRecord
         return $this->hasMany(Requests::className(), ['idrequest' => 'idrequest'])
                     ->viaTable('purchaseorder', ['idelement' => 'idelem']);
     }
+    
+    public function getReceipt() {
+        return $this->hasOne(Receipt::className(), ['idinvoice' =>'idord']);
+    }
 
    
     public function getSupplier(){

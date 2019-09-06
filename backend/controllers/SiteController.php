@@ -110,11 +110,13 @@ class SiteController extends Controller
         }
         */
         $modelrequests = new Requests();
+        $modelrequests->idtype = '1';
+        $modelrequests->iduser = yii::$app->user->identity->id;
         $modelproc = new Processingrequest();
         $searchModelreq = new RequestsSearch();
         $searchElements = new ElementsSearch();
         
-        $query = Requests::find()->where(['status' => '0'])->with(['themes'])->orderBy('created_at DESC'); 
+        $query = Requests::find()->where(['status' => '0'])->with(['themes', 'supplier'])->orderBy('created_at DESC'); 
         $dataProviderreq = new ActiveDataProvider([
             'query' => $query,
               'pagination' => [
@@ -122,12 +124,12 @@ class SiteController extends Controller
             ]
         ]);
         if (Yii::$app->request->isAjax && $modelrequests->load(Yii::$app->request->post())) {
-                $modelrequests->iduser = yii::$app->user->identity->id;
+              //  $modelrequests->iduser = yii::$app->user->identity->id;
                
                 \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             if($modelrequests->save()){
                 Yii::$app->session->setFlash('success', 'Заявка успешно сохранена');
-                return $this->redirect(['view', 'id' => $modelrequests->idrequest]);
+                return $this->redirect(['index']);
             }
         } 
         /*else{

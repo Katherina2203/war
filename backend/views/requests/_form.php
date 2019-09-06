@@ -83,9 +83,7 @@ use common\models\TypeRequest;
         ]);?>
     
     <?php // $form->field($model, 'status')->dropDownList([ '0' => 'не  активна', '1' => 'Активна', '2' => 'Отмена', '3' => 'Выполнено'], ['prompt' => '']) ?>
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+
    </div> 
  </div>
     
@@ -169,10 +167,15 @@ use common\models\TypeRequest;
     
         <?= $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
             ['prompt'=>'Выберите Заказчика']) ?>
+  
+          
        </div> 
       </div>   
     </div> 
   </div> 
+        <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
     <?php ActiveForm::end(); ?>
 <?php Pjax::end(); ?>
 </div>

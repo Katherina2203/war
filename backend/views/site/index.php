@@ -127,7 +127,9 @@ $this->title = 'Мой профиль';
     <div class="row">
         <div class="col col-md-6">
             <div class="box">
-                    <div class="box-header with-border"><i class="glyphicon glyphicon-envelope"></i><h3 class="box-title">Создать заявку</h3>
+                    <div class="box-header with-border">
+                        <h4><i class="glyphicon glyphicon-envelope"></i> Создать заявку</h4>
+                        <span>Общие требования:</span>
                         <div class="pull-right box-tools">
                             <?= Html::a('<i class="fa fa-times"></i>', ['remove', 'id' => $modelrequests->idrequest], ['class' => 'btn btn-info btn-xs']) ?>
                         </div>
