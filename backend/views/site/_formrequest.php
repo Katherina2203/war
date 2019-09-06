@@ -78,7 +78,7 @@ use common\models\TypeRequest;
     
     <?php // $form->field($model, 'status')->dropDownList([ '0' => 'не  активна', '1' => 'Активна', '2' => 'Отмена', '3' => 'Выполнено'], ['prompt' => '']) ?>
     <div class="form-group" id="submit_request">
-        <?= Html::submitButton($model->isNewRecord ? 'Опубликовать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Разместить заявку' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
    </div> 
  </div>
@@ -108,29 +108,29 @@ use common\models\TypeRequest;
                 ],
         ]);?>
           
-        <?= $form->field($model, 'note')->textarea(['rows' => 2, 'cols' => 5]) ?>
+       <?= $form->field($model, 'note')->textarea(['rows' => 2, 'cols' => 5]) ?>
           
-        <?= Html::a('<i class="fa fa-angle-down"></i>' . Yii::t('app', ' Display Advanced Fields'), '', ['class' => 'btn btn-default advanced-fields', 'onclick' => "advancedFields()"]) ?>
-       
-        <div id="toggleFields" style="display:none">
-        <?= $form->field($model, 'img') ->widget(FileInput::classname(), [
-                                        'options' => ['accept' => 'images/requests/*'],
-                            ]);  ?>
+        <?= Html::button('<i class="fa fa-angle-down"></i>', [ 'class' => 'btn btn-default expanded_fields', 'onclick' => 'expandedFields()', 'title' => 'Toggle fields details' ]); ?>
+ 
+        <div id="toggleFields_expanded" style="display:none">
+            <?= $form->field($model, 'img') ->widget(FileInput::classname(), [
+                                            'options' => ['accept' => 'images/requests/*'],
+                                ]);  ?>
 
 
-        <?= $form->field($model, 'estimated_executor')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->where(['role' => '2'])->all(), 'id', 'UserName'),
-            ['prompt'=>'Выберите Предполагаемого исполнителя']) ?>
-        
-        <?= $form->field($model, 'estimated_category')->widget(Select2::className(),[
-            'data' => $category,
-            'options' => ['placeholder' => 'Выберите категорию '],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]);?>
-    
-        <?= $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
-            ['prompt'=>'Выберите Заказчика']) ?>
+            <?= $form->field($model, 'estimated_executor')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->where(['role' => '2'])->all(), 'id', 'UserName'),
+                ['prompt'=>'Выберите Предполагаемого исполнителя']) ?>
+
+            <?= $form->field($model, 'estimated_category')->widget(Select2::className(),[
+                'data' => $category,
+                'options' => ['placeholder' => 'Выберите категорию '],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);?>
+
+            <?= $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
+                ['prompt'=>'Выберите Заказчика']) ?>
        </div>
        </div> 
       </div>   
@@ -143,15 +143,14 @@ use common\models\TypeRequest;
 
 
 <?php $this->registerJs(
-    "$('btn.advanced-fields').on('click', function(e) {
-        
-        
-        var x = document.getElementById('#toggleFields');
-        if (x.style.display === 'none') {
+    "$('.expanded_fields').on('click',function(e){
+        e.preventDefault();
+            var x = document.getElementById('toggleFields_expanded');
+            if (x.style.display === 'none') {
                 x.style.display = 'block';
             } else {
                 x.style.display = 'none';
             }
-    });
+        });
     "
 );?>
