@@ -367,7 +367,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                    'date_receive',
                     //],
-                   
+                   [
+                       'attribute' => 'idord',
+                       'label' => 'Получено',
+                       'format' => 'raw',
+                       'value' => function($data){
+                            return empty($data->receipt->quantity) ? '-' : $data->receipt->quantity;
+                       }//'receipt.quantity', //receipt->quantity
+                     
+                   ],
                  ],
                 ]);
             ?>

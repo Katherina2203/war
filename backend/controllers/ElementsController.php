@@ -138,6 +138,9 @@ class ElementsController extends Controller
         //end show prices
         
         //view specification
+        
+        $receipt = new Receipt();
+        
         $modelSpecification = new Specification();
         $querySpecification = Specification::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
         $dataProviderSpecification = new ActiveDataProvider([
@@ -228,6 +231,7 @@ class ElementsController extends Controller
             'dataProvider2' => $dataProvider2,
             'modelprice' => $modelprice,
             'modelrequests' => $modelrequests,
+            'receipt' => $receipt,
             'modelSpecification' => $modelSpecification,
             'dataProvideracc' => $dataProvideracc,
             'dataProviderpur' => $dataProviderpur,

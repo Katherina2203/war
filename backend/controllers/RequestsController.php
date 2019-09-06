@@ -230,41 +230,7 @@ class RequestsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
- /*   public function actionCreate($iduser = null)
-    {
-        $model = new Requests();
-        $model->iduser = $iduser;
-        
-        Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/images/requests/';
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->status = '0';
-            $img = UploadedFile::getInstance($model, 'img');
-             
-            $model->img = $img->name;
-            $ext = end((explode(".", $img->name)));
-
-         
-            
-           // $model->save();
-            $path = Yii::$app->params['uploadPath'] . $model->img;
-             if($model->save()){
-            $img->saveAs($path);
-            Yii::$app->session->setFlash('success', 'Image uploaded successfully');
-            return $this->redirect(['view', 'id'=>$model->idrequest]);
-
-        } else {
-            Yii::$app->session->setFlash('error', 'Fail to save image');
-        }
-        
-            return $this->redirect(['view', 'id' => $model->idrequest]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-        
-    }*/
     
    public function actionCreate($iduser = null)
     {

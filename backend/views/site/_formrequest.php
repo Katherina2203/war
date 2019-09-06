@@ -24,19 +24,16 @@ use common\models\TypeRequest;
         });
     });'
     );
+      
 ?>
-
 
 <div class="requests-form">
 <?php Pjax::begin(['id' => 'new_request']) ?>
     <?php $form = ActiveForm::begin([
-        'id' => 'new-request-form',
-      //  'action' => 'save-url',
-        'enableAjaxValidation' => true,
-        'validationUrl' => 'validation-rul',
-        'options' => ['enctype'=>'multipart/form-data'],
-        //   ['data-pjax' => true], 
-       //     'layout' => 'horizontal'
+                'id' => 'new-request-form',
+                'action' => 'requests/create',
+                'enableAjaxValidation' => true,
+                'options' => ['enctype'=>'multipart/form-data'],
         ]);
         $themes = Themes::find()->select(['name', 'idtheme'])->indexBy('idtheme')->where(['status' => 'active'])->column();
         $suppliers = Supplier::find()->select(['name', 'idsupplier'])->indexBy('idsupplier')->column();
@@ -45,31 +42,31 @@ use common\models\TypeRequest;
     ?>
     
   <div class="col-lg-6"> 
-       <?= $form->field($model, 'idtype')->radioList(ArrayHelper::map(TypeRequest::find()->all(), 'idtype', 'name'))?>
-    <div class="box box-success">
-      <div class="box-header">
-         <h4 class="box-title pull-left">Обязательные поля для заявки</h4>
-         <div class="clearfix"></div>
-      </div>
-    <div class="box-body">
-     
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'idtype')->radioList(ArrayHelper::map(TypeRequest::find()->all(), 'idtype', 'name'))?>
+        <div class="box box-success">
+            <div class="box-header">
+                <h4 class="box-title pull-left">Обязательные поля для заявки</h4>
+                <div class="clearfix"></div>
+            </div>
+        <div class="box-body">
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 3, 'cols' => 5]) ?>
-    <div class="row">
-        <div class="col-sm-6">
-            <?= $form->field($model, 'quantity')->textInput()//['style' => 'width: 100px;'] ?>
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'description')->textarea(['rows' => 3, 'cols' => 5]) ?>
+        <div class="row">
+                <div class="col-sm-6">
+                <?= $form->field($model, 'quantity')->textInput()//['style' => 'width: 100px;'] ?>
+            </div>
+            <div class="col-sm-6">
+            <?= $form->field($model, 'idproject')->widget(Select2::className(), [
+                 'data' => $themes,
+                 'options' => ['placeholder' => 'Выберите проект '],
+                    'pluginOptions' => [
+                    'allowClear' => true
+                ],
+             ]);?>
+            </div> 
         </div>
-        <div class="col-sm-6">
-        <?= $form->field($model, 'idproject')->widget(Select2::className(), [
-             'data' => $themes,
-             'options' => ['placeholder' => 'Выберите проект '],
-                'pluginOptions' => [
-                'allowClear' => true
-            ],
-         ]);?>
-        </div> 
-    </div>
     
     <?=$form->field($model, 'required_date')->widget(
                     DatePicker::className(), [
@@ -81,12 +78,12 @@ use common\models\TypeRequest;
     
     <?php // $form->field($model, 'status')->dropDownList([ '0' => 'не  активна', '1' => 'Активна', '2' => 'Отмена', '3' => 'Выполнено'], ['prompt' => '']) ?>
     <div class="form-group" id="submit_request">
-        <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Опубликовать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
    </div> 
  </div>
     
-            </div>
+ </div>
     <div class="col-lg-6">
       <div class="box box-warning">
        <div class="box-header">
@@ -110,12 +107,16 @@ use common\models\TypeRequest;
                     'allowClear' => true
                 ],
         ]);?>
-
-        <?= $form->field($model, 'img') ->widget(FileInput::classname(), [
-                                         'options' => ['accept' => 'images/requests/*'],
-                             ]);  ?>
-
+          
         <?= $form->field($model, 'note')->textarea(['rows' => 2, 'cols' => 5]) ?>
+          
+        <?= Html::a('<i class="fa fa-angle-down"></i>' . Yii::t('app', ' Display Advanced Fields'), '', ['class' => 'btn btn-default advanced-fields', 'onclick' => "advancedFields()"]) ?>
+       
+        <div id="toggleFields" style="display:none">
+        <?= $form->field($model, 'img') ->widget(FileInput::classname(), [
+                                        'options' => ['accept' => 'images/requests/*'],
+                            ]);  ?>
+
 
         <?= $form->field($model, 'estimated_executor')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->where(['role' => '2'])->all(), 'id', 'UserName'),
             ['prompt'=>'Выберите Предполагаемого исполнителя']) ?>
@@ -130,6 +131,7 @@ use common\models\TypeRequest;
     
         <?= $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
             ['prompt'=>'Выберите Заказчика']) ?>
+       </div>
        </div> 
       </div>   
     </div> 
@@ -140,9 +142,16 @@ use common\models\TypeRequest;
 </div>
 
 
-<script language="javascript">
-  //  $('.requests-form').on('change', function() {
-    $("#submit_request").click(function(){  
-        alert("clicked");
+<?php $this->registerJs(
+    "$('btn.advanced-fields').on('click', function(e) {
+        
+        
+        var x = document.getElementById('#toggleFields');
+        if (x.style.display === 'none') {
+                x.style.display = 'block';
+            } else {
+                x.style.display = 'none';
+            }
     });
-</script>
+    "
+);?>
