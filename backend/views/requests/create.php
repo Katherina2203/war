@@ -8,8 +8,8 @@ use yii\helpers\Html;
 /* @var $model common\models\Requests */
 
 $this->title = 'Создать заявку';
-//$this->params['breadcrumbs'][] = ['label' => 'Requests', 'url' => ['index']];
-// $this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => 'Requests', 'url' => ['index']];
+ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="col col-md-9">
         <div class="box">
