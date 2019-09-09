@@ -69,7 +69,7 @@ class Supplier extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['manager', 'address', 'phone', 'website', 'logo'], 'safe'],
-            [['created_by' , 'edited_by'], 'integer'],
+        //   [['created_by' , 'edited_by'], 'integer'],
             [['name'], 'string', 'max' => 64],
             [['logo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, gif, jpg, jpeg', 'maxSize' => 1024 * 1024 * 2],
         ];

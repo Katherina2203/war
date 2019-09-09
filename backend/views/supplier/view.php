@@ -38,10 +38,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'manager',
                                 'phone',
                                 [
+                                    'attribute' => 'logo',
+                                    'value' => function($data){
+                                        return empty($data->logo) ? '-' : $data->logo;
+                                    }
+                                ],
+                                [
                                     'attribute' => 'website',
                                     'format' => 'raw',
                                     'value' => function($data){
-                                        return html::a($data->website, $model->website);
+                                        return html::a($data->website, $data->website);
                                     }
                                 ],
                                 

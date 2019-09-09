@@ -24,11 +24,12 @@ use yii\widgets\Pjax;
             <div class="box-body">
             <?php Pjax::begin(['id'=>'new_supplier']) ?>
                 <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true]]); ?>
-                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true, ]) ?>
                     <?= $form->field($model, 'address')->textInput(['rows' => 2]) ?>
-                    <?= $form->field($model, 'manager')->textInput()->hint('Please enter name') ?>
+                    <?= $form->field($model, 'manager')->textInput(['placeholder'=> 'Name Surname'])//->hint('Please enter name') ?> 
                     <?= $form->field($model, 'phone')->textInput() ?>
-                    <?= $form->field($model, 'website')->textInput() ?>
+                    <?= $form->field($model, 'logo')->textInput() ?>
+                    <?= $form->field($model, 'website')->textInput(['placeholder'=> 'http://']) ?>
 
                 <div class="form-group">
                     <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
