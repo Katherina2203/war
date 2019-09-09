@@ -24,7 +24,7 @@ use yii\widgets\Pjax;
             <div class="box-body">
             <?php Pjax::begin(['id'=>'new_supplier']) ?>
                 <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true]]); ?>
-                    <?= $form->field($model, 'name')->textInput(['maxlength' => true, ]) ?>
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder'=> 'Company Name']) ?>
                     <?= $form->field($model, 'address')->textInput(['rows' => 2]) ?>
                     <?= $form->field($model, 'manager')->textInput(['placeholder'=> 'Name Surname'])//->hint('Please enter name') ?> 
                     <?= $form->field($model, 'phone')->textInput() ?>

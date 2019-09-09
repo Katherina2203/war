@@ -116,7 +116,7 @@ echo dmstr\widgets\Menu::widget([
                     [   
                         'label' => Yii::t('app', 'My profile'), 
                         'icon' => 'fa fa-id-card-o',
-                        'url' => ['/myaccount/'],
+                        'url' => ['/site/index'],
                         
                     ],
                     ['label' => Yii::t('app', 'Menu'), 'options' => ['class' => 'header']],
