@@ -47,19 +47,19 @@ use kartik\grid\GridView;
                             'value'=> function($data){
                                 switch ($data->requests_status) {
                                     case '0': // Не обработано
-                                        return '<span class="glyphicon glyphicon-unchecked" style="color: #d05d09"></span>';
+                                        return '<span class="glyphicon glyphicon-unchecked" style="color: #d05d09;"> Не обработано</span>';
                                         break;
                                     case '1': // Активна
-                                        return '<span class="glyphicon glyphicon-ok" style="color: green"></span>';
+                                        return '<span class="glyphicon glyphicon-ok" style="color: green"> Активна</span>';
                                         break;
                                     case '2': // Отменено
-                                        return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d"></span>';
+                                        return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d;"> Отменено</span>';
                                         break;
                                     case '3': // Выполнено
-                                        return '<span class="glyphicon glyphicon-saved" style="color:grey"></span>';
+                                        return '<span class="glyphicon glyphicon-saved" style="color:grey"> Выполнено</span>';
                                         break;
                                     case '4': // Отменено
-                                        return '<span class="glyphicon glyphicon-import" style="color: #60649f"></span>';
+                                        return '<span class="glyphicon glyphicon-import" style="color: #257fc5; white-space: normal;"> Выполнено частично</span>';
                                         break;
                                 }
                             },
@@ -101,16 +101,16 @@ use kartik\grid\GridView;
                             'value'=> function($data){
                                 switch ($data->accounts_status) {
                                     case '2': // Закано
-                                        return '<span class="glyphicon glyphicon-ok" style="color: green"></span>';
+                                        return '<span class="glyphicon glyphicon-ok" style="color: green"> Закано</span>';
                                         break;
                                     case '3': // На складе
-                                        return '<span class="glyphicon glyphicon-saved" style="color:grey"></span>';
+                                        return '<span class="glyphicon glyphicon-saved" style="color:grey"> На складе</span>';
                                         break;
                                     case '4': // Отменено
-                                        return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d"></span>';
+                                        return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d"> Отмена</span>';
                                         break;
                                     case '5': // Отменено
-                                        return '<span class="glyphicon glyphicon-import" style="color: #60649f"></span>';
+                                        return '<span class="glyphicon glyphicon-import" style="color: #257fc5; white-space: normal;"> На складе частично</span>';
                                         break;
                                 }
                             },

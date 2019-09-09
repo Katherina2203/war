@@ -75,14 +75,16 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
             'class' => 'table table-striped table-bordered'
         ],
         'rowOptions' => function($model, $key, $index, $grid){
-            if($model->status == '0'){  // not active
+            if($model->status == '0') {  // not active
                 return ['class' => 'warning'];  //active class => 'sucess'   label label-primary glyphicon glyphicon-ok
-            }elseif($model->status == '1'){  //active
+            } elseif($model->status == '1') {  //active
                  return ['class' => 'success']; //unactive color: #b2b2b2 label label-danger glyphicon glyphicon-remove
-            }elseif($model->status == '2'){ //cancel
+            } elseif($model->status == '2') { //cancel
                 return ['style' => 'label label-default glyphicon glyphicon-time; color: #b2b2b2;']; //cancel f97704 - orange color:#c48044
-            }elseif($model->status == '3'){ //done
+            } elseif($model->status == '3') { //done
                 return ['style' => 'color:#b2b2b2'];
+            } elseif($model->status == '4') { //done
+                return ['style' => 'color: #0e3858;'];
             }
         },
         'pjax' => true,
@@ -153,15 +155,17 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                 'value'=> function($model){
                     if($model->status == '0'){ //not active
                        return '<span class="label label-warning" style="color: #d05d09"><span class="glyphicon glyphicon-unchecked"> Не обработано</span></span>';
-                    }elseif($model->status == '1'){//active
+                    } elseif($model->status == '1'){//active
                        return '<span class="label label-success"><span class="glyphicon glyphicon-ok"> Активна</span></span>';
                     } elseif($model->status == '2'){//cancel
                        return '<span class="label label-danger" style="color: #b02c0d"><span class="glyphicon glyphicon-remove"> Отменено</span></span>';
-                    }elseif($model->status == '3'){ //done
+                    } elseif($model->status == '3'){ //done
                        return '<span class="glyphicon glyphicon-saved" style="color:grey"> Выполнено</span>';
+                    } elseif($model->status == '4'){ //done
+                        return '<span class="glyphicon glyphicon-import" style="color: #257fc5; white-space: normal;"> Выполнено частично</span>';
                     };
                 },
-                'filter' => ['0'=> 'Не обработано', '1' => 'Активна','2' => 'Отменено','3' => 'Выполнено']
+                'filter' => ['0'=> 'Не обработано', '1' => 'Активна','2' => 'Отменено','3' => 'Выполнено','4' => 'Выполнено частично']
             ],
 
             ['class' => 'yii\grid\ActionColumn',
