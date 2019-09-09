@@ -148,8 +148,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                return '<span class="glyphicon glyphicon-ok" style="color: green"> Активна</span>';
                             } elseif($data->status == '2'){//cancel
                                return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d"> Отменено</span>';
-                            }elseif($data->status == '3'){ //done
-                               return '<span class="glyphicon glyphicon-saved" style="color:grey"> Выполнено</span>';
+                            } elseif($data->status == '3'){ //done
+                               return '<span class="glyphicon glyphicon-saved" style="color: grey"> Выполнено</span>';
+                            } elseif($data->status == '4'){ //done
+                               return '<span class="glyphicon glyphicon-import" style="color: #257fc5"> Выполнено частично</span>';
                             }
                             
                         }, $model),
