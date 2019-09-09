@@ -84,7 +84,7 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
             } elseif($model->status == '3') { //done
                 return ['style' => 'color:#b2b2b2'];
             } elseif($model->status == '4') { //done
-                return ['style' => 'color: #0e3858;'];
+                return ['style' => 'background-color: #d3eafc; ;color: #0e3858;'];
             }
         },
         'pjax' => true,

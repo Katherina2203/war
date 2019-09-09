@@ -26,10 +26,10 @@ use common\models\Supplier;
     ]);
             //->dropDownList(ArrayHelper::map(Supplier::find()->all(), 'idsupplier', 'name')) ?>
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-4">
          <?= $form->field($model, 'invoice')->textInput(['maxlength' => true]) ?>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
          <?= //$form->field($model, 'date')->textInput() 
         $form->field($model, 'date_invoice')->widget(
         DatePicker::className(), [
@@ -38,6 +38,9 @@ use common\models\Supplier;
             'format' => 'yyyy-mm-dd'
         ]
         ]);?>
+    </div>
+    <div class="col-sm-4">
+         <?= $form->field($model, 'usd')->textInput() ?>
     </div>
 </div>
        

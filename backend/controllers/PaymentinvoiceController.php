@@ -118,7 +118,7 @@ class PaymentinvoiceController extends Controller
         $searchModel = new AccountsSearch();
         $model->idinvoice = $idinvoice;
         
-        $query = Accounts::find()->where(['idinvoice' => $idinvoice])->joinWith(['elements', 'prices']);
+        $query = Accounts::find()->where(['idinvoice' => $idinvoice])->joinWith(['elements', 'prices', 'accountsRequests']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -148,15 +148,14 @@ class PaymentinvoiceController extends Controller
     {
         $model = new Paymentinvoice();
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
            // $model->confirm = '0';
             $model->save();
             return $this->redirect(['itemsin', 'idinvoice' => $model->idpaymenti]); //view
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
     
     public function actionAddfast()

@@ -77,6 +77,7 @@ class Paymentinvoice extends \yii\db\ActiveRecord
             ['confirm', 'default','value' => self::CONFIRM_NOT],
             [['invoice'], 'string', 'max' => 128],
             [['tracking_number'], 'string', 'max' => 20],
+            [['usd'], 'double'],
         ];
     }
 
@@ -100,6 +101,7 @@ class Paymentinvoice extends \yii\db\ActiveRecord
             'edited_by' => Yii::t('app', 'Кем отредактировано'),
             'price' => Yii::t('app', 'Цена'),
             'tracking_number' => Yii::t('app', 'Декларация'),
+            'usd' => Yii::t('app', 'Курс доллара'),
         ];
     }
     
