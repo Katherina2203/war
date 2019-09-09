@@ -341,7 +341,7 @@ class AccountsController extends Controller
         $modelPrices->idel = $modelRequests->estimated_idel;
         $modelPrices->idsup = $modelPaymentinvoice->idsupplier;
         //defaul values for creating new price
-        $modelPrices->usd = '25.65';
+        $modelPrices->usd = $modelPaymentinvoice->usd;
         $modelPrices->pdv = '20%';
         $modelPrices->forUP = '1';
         $modelPrices->idcurrency = '1';
