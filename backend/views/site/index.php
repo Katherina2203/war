@@ -13,6 +13,7 @@ use common\models\Themes;
 use common\models\Produce;
 use common\models\Supplier;
 use common\models\Users;
+use common\models\Requests;
 
 $gridColumns = [
     ['class' => 'kartik\grid\SerialColumn'],
@@ -61,23 +62,30 @@ $this->title = 'Мой профиль';
             <div class=" box box-warning">
                 <div class="box-header with-border"><i class="glyphicon glyphicon-signal"></i><h3 class="box-title">Мои заявки</h3></div>
                 <div class="box-body">
-                    <div class="col-sm-4 border-right">
+                    <div class="col-sm-3 border-right">
                         <center>
-                            <h3><?= Html::a($statusactive = 15, ['/requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=0 ?></h3>
+                            <h3><?= Html::a(Requests::getStatusNoactive(), ['/requests/myrequests', 'iduser' => yii::$app->user->identity->id])//where status=0 ?></h3>
                             <span class="description-text">Не обработаны</span>
                             
                         </center>
                     </div>
-                    <div class="col-sm-4 border-right">
+                    <div class="col-sm-3 border-right">
                         <center>
-                            <h3><?= Html::a($statusactive = 4, ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=1 ?></h3>
+                            <h3><?= Html::a(Requests::getStatusActive(), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=1 ?></h3>
                             <span class="description-text">Активные</span>
                         </center>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <center>
-                            <h3><?= Html::a(count($modelrequests->idrequest), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=2 ?></h3>
+                            <h3><?= Html::a(Requests::getStatusCancel(), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=2 ?></h3>
                             <span class="description-text">Заблокировано</span>        
+                        </center>
+                    </div>
+                    
+                    <div class="col-sm-3">
+                        <center>
+                            <h3><?= Html::a(Requests::getStatusDone(), ['/requests/myrequests', 'iduser'=> yii::$app->user->identity->id])//where status=2 ?></h3>
+                            <span class="description-text">Done</span>        
                         </center>
                     </div>
                 </div>  

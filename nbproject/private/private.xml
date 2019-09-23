@@ -4,17 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/xampp/htdocs/war/backend/views/site/_formrequest.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/web/dist/js/myjs.js</file>
-            <file>file:/D:/xampp/htdocs/war/backend/web/dist/js/main.js</file>
-            <file>file:/D:/xampp/htdocs/war/common/models/Accounts.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/accounts/additemquick.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/controllers/ElementsController.php</file>
+            <file>file:/D:/xampp/htdocs/war/common/models/RequestsQuery.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/requests/create.php</file>
             <file>file:/D:/xampp/htdocs/war/common/models/Requests.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/assets/AdminAsset.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/requests/_form.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/site/index.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/layouts/main.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/controllers/SiteController.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/controllers/RequestsController.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/assets/AppAsset.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/requests/_form.php</file>
+            <file>file:/D:/xampp/htdocs/war/common/models/AccountsRequests.php</file>
+            <file>file:/D:/xampp/htdocs/war/common/models/Elements.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/controllers/AccountsController.php</file>
         </group>
     </open-files>
 </project-private>

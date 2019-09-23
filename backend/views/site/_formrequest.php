@@ -41,49 +41,49 @@ use common\models\TypeRequest;
         $category = Category::getHierarchy(); 
     ?>
     
-  <div class="col-lg-6"> 
+    <div class="col-lg-6"> 
         <?= $form->field($model, 'idtype')->radioList(ArrayHelper::map(TypeRequest::find()->all(), 'idtype', 'name'))?>
         <div class="box box-success">
             <div class="box-header">
                 <h4 class="box-title pull-left">Обязательные поля для заявки</h4>
                 <div class="clearfix"></div>
             </div>
-        <div class="box-body">
+            <div class="box-body">
 
-        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'description')->textarea(['rows' => 3, 'cols' => 5]) ?>
-        <div class="row">
-                <div class="col-sm-6">
-                <?= $form->field($model, 'quantity')->textInput()//['style' => 'width: 100px;'] ?>
-            </div>
-            <div class="col-sm-6">
-            <?= $form->field($model, 'idproject')->widget(Select2::className(), [
-                 'data' => $themes,
-                 'options' => ['placeholder' => 'Выберите проект '],
-                    'pluginOptions' => [
-                    'allowClear' => true
-                ],
-             ]);?>
-            </div> 
+                    <?= $form->field($model, 'description')->textarea(['rows' => 3, 'cols' => 5]) ?>
+                    <div class="row">
+                            <div class="col-sm-6">
+                            <?= $form->field($model, 'quantity')->textInput()//['style' => 'width: 100px;'] ?>
+                        </div>
+                        <div class="col-sm-6">
+                        <?= $form->field($model, 'idproject')->widget(Select2::className(), [
+                             'data' => $themes,
+                             'options' => ['placeholder' => 'Выберите проект '],
+                                'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                         ]);?>
+                        </div> 
+                    </div>
+
+                <?=$form->field($model, 'required_date')->widget(
+                                DatePicker::className(), [
+                                 'clientOptions' => [
+                                 'autoclose' => true,
+                                 'format' => 'yyyy-mm-dd'
+                    ]
+                    ]);?>
+
+                <?php // $form->field($model, 'status')->dropDownList([ '0' => 'не  активна', '1' => 'Активна', '2' => 'Отмена', '3' => 'Выполнено'], ['prompt' => '']) ?>
+
+            </div> <!--close box-body -->
+        </div><!--close box-success -->
+        <div class="form-group" id="submit_request">
+             <?= Html::submitButton($model->isNewRecord ? 'Разместить заявку' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
-    
-    <?=$form->field($model, 'required_date')->widget(
-                    DatePicker::className(), [
-                     'clientOptions' => [
-                     'autoclose' => true,
-                     'format' => 'yyyy-mm-dd'
-        ]
-        ]);?>
-    
-    <?php // $form->field($model, 'status')->dropDownList([ '0' => 'не  активна', '1' => 'Активна', '2' => 'Отмена', '3' => 'Выполнено'], ['prompt' => '']) ?>
-    <div class="form-group" id="submit_request">
-        <?= Html::submitButton($model->isNewRecord ? 'Разместить заявку' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-   </div> 
- </div>
-    
- </div>
+    </div><!--close col-lg-6 --> 
     <div class="col-lg-6">
       <div class="box box-warning">
        <div class="box-header">
@@ -134,10 +134,10 @@ use common\models\TypeRequest;
        </div>
        </div> 
       </div>   
-    </div> 
+    </div> <!--close col-lg-6 --> 
  
     <?php ActiveForm::end(); ?>
 <?php Pjax::end(); ?>
 </div>
-</div>
+
 

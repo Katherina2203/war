@@ -3,6 +3,7 @@ namespace common\models;
 use Yii;
 use \yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "requests".
  *
@@ -209,6 +210,46 @@ class Requests extends \yii\db\ActiveRecord
             self::REQUEST_CANCEL => 'Отменено',
             self::REQUEST_DONE => 'Выполнено',
         ];
+    }
+    
+    public static function getStatusNoactive()
+    {
+        $countstatus = Requests::find()
+                ->select(['idrequest'])
+                ->where(['status' => '0'])
+                ->andWhere(['iduser' => \Yii::$app->user->identity->id])
+                ->all();
+        return count($countstatus);
+    }
+    
+    public static function getStatusActive()
+    {
+        $countstatus = Requests::find()
+                ->select(['idrequest'])
+                ->where(['status' => '1'])
+                ->andWhere(['iduser' => \Yii::$app->user->identity->id])
+                ->all();
+        return count($countstatus);
+    }
+    
+    public static function getStatusCancel()
+    {
+        $countstatus = Requests::find()
+                ->select(['idrequest'])
+                ->where(['status' => '2'])
+                ->andWhere(['iduser' => \Yii::$app->user->identity->id])
+                ->all();
+        return count($countstatus);
+    }
+    
+    public static function getStatusDone()
+    {
+        $countstatus = Requests::find()
+                ->select(['idrequest'])
+                ->where(['status' => '3'])
+                ->andWhere(['iduser' => \Yii::$app->user->identity->id])
+                ->all();
+        return count($countstatus);
     }
     
     private $_requestsArray;
