@@ -44,10 +44,7 @@ use common\models\Requests;
     
     <?= $form->field($model, 'idelem')->textInput() ?>
 
-   
-        <?= $form->field($model, 'idprice')->textInput() 
-            ?>
-
+    <?= $form->field($model, 'idprice')->textInput() ?>
 
     <?= $form->field($model, 'quantity')->textInput(['style' => 'width: 150px;']) ?>
     
@@ -76,7 +73,7 @@ use common\models\Requests;
             'format' => 'yyyy-mm-dd'
         ]
         ]);?>
-    
+    <?= $form->field($model, 'sorting')->textInput(); ?>
     <?php //  $form->field($model, 'status')->radioList([ '2' => ' Заказано', '3' => ' На складе'], ['prompt' => '']) ?>
 
     <div class="form-group">

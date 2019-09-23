@@ -159,7 +159,7 @@ class ElementsController extends Controller
         ]);
         
         $querypur = Purchaseorder::find()->where(['idelement' => $id])->orderBy('created_at DESC')->limit(5);
-        //echo '<pre>'; var_dump($querypur); echo '</pre>'; die();
+//        echo '<pre>'; var_dump($querypur->createCommand()->rawSql); echo '</pre>'; die();
         $dataProviderpur = new ActiveDataProvider([
             'query' => $querypur,
         ]);  /*in future point the limit of requests..E.x. last 5 orders */
@@ -497,28 +497,30 @@ class ElementsController extends Controller
     
     public function actionAddreceipt($id)
     {
-        
         $modelAccountsRequests = AccountsRequests::findOne($id);
-        $modelRequests = Requests::findOne($modelAccountsRequests->requests_id);
+        if (is_null($modelAccountsRequests)) {
+            $this->redirect(['elements/index']);
+        }
+        $modelAccounts = Accounts::findOne($modelAccountsRequests->accounts_id);
                 
         $modelReceipt = new Receipt();
-        $modelReceipt->id = $modelRequests->estimated_idel;
+        $modelReceipt->id = $modelAccounts->idelem;
         $modelReceipt->idinvoice = $modelAccountsRequests->accounts_id;
         $modelReceipt->users_id = yii::$app->user->identity->id;
         	
         if ($modelReceipt->load(Yii::$app->request->post()) && $modelReceipt->validate()) {
 
-            $db = Yii::$app->db;
-            $transaction = $db->beginTransaction();
+            $transaction = Yii::$app->db->beginTransaction();
 
             try {
+                $modelReceipt->save(false);
+                
                 //adding element's quantity in elements
-                $modelElements = Elements::findOne($modelRequests->estimated_idel);
+                $modelElements = Elements::findOne($modelAccounts->idelem);
                 $modelElements->quantity += $modelReceipt->quantity;
                 $modelElements->save();
                 
                 //adding received quantity and changing account's status
-                $modelAccounts = Accounts::findOne($modelAccountsRequests->accounts_id);
                 $modelAccounts->received_quantity += $modelReceipt->quantity;
                 if ($modelAccounts->received_quantity >= $modelAccounts->quantity) {
                     $modelAccounts->status = strval(Accounts::ACCOUNTS_ONSTOCK);
@@ -527,23 +529,32 @@ class ElementsController extends Controller
                 }
                 $modelAccounts->save();
                 
-                //saving before changing request's status
-                $modelAccountsRequests->quantity += $modelReceipt->quantity;
-                $modelAccountsRequests->save();
+                //getting all requests related to the account
+                $aRequestsOfAccount = AccountsRequests::getRequestsOfAccount($modelAccountsRequests->accounts_id)->all();
+//                Yii::info('<before>'. print_r($aRequestsOfAccount, true).'</pre>', 'ajax');
+                //separation of the current accounts_requests from the rest of the array
+                foreach ($aRequestsOfAccount as $iKey => $model) {
+                    if ($modelAccountsRequests->id == $model->id) {
+                        $modelCurrent = $model;
+                        unset($aRequestsOfAccount[$iKey]);
+                        break;
+                    }
+                }
+                $iReceiptQuantity = $modelReceipt->quantity;
+//                Yii::info('<after>'. print_r($aRequestsOfAccount, true).'</pre>', 'ajax');
+                //adding quantity to the current accounts_requests first
+                $iReceiptQuantity = $this->changeAccountsRequests($modelCurrent, $iReceiptQuantity);
                 
-                //changing request's status
-                //getting a sum of all accounts of this request
-                $querySUM = (new \yii\db\Query())
-                    ->select('SUM(quantity) as total_sum')
-                    ->from('accounts_requests')
-                    ->where('requests_id = :requests_id', [':requests_id' => $modelAccountsRequests->requests_id])
-                    ->limit(1)
-                    ->one();
-                
-                $modelRequests->status = ($querySUM['total_sum'] >= $modelRequests->quantity) ? strval(Requests::REQUEST_DONE) : strval(Requests::REQUEST_DONE_PARTLY);
-                $modelRequests->save();
-                
-                $modelReceipt->save(false);
+                foreach ($aRequestsOfAccount as $model) {
+                    if (!$iReceiptQuantity) {
+                        break;
+                    }
+                    $iReceiptQuantity = $this->changeAccountsRequests($model, $iReceiptQuantity);
+                }
+                //if all requests have REQUEST_DONE status but received_quantity still is not 0 
+                //then add it to the current accounts_requests.quantity
+                $modelCurrent->quantity += $iReceiptQuantity;
+                $modelCurrent->save();
 
                 $transaction->commit();
 
@@ -565,6 +576,28 @@ class ElementsController extends Controller
     }
 
 
+    private function changeAccountsRequests($model, $iReceiptQuantity)
+    {
+        //how much we need to set REQUEST_DONE status
+        $iNeededQuantity = $model->requests_quantity - $model->total_quantity;
+        $iNeededQuantity = $iNeededQuantity > 0 ? $iNeededQuantity : 0;
+        //how much we can add
+        $iAddedQuantity = ($iNeededQuantity >=  $iReceiptQuantity) ? $iReceiptQuantity : $iNeededQuantity;
+         Yii::info('<before>'. print_r($model, true).'</pre>', 'ajax');
+        //adding quantity to an accounts_requests.quantity
+        $model->quantity += $iAddedQuantity;
+        Yii::info('<pre>'. print_r($model, true).'</pre>', 'ajax');
+        $result = $model->save();
+        //setting a new status for a request
+        $modelRequests = Requests::findOne($model->requests_id); 
+        $modelRequests->status = (($model->total_quantity + $iAddedQuantity) >= $modelRequests->quantity) ? strval(Requests::REQUEST_DONE) : strval(Requests::REQUEST_DONE_PARTLY);
+        $modelRequests->save();
+        //calculating the last quantity
+        $iReceiptQuantity -= $iAddedQuantity;
+        return $iReceiptQuantity > 0 ? $iReceiptQuantity : 0;
+    }
+            
+            
     public function actionCreatereceipt($idord, $idel)
     {
         $model = new Receipt();

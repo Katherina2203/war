@@ -118,7 +118,7 @@ class PaymentinvoiceController extends Controller
         $searchModel = new AccountsSearch();
         $model->idinvoice = $idinvoice;
         
-        $query = Accounts::find()->where(['idinvoice' => $idinvoice])->joinWith(['elements', 'prices', 'accountsRequests']);
+        $query = Accounts::find()->where(['idinvoice' => $idinvoice])->joinWith(['elements', 'prices', 'accountsRequests'])->orderBy('sorting ASC');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

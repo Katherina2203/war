@@ -122,6 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'floatHeader' => true,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
+                        'sorting',
                         'idord',
                         [
                             'attribute' => 'requests_id',
@@ -217,15 +218,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'date_receive',
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{view} {editinvoice} {deletefrom} {receipt} {changeprice}',
+                            'template' => '{view} {edit_account} {deletefrom} {receipt} {changeprice}',
                             'controller' => 'accounts',
                             'buttons' => [
                                 'deletefrom' => function ($url,$model,$key) {
                                     $url = Url::to(['deletefrom', 'id' => $key]);
                                   
                                 },
-                                'editinvoice' => function ($url,$model,$key) {
-                                    $url = Url::to(['editinvoice', 'id' => $key]);
+                                'edit_account' => function ($url,$model,$key) {
+                                    $url = Url::to(['accounts/edit-account', 'idinvoice' => $model->idinvoice, 'idaccount' => $model->idord]);
                                     return $model->status == '2' ? Html::a('<span class="glyphicon glyphicon-edit"></span>', $url,['title' => 'Редактировать позицию в счете'])
                                     : '';
                                 },
