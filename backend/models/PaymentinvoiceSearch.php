@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Paymentinvoice;
+use common\models\Accounts;
 
 /**
  * PaymentinvoiceSearch represents the model behind the search form about `common\models\Paymentinvoice`.
@@ -42,11 +43,24 @@ class PaymentinvoiceSearch extends Paymentinvoice
      */
     public function search($params)
     {
+        //the count of accounts that are not received but their receipt date has passed
+        $subQuery = (new \yii\db\Query())
+            ->select(['idinvoice', 'count(idord) as accounts_cnt'])
+            ->from('accounts')
+            ->where(['in', 'status', [strval(Accounts::ACCOUNTS_ORDERED), strval(Accounts::ACCOUNTS_ONSTOCK_PARTLY)]])
+            ->andWhere(['<', 'date_receive', date('Y-m-d')])
+            ->groupBy('idinvoice');
+                 
         $query = Paymentinvoice::find()
-                ->With(['payer', 'supplier']);
+            ->select(["p.*", 'COALESCE(a.accounts_cnt, 0) as cnt'])
+            ->from(['p' => 'paymentinvoice'])
+            ->leftJoin(['a' => $subQuery], 'a.idinvoice = p.idpaymenti')
+            ->With(['payer', 'supplier']);
+
+//        $query = Paymentinvoice::find()
+//                ->With(['payer', 'supplier']);
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=> ['defaultOrder' => ['created_at'=>SORT_DESC]]

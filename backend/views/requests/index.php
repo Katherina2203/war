@@ -83,7 +83,7 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                 return ['style' => 'label label-default glyphicon glyphicon-time; color: #b2b2b2;']; //cancel f97704 - orange color:#c48044
             } elseif($model->status == '3') { //done
                 return ['style' => 'color:#b2b2b2'];
-            } elseif($model->status == '4') { //done
+            } elseif($model->status == '4') { //partly done
                 return ['style' => 'background-color: #d3eafc; ;color: #0e3858;'];
             }
         },

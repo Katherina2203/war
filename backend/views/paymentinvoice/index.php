@@ -81,16 +81,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ], 
         'rowOptions' => function($model, $key, $index, $grid){
-            if($model->date_payment == NULL & $model->confirm == false){ //еще нет оплаты
-                return ['class' => 'info', 'style' => 'color:#ba1313'];
-            }elseif(($model->date_payment != NULL & $model->confirm == false) || ($model->date_payment == NULL & $model->confirm == Paymentinvoice::CONFIRM_AGREE)){ //еще не подтвердил шеф   =0
-                return ['class' => 'warning'];
-            }elseif($model->confirm == Paymentinvoice::CONFIRM_CANCEL){  //отбой полный
-                 return ['class' => 'danger'];//label label-default glyphicon glyphicon-time;
+            if($model->cnt){
+                return ['class' => 'danger', 'style' => 'color:#ba1313; background-color: #ba1313;'];
+            } else {
+                 return ['class' => 'info'];
             }
-            elseif($model->date_payment != NULL & $model->confirm == Paymentinvoice::CONFIRM_AGREE){
-                return ['class' => 'default', 'style' => 'color: #b2b2b2'];
-           }
+//            if($model->date_payment == NULL & $model->confirm == false){ //еще нет оплаты
+//                return ['class' => 'info', 'style' => 'color:#ba1313'];
+//            }elseif(($model->date_payment != NULL & $model->confirm == false) || ($model->date_payment == NULL & $model->confirm == Paymentinvoice::CONFIRM_AGREE)){ //еще не подтвердил шеф   =0
+//                return ['class' => 'warning'];
+//            }elseif($model->confirm == Paymentinvoice::CONFIRM_CANCEL){  //отбой полный
+//                 return ['class' => 'danger'];//label label-default glyphicon glyphicon-time;
+//            }
+//            elseif($model->date_payment != NULL & $model->confirm == Paymentinvoice::CONFIRM_AGREE){
+//                return ['class' => 'default', 'style' => 'color: #b2b2b2'];
+//            }
         },
        'columns' => [
          //   ['class' => 'yii\grid\SerialColumn'],
@@ -120,6 +125,11 @@ $this->params['breadcrumbs'][] = $this->title;
                            ]);
                 },
                 ],*/
+           
+            [
+                'attribute' => 'cnt',
+                'format' => 'raw',
+            ],
             'idpaymenti',
             [
                 'attribute' => 'idsupplier',
@@ -133,7 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'invoice',
                 'format' => 'raw',
                 'value' =>function($model){
-                    return Html::a('№ ' . $model->invoice . 'от ' . $model->date_invoice, ['paymentinvoice/itemsin', 'idinvoice' => $model->idpaymenti]);
+                    return Html::a('№ ' . $model->invoice . ' от ' . $model->date_invoice, ['paymentinvoice/itemsin', 'idinvoice' => $model->idpaymenti]);
                 }
             ],
             [

@@ -68,7 +68,7 @@ class PaymentinvoiceController extends Controller
      //   if (Yii::$app->request->post('hasEditable')) {
             
      //   }
-       
+
         return $this->render('index', [
             'model' =>$model,
             'modelacc' =>$modelacc,

@@ -211,7 +211,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                    return '<span class="glyphicon glyphicon-ok" style="color: green"> На складе</span>';
                                 }elseif($model->status == '4'){
                                     return '<span class="glyphicon glyphicon-cancel" style="color: grey"> Отмена</span>';
-                                }
+                                } elseif($model->status == '5'){ //done
+                                    return '<span class="glyphicon glyphicon-import" style="color: #257fc5; white-space: normal;"> Выполнено частично</span>';
+                                };
                             },
                             'filter' => ['2'=> 'Заказано', '3' => 'На складе']
                         ],

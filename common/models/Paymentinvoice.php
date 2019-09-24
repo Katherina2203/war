@@ -102,7 +102,16 @@ class Paymentinvoice extends \yii\db\ActiveRecord
             'price' => Yii::t('app', 'Цена'),
             'tracking_number' => Yii::t('app', 'Декларация'),
             'usd' => Yii::t('app', 'Курс доллара'),
+            'cnt' => Yii::t('app', 'Не доставленные позиции'),
         ];
+    }
+    
+    public function attributes()
+    {
+        // делаем поле зависимости доступным для поиска
+        return array_merge(parent::attributes(), [
+            'cnt', //count
+        ]);
     }
     
     public function getPayer()
@@ -113,7 +122,8 @@ class Paymentinvoice extends \yii\db\ActiveRecord
     public function getAccounts(){
         return $this->hasMany(Accounts::className(), ['idinvoice' => 'idpaymenti']);
                 
-    }   
+    }
+
     public function getInvoicelist(){
         
         $users = Users::find()
