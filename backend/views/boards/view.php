@@ -8,6 +8,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+use yii\bootstrap\Tabs;
 /* @var $this yii\web\View */
 /* @var $model common\models\Boards */
 
@@ -103,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box box-solid bg-gray-light" style="border: 1px solid #d2d6de;">
                         <div class="box-body">
                             <span>Поиск для добавления в перечень:</span>
-                                <?php  echo $this->render('_searchelem', ['modelsearchelem' => $modelsearchelem]); ?>
+                                <?php echo $this->render('_searchelem', ['searchModelelem' => $searchModelelem]); ?>
                         </div>
                     </div>
                 </div>
@@ -111,18 +112,38 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         
         
-        <div class="container-items">
+        
             
             <div class="container-items"><!-- widgetContainer -->
-              
+               
+                    <?= Tabs::widget([
+                            'items' => [
+                                [
+                                    'label' => 'Specification',
+                                  //  'content' => $this->render('view', ['id'=> $model->idboards, 'model' => $model, 'form' => $form]),
+                                    'active' => true
+                                ],
+                                [
+                                    'label' => 'Template of the specification',
+                                    'content' => $this->render('outof', ['model' => $modelOut, 'dataProvideroutof' => $dataProvideroutof]),
+                                    'active' => true
+                                ],
+                                [
+                                    'label' => 'Out of stock',
+                                    'content' => $this->render('outof', ['model' => $modelOut, 'dataProvideroutof' => $dataProvideroutof]),
+                                ],
+                                [
+                                    'label' => 'Requests',
+                                    'content' => $this->render('requests', ['searchModelrequest' => $searchModelrequest, 'dataProviderreq' => $dataProviderreq]),
+                                ],
+                                [
+                                    'label' => 'Shortage',
+                                    'content' => $this->render('shortage', ['dataProvidersh' => $dataProvidersh, 'searchModelsh' => $searchModelsh]),
+                                ],
+                            ]]);
+                    ?>
                     <?php // Html::a('Недостачи', ['shortage', 'idboard' => $model->idboards], ['class' => 'btn btn-primary']) ?>
-                    <ul class="nav nav-tabs">
-                        <li role="presentation" class="active"><a href="<?= Url::to(['boards/view', 'id'=> $model->idboards]) ?>"><?= 'Specification' ?></a></li>
-                        <li role="presentation"><a href="<?= Url::to(['boards/specificationtemplate', 'id' => $model->idboards]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'Template of the specification' ?></a></li>
-                        <li role="presentation"><a href="<?= Url::to(['boards/outof', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
-                        <li role="presentation" ><a href="<?= Url::to(['boards/requests', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Requests'?></a></li>
-                        <li role="presentation" ><a href="<?= Url::to(['boards/shortage', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Shortage'?></a></li>
-                    </ul>
+            </div>  
              
                 <div class="item panel panel-default"><!-- widgetBody -->
                            <div class="panel-heading">
@@ -140,7 +161,7 @@ $this->params['breadcrumbs'][] = $this->title;
                               <?php Pjax::begin(['id' => 'specifications']); ?>  
                                 <?= GridView::widget([
                                         'dataProvider' => $dataProviderspec,
-                                        'filterModel' => $searchmodelspec,
+                                        'filterModel' => $searchModelspec,
                                    
                                         'tableOptions' => [
                                             'class' => 'table table-striped table-bordered'
@@ -215,12 +236,12 @@ $this->params['breadcrumbs'][] = $this->title;
                               <!-- .row -->
                             <?php Pjax::end(); ?>  
                            </div>
-                       </div>
-
+                </div>
+     
             </div>
             <?php DynamicFormWidget::end(); ?>
-    </div>
-   
-</div>
 
+   
+    </div>
+</div>
 

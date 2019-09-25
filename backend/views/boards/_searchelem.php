@@ -16,13 +16,13 @@ use yii\widgets\ActiveForm;
     ]); ?>
     <div class="row">
          <div class="col-lg-2">
-            <?= $form->field($modelsearchelem, 'idelements')->textInput(['placeholder' => 'Search by Id element']) ?>
+            <?= $form->field($searchModelelem, 'idelements')->textInput(['placeholder' => 'Search by Id element']) ?>
         </div>
         <div class="col-lg-4">
-            <?= $form->field($modelsearchelem, 'name')->textInput(['placeholder' => 'Search by Name']) ?>
+            <?= $form->field($searchModelelem, 'name')->textInput(['placeholder' => 'Search by Name']) ?>
         </div>
         <div class="col-lg-5">
-            <?= $form->field($modelsearchelem, 'nominal')->textInput(['placeholder' => 'Search by Nominal']) ?>
+            <?= $form->field($searchModelelem, 'nominal')->textInput(['placeholder' => 'Search by Nominal']) ?>
         </div>
     </div>
     <div class="form-group">

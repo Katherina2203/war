@@ -65,25 +65,7 @@ class BoardsController extends Controller
         ]);
     }
     
-    public function actionRequests($idb)
-    {
-        $model = $this->findModel($idb);
-        $modelrequests = new Requests();
-        $searchModel = new RequestsSearch();
-        
-        $query = Requests::find()->where(['idboard' => $idb])->orderBy('created_at DESC');
-        $dataProviderreq = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-        
-        return $this->render('requests', [
-            'model' => $model,
-            'modelrequests' => $modelrequests,
-            'dataProviderreq' => $dataProviderreq,
-            'searchModel' => $searchModel,
-        ]);
-    }
-    
+
     public function actionCurrentboard()
     {
         $searchModel = new BoardsSearch();
@@ -110,35 +92,62 @@ class BoardsController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        $searchModeloutof = new OutofstockSearch();
+        $model = $this->findModel($id); //model of boards
+        
        // $modelsearchelem = new SearchByElem();
-        $modelsearchelem = new ElementsSearch(); //ElementsSearch();
+        $searchModelelem = new ElementsSearch(); //ElementsSearch();
         
      //   $modelelem = new Elements();
-        $modelspec = new Specification();
         
+        
+        $modelOut = new Outofstock();
+        $searchModeloutof = new OutofstockSearch();
         $queryoutof = Outofstock::find()->with(['elements', 'users'])->where(['idboart' => $id]);
         $dataProvideroutof = new ActiveDataProvider([
             'query' => $queryoutof,
             'pagination' =>['pageSize' => 50],
         ]);
         
-        $searchmodelspec = new SpecificationSearch();
+        $modelspec = new Specification();
+        $searchModelspec = new SpecificationSearch();
         $queryspec = Specification::find()->with(['elements'])->where(['idboard' => $id]);
         $dataProviderspec = new ActiveDataProvider([
             'query' => $queryspec,
             'pagination' =>['pageSize' => 50],
         ]);
         
+        $modelrequests = new Requests();
+        $searchModelrequest = new RequestsSearch();
+        
+        $queryreq = Requests::find()->where(['idboard' => $id])->orderBy('created_at DESC');
+        $dataProviderreq = new ActiveDataProvider([
+            'query' => $queryreq,
+        ]);
+        
+        $modelsh = new Shortage();
+        $searchModelsh = new \backend\models\ShortageSearch();
+        
+        $query = Shortage::find()->where(['idboard' => $id]);
+        $dataProvidersh = new \yii\data\ActiveDataProvider([
+            'query' => $query,
+        ]);
+        
         return $this->render('view', [
             'model' => $model,
+            'modelOut' => $modelOut,
+            'modelsh' => $modelsh,
+            'modelspec' => $modelspec,
+            'modelrequests' => $modelrequests,
             'dataProvideroutof' => $dataProvideroutof,
             'dataProviderspec' => $dataProviderspec,
             'searchModeloutof' => $searchModeloutof,
-            'modelsearchelem' => $modelsearchelem,
-            'searchmodelspec' =>$searchmodelspec,
-            'modelspec' => $modelspec,
+            'searchModelelem' => $searchModelelem,
+            'searchModelsh' => $searchModelsh,
+            'dataProviderreq' => $dataProviderreq,
+            'dataProvidersh' => $dataProvidersh,
+            'searchModelspec' =>$searchModelspec,
+            'searchModelrequest' => $searchModelrequest,
+           
         ]);
     }
 
@@ -220,47 +229,8 @@ class BoardsController extends Controller
     }
     echo Json::encode(['output'=>'', 'selected'=>'']);
     }
-    public function actionShortage($idboard) 
-    {
-        $model = $this->findModel($idboard);
-        $modelsh = new Shortage();
-        $searchModelsh = new \backend\models\ShortageSearch();
-        
-        $query = Shortage::find()->where(['idboard' => $idboard]);
-        $dataProvidersh = new \yii\data\ActiveDataProvider([
-            'query' => $query,
-        ]);
-        
-          return $this->render('shortage', [
-               'model' => $model,
-               'modelsh' => $modelsh,
-               'searchModelsh' => $searchModelsh,
-               'dataProvidersh' => $dataProvidersh,
-             ]);
-        
-    }
-    
-    public function actionOutof($idboard)
-    {
-        $model = $this->findModel($idboard);
-        $searchModeloutof = new OutofstockSearch();
-        
-        $modelsearchelem = new ElementsSearch();
-         
-        $queryoutof = Outofstock::find()->with(['elements', 'users'])->where(['idboart' => $idboard]);
-        $dataProvideroutof = new ActiveDataProvider([
-            'query' => $queryoutof,
-            'pagination' =>['pageSize' => 50],
-        ]);
-        
-         return $this->render('outof', [
-               'model' => $model,
-               'dataProvideroutof' => $dataProvideroutof,
-               'searchModeloutof' => $searchModeloutof,
-               'modelsearchelem' => $modelsearchelem
-             ]);
-        
-    }
+   
+ 
     /**
      * Deletes an existing Boards model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

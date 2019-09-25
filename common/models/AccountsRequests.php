@@ -24,25 +24,25 @@ class AccountsRequests extends \yii\db\ActiveRecord
     {
         // делаем поле зависимости доступным для поиска
         return array_merge(parent::attributes(), [
-            'requests_quantity', 
-            'received_quantity', 
-            'requests_status',
-            'accounts_id',
-            'unit_price',
-            'accounts_quantity',
-            'amount',
-            'invoice_name',
-            'accounts_status',
-            'invoice_id',
-            'elements_id',
-            'project_name',
-            'board_id',
-            'users_name',
-            'delivery',
-            'date_receive',
-            'elements_name',
-            'elements_nominal',
-            
+            'requests_quantity', //requests.quantity
+            'received_quantity', //accounts_requests.quantity
+            'requests_status', //requests.status
+            'accounts_id', //accounts_requests.accounts_id
+            'unit_price', //prices.unitPrice
+            'accounts_quantity', //accounts.quantity
+            'amount', //accounts.amount
+            'invoice_name', //CONCAT('№', pi.invoice, ' от ', pi.date_invoice ) 
+            'accounts_status', //accounts.status
+            'invoice_id', //paymentinvoice.idpaymenti
+            'elements_id', //requests.estimated_idel
+            'project_name', //themes.name
+            'board_id', //requests.idboard
+            'users_name', //users.surname
+            'delivery', //accounts.delivery
+            'date_receive', //accounts.date_receive
+            'elements_name', //elements.name
+            'elements_nominal', //elements.nominal
+            'total_quantity', //SUM(accounts_requests.quantity)
 
         ]);
     }
@@ -53,12 +53,12 @@ class AccountsRequests extends \yii\db\ActiveRecord
         SELECT 
             ar.id as id,
             r.idrequest as requests_id, 
-            r.quantity as requests_quantity, 
+            FORMAT(r.quantity, 0) as requests_quantity,  
             FORMAT(ar.quantity, 0) as received_quantity, 
             r.status as requests_status,
             ar.accounts_id as accounts_id,
             FORMAT(p.unitPrice, 2) as unit_price,
-            a.quantity as accounts_quantity,
+            FORMAT(a.quantity, 0) as accounts_quantity,
             FORMAT(a.amount, 2) as amount,
             CONCAT('№', pi.invoice, ' от ', pi.date_invoice ) as invoice_name,
             a.status as accounts_status, 
@@ -83,6 +83,57 @@ class AccountsRequests extends \yii\db\ActiveRecord
         return AccountsRequests::findBySql($sSql, ['estimated_idel' => $id]);
     }
     
+    /**
+     * The method returns a list of requests related to the account
+     * @param integer $accounts_id
+     * @return query object
+     */
+    public static function getRequestsOfAccount($accounts_id, $requests_id = null)
+    {        
+        $sSql = "
+        SELECT 
+            ar.id as id, 
+            ar.requests_id as requests_id, 
+            ar.accounts_id as accounts_id,
+            ar.quantity as quantity,
+            FORMAT(ar.quantity, 0) as received_quantity, 
+            FORMAT(r.quantity, 0) as requests_quantity, 
+            r.status as requests_status ,
+            ar_sum.quantity as total_quantity
+
+        FROM accounts_requests ar, requests r, 
+            (SELECT 
+                requests_id as requests_id,
+                SUM(quantity) as quantity
+            FROM
+                accounts_requests
+            GROUP BY 
+                requests_id) ar_sum
+        WHERE r.idrequest = ar.requests_id 
+        AND ar_sum.requests_id = ar.requests_id 
+        AND ar.accounts_id = :accounts_id 
+        
+        ";
+        //AND r.status != '" . Requests::REQUEST_DONE . "'
+        $aParam = ['accounts_id' => $accounts_id];
+        if (!is_null($requests_id)) {
+            $sSql .= ' AND ar.requests_id != :requests_id ';
+        }
+        return AccountsRequests::findBySql($sSql, $aParam);
+    }
+    
+    
+    /**
+     * The method returns a list of accounts of this invoice related to the request
+     * @param integer $invoices_id - the invoice ID
+     * @param integer $requests_id - the request ID
+     * @param integer $elements_id - the element ID 
+     *  if the element ID is not null 
+     *  then the accounts 
+     *      that are not related to the request but they have the same element ID 
+     *  will be returned too
+     * @return query object
+     */
     public static function getAccountsForRequest($invoices_id, $requests_id, $elements_id = null)
     {
         $sSql = "
@@ -90,7 +141,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
                 ar.requests_id as requests_id,
                 ar.accounts_id as accounts_id,
                 FORMAT(p.unitPrice, 2) as unit_price,
-                a.quantity as accounts_quantity,
+                FORMAT(a.quantity, 0) as accounts_quantity,
                 FORMAT(a.amount, 2) as amount,
                 a.status as accounts_status, 
                 a.idelem as elements_id, 

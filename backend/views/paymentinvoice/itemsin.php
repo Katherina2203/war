@@ -122,6 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'floatHeader' => true,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
+                        'sorting',
                         'idord',
                         [
                             'attribute' => 'requests_id',
@@ -210,22 +211,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                    return '<span class="glyphicon glyphicon-ok" style="color: green"> На складе</span>';
                                 }elseif($model->status == '4'){
                                     return '<span class="glyphicon glyphicon-cancel" style="color: grey"> Отмена</span>';
-                                }
+                                } elseif($model->status == '5'){ //done
+                                    return '<span class="glyphicon glyphicon-import" style="color: #257fc5; white-space: normal;"> Выполнено частично</span>';
+                                };
                             },
                             'filter' => ['2'=> 'Заказано', '3' => 'На складе']
                         ],
                         'date_receive',
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{view} {editinvoice} {deletefrom} {receipt} {changeprice}',
+                            'template' => '{view} {edit_account} {deletefrom} {receipt} {changeprice}',
                             'controller' => 'accounts',
                             'buttons' => [
                                 'deletefrom' => function ($url,$model,$key) {
                                     $url = Url::to(['deletefrom', 'id' => $key]);
                                   
                                 },
-                                'editinvoice' => function ($url,$model,$key) {
-                                    $url = Url::to(['editinvoice', 'id' => $key]);
+                                'edit_account' => function ($url,$model,$key) {
+                                    $url = Url::to(['accounts/edit-account', 'idinvoice' => $model->idinvoice, 'idaccount' => $model->idord]);
                                     return $model->status == '2' ? Html::a('<span class="glyphicon glyphicon-edit"></span>', $url,['title' => 'Редактировать позицию в счете'])
                                     : '';
                                 },

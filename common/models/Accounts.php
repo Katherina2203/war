@@ -79,7 +79,7 @@ class Accounts extends \yii\db\ActiveRecord
     {
         return [
             [['idelem', 'idprice', 'quantity', 'delivery', 'date_receive', 'amount'], 'required'],
-            [['idelem', 'idprice', 'idinvoice', 'created_by' , 'edited_by'], 'integer'],
+            [['idelem', 'idprice', 'idinvoice', 'created_by' , 'edited_by', 'sorting'], 'integer'],
             [['date_receive'], 'safe'],
             ['status', 'default', 'value' => self::ACCOUNTS_ORDERED],
             [['quantity','status'], 'string', 'max' => 48],
@@ -88,11 +88,11 @@ class Accounts extends \yii\db\ActiveRecord
            // [['amount'], 'number', 'min'=>0,],
           
             //SCENARIO_REQUEST_BY_ID rules
-            [['idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive'], 'required', 'on' => self::SCENARIO_REQUEST_BY_ID],
-            [['idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive'], 'trim', 'on' => self::SCENARIO_REQUEST_BY_ID],
-//            [['date_receive'], 'date', 'on' => self::SCENARIO_REQUEST_BY_ID],
-            [['amount', 'quantity'], 'double', 'on' => self::SCENARIO_REQUEST_BY_ID],
-            [['idelem', 'idinvoice',], 'integer', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive', 'sorting'], 'required', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive', 'sorting'], 'trim', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['amount'], 'double', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['idelem', 'idinvoice', 'quantity'], 'integer', 'on' => self::SCENARIO_REQUEST_BY_ID],
+            [['sorting'], 'integer', 'min' => 1, 'on' => self::SCENARIO_REQUEST_BY_ID],
             [['delivery'], 'string', 'on' => self::SCENARIO_REQUEST_BY_ID, 'max' => 10],
         ];
     }
@@ -100,7 +100,7 @@ class Accounts extends \yii\db\ActiveRecord
     public function scenarios() {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_REQUEST_BY_ID] = [
-            'idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive',
+            'idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive', 'sorting',
         ];
         return $scenarios;
     }
@@ -124,6 +124,7 @@ class Accounts extends \yii\db\ActiveRecord
             'amount' => Yii::t('app', 'Сумма'),
          //   'idpayer' => 'Плательщик',
             'date_receive' => Yii::t('app', 'Дата получения'),
+            'sorting' => Yii::t('app', 'Порядок в счете'),
             'created_at' => Yii::t('app', 'Дата создания'),
             'created_by' =>  Yii::t('app', 'Кем создано'),
             'updated_at' => Yii::t('app', 'Дата обновления'),

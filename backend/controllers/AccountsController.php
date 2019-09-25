@@ -223,36 +223,51 @@ class AccountsController extends Controller
     
     public function actionCreateitem($idinvoice)
     {
-        $model = new Accounts();
         $modelpurchase = new Purchaseorder();
+        $modelAccountsRequests = new AccountsRequests();
+        $modelel = new Elements();
+
+        $oldSorting = (new \yii\db\Query())->from('accounts')->where(['idinvoice' => $idinvoice])->max('sorting') + 1;
+        
+        $model = new Accounts();
         $model->idinvoice = $idinvoice;
         $model->delivery = '1 week';
         $model->date_receive = $modelpurchase->date;
+        $model->sorting = $oldSorting;
         
-        $modelAccountsRequests = new AccountsRequests();
-       
-        $modelel = new Elements();
+        if ($model->load(Yii::$app->request->post()) && $modelAccountsRequests->load(Yii::$app->request->post()) && $model->validate() && $modelAccountsRequests->validate()) {
+            
+            $transaction = Yii::$app->db->beginTransaction();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->status = '2';
-            $modelpurchase->idelement = $model->idelem;
-            $bResult = $model->save(false);
-            
-            $modelAccountsRequests->requests_id = intval($_POST['AccountsRequests']['requests_id']);
-            $modelAccountsRequests->accounts_id = $model->idord;
-            $modelAccountsRequests->save();
-            
-            if($bResult){
+            try {
+                $this->changeSorting($oldSorting, $model);
+                $model->status = '2';
+                $modelpurchase->idelement = $model->idelem;
+                $model->save(false);
+
+//                $modelAccountsRequests->requests_id = intval($_POST['AccountsRequests']['requests_id']);
+                $modelAccountsRequests->accounts_id = $model->idord;
+                $modelAccountsRequests->save();
+
+                $transaction->commit();
+
+
                 Yii::$app->session->setFlash('success', 'Товар успешно добавлен в счет!');
                 return $this->redirect(['paymentinvoice/itemsin', 'idinvoice' => $model->idinvoice]);
+            } catch(\Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+            } catch(\Throwable $e) {
+                    $transaction->rollBack();
             }
-        } else {
-            return $this->render('createitem', [
-                'model' => $model,
-                'modelpurchase' => $modelpurchase,
-                'modelAccountsRequests' => $modelAccountsRequests,
-            ]);
+
         }
+        return $this->render('createitem', [
+            'model' => $model,
+            'modelpurchase' => $modelpurchase,
+            'modelAccountsRequests' => $modelAccountsRequests,
+        ]);
+        
     }
     
     public function actionCreatein($id)
@@ -289,6 +304,121 @@ class AccountsController extends Controller
         }
     }
     
+    /**
+     * The method resorts accounts in an invioce in accordance with new changes
+     * @param integer $oldSorting - an old sorting position of an edited account
+     * @param object $modelAccounts - an object of Account class
+     */
+    public function changeSorting($oldSorting, $modelAccounts)
+    {
+        if ($oldSorting > $modelAccounts->sorting) {
+            Yii::$app->db->createCommand()
+                ->update('accounts', 
+                    ['sorting' => new \yii\db\Expression('(sorting + 1)')], 
+                    'idinvoice = :idinvoice AND sorting >= :newSorting AND sorting < :oldSorting', 
+                    [
+                        ':idinvoice' => $modelAccounts->idinvoice, 
+                        ':newSorting' => $modelAccounts->sorting, 
+                        ':oldSorting' => $oldSorting,
+                    ])
+                ->execute();
+        } elseif ($oldSorting < $modelAccounts->sorting) {
+            //this is unnecessary for a new record
+            //may be it could be useful for editing
+//            $iMaxSorting = (new \yii\db\Query())->from('accounts')->where(['idinvoice' => $idinvoice])->max('sorting');
+//            $iMaxSorting = $modelAccounts->isNewRecord ? $iMaxSorting + 1 : $iMaxSorting;
+//            if ($modelAccounts->sorting > $iMaxSorting) {
+//                $modelAccounts->sorting = $iMaxSorting;
+//            }
+            if ($oldSorting != $modelAccounts->sorting) {
+                Yii::$app->db->createCommand()
+                    ->update('accounts', 
+                        ['sorting' => new \yii\db\Expression('(sorting - 1)')], 
+                        'idinvoice = :idinvoice AND sorting <= :newSorting AND sorting > :oldSorting', 
+                        [
+                            ':idinvoice' => $modelAccounts->idinvoice, 
+                            ':newSorting' => $modelAccounts->sorting, 
+                            ':oldSorting' => $oldSorting,
+                        ])
+                    ->execute();
+            }
+        }
+    }
+    
+    public function actionEditAccount($idinvoice, $idaccount)
+    {
+        //checking a valid Paymentinvoice Id
+        $modelPaymentinvoice = Paymentinvoice::findOne($idinvoice);
+        if(is_null($modelPaymentinvoice)) {
+            return $this->redirect(['paymentinvoice/index']);
+        }
+        
+        //checking a valid Account Id
+        $modelAccounts = Accounts::findOne($idaccount);
+        $modelAccounts->scenario = Accounts::SCENARIO_REQUEST_BY_ID;
+        if(is_null($modelAccounts) || $modelAccounts->idinvoice != $idinvoice) {
+            return $this->redirect(['paymentinvoice/itemsin', 'id' => $idinvoice]);
+        }
+        $oldSorting = $modelAccounts->sorting;
+        
+        $modelPrices = Prices::findOne($modelAccounts->idprice);
+        $modelPrices->scenario = Prices::SCENARIO_REQUEST_BY_ID;
+        
+        
+        if ($modelPrices->load(Yii::$app->request->post()) && $modelAccounts->load(Yii::$app->request->post()) && $modelPrices->validate() && $modelAccounts->validate()) {
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
+
+            try {
+                $modelPrices->idel = $modelAccounts->idelem;
+                $modelPrices->save(false);
+
+                //changing sorting of the other accounts
+                $this->changeSorting($oldSorting, $modelAccounts);
+                $modelAccounts->save(false);
+                
+
+                $aModelAccountsRequests = $modelAccounts->accountsRequests;
+                if (!empty($aModelAccountsRequests)) {
+                    foreach ($aModelAccountsRequests as $modelAccountsRequests) {
+                        $modelRequests = Requests::findOne($modelAccountsRequests->requests_id);
+                        $modelRequests->estimated_idel = $modelAccounts->idelem;
+                        $modelRequests->save();
+                        
+                        Yii::$app->db->createCommand()
+                            ->update('purchaseorder', 
+                                ['idelement' => $modelAccounts->idelem], 
+                                'idrequest = :idrequest', 
+                                [':idrequest' => $modelAccountsRequests->requests_id,])
+                            ->execute();
+                    }
+                }
+
+                $transaction->commit();
+
+                if (Amounts::checkAmount($modelPrices, $modelAccounts)) {
+                    Yii::$app->session->setFlash('success', 'Позиция в счете была изменена!');
+                } else {
+                    Yii::$app->session->setFlash('warning', 'Позиция в счете была изменена! Но общая сумма не совпадает с расчетной.');
+                }
+                return $this->redirect(['paymentinvoice/itemsin', 'idinvoice' => $modelPaymentinvoice->idpaymenti]);
+                
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
+            
+        } //if ($modelPrices->load(Yii::$app->request->post()) 
+       
+        return $this->render('addrequest', [
+            'modelAccounts' => $modelAccounts,
+            'modelPaymentinvoice' => $modelPaymentinvoice,
+            'modelPrices' => $modelPrices,
+        ]);
+    }
+    
     public function actionAddToAccount($accounts_id, $requests_id)
     {        
         //checking a valid Accounts Id
@@ -310,6 +440,10 @@ class AccountsController extends Controller
             $modelAccountsRequests->requests_id = $requests_id;
             $modelAccountsRequests->quantity = 0;
             $modelAccountsRequests->save();
+            
+            $modelRequests->status = strval(Requests::REQUEST_ACTIVE);
+            $modelRequests->save(false);
+            
         }
         
         return $this->redirect(['accounts/addrequest', 'idinvoice' => $modelAccounts->idinvoice, 'idrequest' => $requests_id]);
@@ -346,6 +480,7 @@ class AccountsController extends Controller
         $modelPrices->forUP = '1';
         $modelPrices->idcurrency = '1';
         
+        $iMaxSorting = (new \yii\db\Query())->from('accounts')->where(['idinvoice' => $idinvoice])->max('sorting');
 
         $modelAccounts = new Accounts(['scenario' => Accounts::SCENARIO_REQUEST_BY_ID]);
         $modelAccounts->idinvoice = $modelPaymentinvoice->idpaymenti;
@@ -353,6 +488,7 @@ class AccountsController extends Controller
         $modelAccounts->status = Accounts::ACCOUNTS_ORDERED;
         $modelAccounts->delivery = '1 week';
         $modelAccounts->date_receive = date('Y-m-d', time() + (86400 * 8));
+        $modelAccounts->sorting = $iMaxSorting + 1;
 
         if ($modelPrices->load(Yii::$app->request->post()) && $modelAccounts->load(Yii::$app->request->post()) && $modelPrices->validate() && $modelAccounts->validate()) {
 
@@ -369,8 +505,6 @@ class AccountsController extends Controller
                 $modelRequests->status = strval(Requests::REQUEST_ACTIVE);
                 $modelRequests->estimated_idel = $modelAccounts->idelem;
                 $modelRequests->save();
-                
-//Yii::$app->db->createCommand()->update('requests', ['status' => Requests::REQUEST_ACTIVE],['idrequest' => $modelRequests->idrequest])->execute();
 
                 $modelAccountsRequests = new AccountsRequests();
                 $modelAccountsRequests->accounts_id = $modelAccounts->idord;
