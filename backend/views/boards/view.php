@@ -17,50 +17,48 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="boards-view">
     <div class="row">
-         <div class="col-md-6">
+        <div class="col-md-4">
             <div class="box box-success">
                 <div class="box-header with-border"><span>Номер платы: <strong><?= $model->idtheme. '-'. $model->idthemeunit. '-'. $model->idboards;?></strong></span>
                     <h4><i class="glyphicon glyphicon-hdd"></i> <?= Html::encode($this->title) ?></h4>
+                    
+                    <div class="box-tools pull-right">
+                        <?= Html::a('Update', ['update', 'id' => $model->idboards], ['class' => 'btn btn-primary']) ?>
+                    </div>
                 </div>
             <div class="box-body">
-            
-                <p>
-                    <?= Html::a('Update', ['update', 'id' => $model->idboards], ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Delete', ['delete', 'id' => $model->idboards], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => 'Are you sure you want to delete this item?',
-                            'method' => 'post',
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                       'idboards',
+                        [
+                            'attribute' => 'idtheme',
+                            'value' =>  ArrayHelper::getValue($model, 'themes.name'),
                         ],
-                    ]) ?>
-             
-                </p>
-                 <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                   'idboards',
-                 /*   [
-                        'attribute' => 'name',
-                        'format' => 'raw',
-                        'value' => '<strong>'.$model->name.'</strong>', 
-                    ],*/
-                    [
-                        'attribute' => 'idtheme',
-                        'value' =>  ArrayHelper::getValue($model, 'themes.name'),
-                    ],
-                    [
-                        'attribute' => 'idthemeunit',
-                        'value' =>  ArrayHelper::getValue($model, 'themeunits.nameunit'),
-                    ],
+                        [
+                            'attribute' => 'idthemeunit',
+                            'value' =>  ArrayHelper::getValue($model, 'themeunits.nameunit'),
+                        ],
 
-                    [
-                        'attribute' => 'current',
-                        'value' =>  ArrayHelper::getValue($model, 'users.surname'),
+                        [
+                            'attribute' => 'current',
+                            'value' =>  ArrayHelper::getValue($model, 'users.surname'),
+                        ],
+                        'date_added',
+                        [
+                            'attribute' => 'discontinued',
+                            'label'=>'Актуальность',
+                            'format'=>'raw',
+                            'value'=> call_user_func(function($data){
+                                if($data->discontinued == '0'){ //not active
+                                   return '<span class="glyphicon glyphicon-unchecked" style="color: #d05d09"> Закрыта</span>';
+                                }elseif($data->discontinued == '1'){//active
+                                   return '<span class="glyphicon glyphicon-ok" style="color: green"> Активна</span>';
+                                } 
+                            }, $model),
+                        ],
                     ],
-                    'date_added',
-                    'discontinued',
-                ],
-            ]) ?>
+                ]) ?>
             </div>
           </div> 
         </div>
@@ -105,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box box-solid bg-gray-light" style="border: 1px solid #d2d6de;">
                         <div class="box-body">
                             <span>Поиск для добавления в перечень:</span>
-                            <?php  echo $this->render('_searchelem', ['model' => $searchModelelem]); ?>
+                                <?php  echo $this->render('_searchelem', ['modelsearchelem' => $modelsearchelem]); ?>
                         </div>
                     </div>
                 </div>
@@ -121,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <ul class="nav nav-tabs">
                         <li role="presentation" class="active"><a href="<?= Url::to(['boards/view', 'id'=> $model->idboards]) ?>"><?= 'Specification' ?></a></li>
                         <li role="presentation"><a href="<?= Url::to(['boards/specificationtemplate', 'id' => $model->idboards]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'Template of the specification' ?></a></li>
-                        <li role="presentation"><a href="<?= Url::to(['boards/outof', 'idboard' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
+                        <li role="presentation"><a href="<?= Url::to(['boards/outof', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
                         <li role="presentation" ><a href="<?= Url::to(['boards/requests', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Requests'?></a></li>
                         <li role="presentation" ><a href="<?= Url::to(['boards/shortage', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Shortage'?></a></li>
                     </ul>
@@ -142,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                               <?php Pjax::begin(['id' => 'specifications']); ?>  
                                 <?= GridView::widget([
                                         'dataProvider' => $dataProviderspec,
-                                        'filterModel' => $searchModelspec,
+                                        'filterModel' => $searchmodelspec,
                                    
                                         'tableOptions' => [
                                             'class' => 'table table-striped table-bordered'
@@ -183,9 +181,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 },
                                                 'contentOptions'=>['style'=>'width: 70px;'],
                                             ],
-                                       
-                                        //    'date',
-                                         //   'idtheme',
                                             [
                                                'attribute' => 'idprice',
                                                'label' => 'Цена',

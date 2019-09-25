@@ -26,7 +26,7 @@ class Paymentinvoice extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'paymentinvoice';
+        return '{{%paymentinvoice}}';
     }
 
       public function beforeSave($insert)

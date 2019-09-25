@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Tabs;
 use yii\bootstrap\Modal;
 use kartik\detail\DetailView;
+use wbraganca\dynamicform\DynamicFormWidget;
 
 use common\models\Users;
 /* @var $this yii\web\View */
@@ -78,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <ul class="nav nav-tabs">
         <li role="presentation"><a href="<?= Url::to(['boards/view', 'id'=> $model->idboards]) ?>"><?= 'Specification' ?></a></li>
         <li role="presentation"><a href="<?= Url::to(['boards/template', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-user"></span> <?=  'Template of the specification' ?></a></li>
-        <li role="presentation" class="active"><a href="<?= Url::to(['boards/outof', 'idboard' => yii::$app->user->identity->id]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
+        <li role="presentation" class="active"><a href="<?= Url::to(['boards/outof', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?= 'Out of stock' ?></a></li>
         <li role="presentation" ><a href="<?= Url::to(['boards/requests', 'idb' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Requests'?></a></li>
         <li role="presentation" ><a href="<?= Url::to(['boards/shortage', 'idboard' => $model->idboards]) ?>"><span class="glyphicon glyphicon-comment"></span> <?=  'Shortage'?></a></li>
     </ul>
@@ -148,64 +149,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                     ]); ?>
     </div>
-
-<div class="panel panel-default">
-        <div class="panel-heading"><h4><i class="glyphicon glyphicon-hdd"></i> Перечень электронных компонентов</h4></div>
-        <div class="panel-body">
-            <?php DynamicFormWidget::begin([
-                'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
-                'widgetBody' => '.container-items', // required: css class selector
-                'widgetItem' => '.item', // required: css class
-                'limit' => 4, // the maximum times, an element can be cloned (default 999)
-                'min' => 1, // 0 or 1 (default 1)
-                'insertButton' => '.add-item', // css class
-                'deleteButton' => '.remove-item', // css class
-                'model' => $model,
-                'formId' => 'dynamic-form',
-                'formFields' => [
-                    'full_name',
-                    'address_line1',
-                    'address_line2',
-                    'city',
-                    'state',
-                    'postal_code',
-                ],
-            ]); ?>
-            
-            
-            <div class="row">
-                <div class="search-form">
-                    <div class="box box-solid bg-gray-light" style="border: 1px solid #d2d6de;">
-                        <div class="box-body">
-                            <span>Поиск для добавления в перечень:</span>
-                            <?php  echo $this->render('_searchelem', ['model' => $searchModelelem]); ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        
-        <div class="container-items">
-            
-            <div class="container-items"><!-- widgetContainer -->
-                <div>
-                    <?= Html::a('Недостачи', ['shortage', 'idboard' => $model->idboards], ['class' => 'btn btn-primary']) ?>
-                </div>
-                       <div class="item panel panel-default"><!-- widgetBody -->
-                           <div class="panel-heading">
-                               
-                               <h3 class="panel-title pull-left">Elements</h3>
-                               <div class="pull-right">
-                                   <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
-                                   <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
-                               </div>
-                               <div class="clearfix"></div>
-                           </div>
-                           <div class="panel-body">
-                            <div>
-                                
-                            </div>
                                <div class="row">
                                 <?= GridView::widget([
                                         'dataProvider' => $dataProvideroutof,
@@ -232,6 +175,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ],
                                             [
                                                 'attribute' => 'iduser',
+                                                'label' => 'User',
                                                 'value' => 'users.surname',
                                                //   'filter' => Html::activeDropDownList($searchModeloutof, 'iduser', ArrayHelper::map(\common\models\Users::find()->select(['id', 'surname'])->indexBy('id')->all(), 'id', 'surname'),['class'=>'form-control','prompt' => 'Select user']),
                                             ],
@@ -268,13 +212,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                     ]); ?>
                                </div><!-- .row -->
-
-                           </div>
-                       </div>
-
-            </div>
-            <?php DynamicFormWidget::end(); ?>
-
 
         </div>
     </div>

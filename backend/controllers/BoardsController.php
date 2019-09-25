@@ -23,6 +23,7 @@ use common\models\Requests;
 use backend\models\RequestsSearch;
 use common\models\Specification;
 use backend\models\SpecificationSearch;
+use backend\models\SearchByElem;
 
 use common\models\BoardsQuery;
 /**
@@ -111,7 +112,8 @@ class BoardsController extends Controller
     {
         $model = $this->findModel($id);
         $searchModeloutof = new OutofstockSearch();
-        $searchModelelem = new ElementsSearch();
+       // $modelsearchelem = new SearchByElem();
+        $modelsearchelem = new ElementsSearch(); //ElementsSearch();
         
      //   $modelelem = new Elements();
         $modelspec = new Specification();
@@ -122,7 +124,7 @@ class BoardsController extends Controller
             'pagination' =>['pageSize' => 50],
         ]);
         
-        $searchModelspec = new SpecificationSearch();
+        $searchmodelspec = new SpecificationSearch();
         $queryspec = Specification::find()->with(['elements'])->where(['idboard' => $id]);
         $dataProviderspec = new ActiveDataProvider([
             'query' => $queryspec,
@@ -134,8 +136,8 @@ class BoardsController extends Controller
             'dataProvideroutof' => $dataProvideroutof,
             'dataProviderspec' => $dataProviderspec,
             'searchModeloutof' => $searchModeloutof,
-            'searchModelelem' => $searchModelelem,
-            'searchModelspec' =>$searchModelspec,
+            'modelsearchelem' => $modelsearchelem,
+            'searchmodelspec' =>$searchmodelspec,
             'modelspec' => $modelspec,
         ]);
     }
@@ -241,6 +243,9 @@ class BoardsController extends Controller
     public function actionOutof($idboard)
     {
         $model = $this->findModel($idboard);
+        $searchModeloutof = new OutofstockSearch();
+        
+        $modelsearchelem = new ElementsSearch();
          
         $queryoutof = Outofstock::find()->with(['elements', 'users'])->where(['idboart' => $idboard]);
         $dataProvideroutof = new ActiveDataProvider([
@@ -248,11 +253,11 @@ class BoardsController extends Controller
             'pagination' =>['pageSize' => 50],
         ]);
         
-         return $this->render('shortage', [
+         return $this->render('outof', [
                'model' => $model,
-            
-              
                'dataProvideroutof' => $dataProvideroutof,
+               'searchModeloutof' => $searchModeloutof,
+               'modelsearchelem' => $modelsearchelem
              ]);
         
     }

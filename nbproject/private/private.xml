@@ -3,17 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/xampp/htdocs/war/backend/views/site/_formrequest.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/accounts/additemquick.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/controllers/ElementsController.php</file>
-            <file>file:/D:/xampp/htdocs/war/common/models/RequestsQuery.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/requests/create.php</file>
-            <file>file:/D:/xampp/htdocs/war/common/models/Requests.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/site/index.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/requests/_form.php</file>
-            <file>file:/D:/xampp/htdocs/war/common/models/AccountsRequests.php</file>
-            <file>file:/D:/xampp/htdocs/war/common/models/Elements.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/controllers/AccountsController.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/boards/shortage.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/accounts/addrequest.php</file>
+            <file>file:/D:/xampp/htdocs/war/common/models/Paymentinvoice.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/shortage/index.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/models/RequestsByIdSearch.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/boards/outof.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/requests/view.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/models/SearchByElem.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/paymentinvoice/itemsin.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/boards/requests.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/boards/view.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/controllers/BoardsController.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/controllers/PaymentinvoiceController.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/boards/_searchelem.php</file>
         </group>
     </open-files>
 </project-private>
