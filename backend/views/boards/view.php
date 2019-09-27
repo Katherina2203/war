@@ -117,17 +117,31 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="container-items"><!-- widgetContainer -->
                
                     <?= Tabs::widget([
+                        'options' => [
+                            'class' => 'nav-tabs',
+                            'style' => 'margin-bottom: 15px',
+                        ],
                             'items' => [
                                 [
                                     'label' => 'Specification',
                                   //  'content' => $this->render('view', ['id'=> $model->idboards, 'model' => $model, 'form' => $form]),
-                                    'active' => true
+                                    'items' => [
+                                        [
+                                            'label' => 'Specification',
+                                            'content' => $this->render('specification', ['dataProviderspec' => $dataProviderspec, 'searchModelspec' => $searchModelspec]),
+                                        ],
+                                        [
+                                            'label' => 'Template of the specification',
+                                            'content' => $this->render('specificationtemplate', ['dataProviderspectemp' => $dataProviderspectemp, 'searchModelspectemp' => $searchModelspectemp]),
+                                        ],
+                                   ],
+                                    'active' => true,
                                 ],
-                                [
+                              /*  [
                                     'label' => 'Template of the specification',
                                     'content' => $this->render('outof', ['model' => $modelOut, 'dataProvideroutof' => $dataProvideroutof]),
                                     'active' => true
-                                ],
+                                ],*/
                                 [
                                     'label' => 'Out of stock',
                                     'content' => $this->render('outof', ['model' => $modelOut, 'dataProvideroutof' => $dataProvideroutof]),

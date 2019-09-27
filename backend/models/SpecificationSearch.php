@@ -18,7 +18,7 @@ class SpecificationSearch extends Specification
     public function rules()
     {
         return [
-            [['idspec', 'quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at', 'status'], 'safe'],
         ];
     }
@@ -59,7 +59,7 @@ class SpecificationSearch extends Specification
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idspec' => $this->idspec,
+            'id' => $this->id,
             'quantity' => $this->quantity,
             'idelement' => $this->idelement,
             'idboard' => $this->idboard,

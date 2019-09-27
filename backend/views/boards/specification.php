@@ -11,19 +11,16 @@ $this->title = Yii::t('app', 'Specification');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="specification-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<h2>Template of the specification</h2>
+   
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Source Message'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+  
+<?php Pjax::begin(); ?>    
+<?= GridView::widget([
+        'dataProvider' => $dataProviderspec,
+        'filterModel' => $searchModelspec,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'idspec',
             'quantity',
             'idelement',

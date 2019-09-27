@@ -4,19 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/xampp/htdocs/war/backend/views/boards/shortage.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/accounts/addrequest.php</file>
-            <file>file:/D:/xampp/htdocs/war/common/models/Paymentinvoice.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/shortage/index.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/models/RequestsByIdSearch.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/boards/outof.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/requests/view.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/models/SearchByElem.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/paymentinvoice/itemsin.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/boards/requests.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/boards/view.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/controllers/BoardsController.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/controllers/PaymentinvoiceController.php</file>
             <file>file:/D:/xampp/htdocs/war/backend/views/boards/_searchelem.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/users/myprofile.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/elements/index.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/users/viewmyprofile.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/boards/specification.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/boards/outof.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/controllers/AccountsController.php</file>
         </group>
     </open-files>
 </project-private>
