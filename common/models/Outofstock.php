@@ -1,9 +1,10 @@
 <?php
-
 namespace common\models;
-use yii\behaviors\TimestampBehavior;
+
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use common\models\Themes;
+
 /**
  * This is the model class for table "outofstock".
  *
@@ -19,6 +20,9 @@ use common\models\Themes;
  */
 class Outofstock extends \yii\db\ActiveRecord
 {
+    
+    const SCENARIO_OUT_OF_STOCK_QUICKLY = "out_of_stock_quickly";
+    
     /**
      * @inheritdoc
      */
@@ -42,16 +46,39 @@ class Outofstock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idelement', 'iduser', 'quantity',  'idtheme', 'idboart', 'ref_of_board'], 'required'], 
+            [['idelement', 'iduser', 'quantity', 'idtheme', 'idboart', 'ref_of_board'], 'required'], 
             [['idelement', 'iduser', 'quantity', 'idtheme', 'idthemeunit', 'idboart', 'idprice'], 'integer'],
             [['quantity'], 'safe'],
             ['idtheme', 'required', 'message' => 'Please enter a project'],
             ['idthemeunit', 'required', 'message' => 'Please enter a unit'],
             ['idboart', 'required', 'message' => 'Please enter a board'],
             [['ref_of_board'], 'string', 'max' => 64],
+            
+            //SCENARIO_OUT_OF_STOCK_QUICKLY rules
+            [['quantity', 'idboart',], 'required', 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
+            [['idelement', 'quantity', 'idboart',], 'integer', 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
+            [['quantity', 'idboart',], 'trim', 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
+            [['ref_of_board'], 'string', 'max' => 64, 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
+            [['idboart'], 'validateBoardId', 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
         ];
     }
+    
+    public function validateBoardId($attribute, $params)
+    {
+        if (!Boards::find()->where(['idboards' => $this->$attribute])->exists()) {
+            $this->addError($attribute, 'Такой платы нет.');
+        }
+    }
 
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_OUT_OF_STOCK_QUICKLY] = [
+            'idelement', 'quantity', 'idboart', 'ref_of_board',  // 'iduser', //'idelement', 
+        ];
+        return $scenarios;
+    }
+    
     /**
      * @inheritdoc
      */

@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div>
         <p>
-             <?= Html::a('Вернуть на склад', ['createreturn', 'idel' => $element->idelements, 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-default'])?>
+            <?= Html::a('Вернуть на склад', ['createreturn', 'idel' => $element->idelements, 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-default'])?>
+            <?= Html::a('<i class="fa fa-external-link"></i> Взять со склада быстро', ['createfromquick',  'idel' => $element->idelements, 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-warning']) ?>
             <?= Html::a('<i class="fa fa-external-link"></i> Взять со склада', ['createfrom',  'idel' => $element->idelements, 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-success']) ?>
 
         </p>

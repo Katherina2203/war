@@ -56,12 +56,12 @@ class ElementsController extends Controller
                       //  'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
-                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'addreceipt', 'createreceipt', 'update', 'viewcat', 'createfromquick', 'closeshortage'],
+                        'actions' => ['createreturn', 'create', 'tostock', 'addreceipt', 'createreceipt', 'update', 'viewcat', 'closeshortage'],
                     ],
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'actions' => ['index', 'view', 'orderquick', 'vue'],
+                        'actions' => ['index', 'view', 'orderquick', 'viewfrom', 'vue',  'createfromquick',  'createfrom',],
                     ],
                 ],
             ],
@@ -418,7 +418,48 @@ class ElementsController extends Controller
         }
     }
     
-     public function actionCreatefromquick($idel)
+    
+    public function actionCreatefromquick($idel)
+    {
+//        Yii::info('<pre>'. print_r(\yii::$app->user, true).'</pre>', 'ajax');
+        $modelElements = Elements::findOne($idel);
+        $modelOutofstock = new Outofstock(['scenario' => Outofstock::SCENARIO_OUT_OF_STOCK_QUICKLY]);
+        $modelOutofstock->idelement = $modelElements->idelements;
+        
+        if ($modelOutofstock->load(Yii::$app->request->post()) && $modelOutofstock->validate()) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $modelBoards = Boards::findOne($modelOutofstock->idboart);
+                $modelOutofstock->idtheme = $modelBoards->idtheme;
+                $modelOutofstock->idthemeunit = $modelBoards->idthemeunit;
+                $modelOutofstock->iduser = \yii::$app->user->id;
+                $modelOutofstock->save();
+
+                $modelElements->quantity -= $modelOutofstock->quantity;
+                $modelElements->save();
+                
+                $transaction->commit();
+                
+                Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
+                return $this->redirect(['elements/viewfrom', 'idel' => $modelOutofstock->idelement]);
+
+            } catch(\Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+            } catch(\Throwable $e) {
+                    $transaction->rollBack();
+            }
+        }
+        
+        return $this->render('createfromquick', [
+            'modelOutofstock' => $modelOutofstock,
+            'modelElements' => $modelElements,
+        ]);
+        
+        
+    }
+    
+    public function actionCreatefromquick2($idel)
     {
         $model = new Outofstock();
         $board = new Boards();
@@ -434,13 +475,12 @@ class ElementsController extends Controller
                
             
                   //  if($_POST['idboart'])){
-        if(!empty($model->idboart)){ 
-                    
-                        $model->idtheme = 114; //->where(['discontinued' => Boards::DISCONTINUED_ACTIVE])
-                        $model->idthemeunit = 113;
-                    }else{
-                         Yii::$app->session->setFlash('error', 'не указан номер платы');
-                    }
+            if(!empty($model->idboart)){ 
+                $model->idtheme = 114; //->where(['discontinued' => Boards::DISCONTINUED_ACTIVE])
+                $model->idthemeunit = 113;
+            }else{
+                Yii::$app->session->setFlash('error', 'не указан номер платы');
+            }
                     
             
            // $model->idtheme = $board->themes->idtheme;
@@ -485,7 +525,7 @@ class ElementsController extends Controller
            
         } else {
            // var_dump($model->getErrors());
-            return $this->render('createfromquick', [
+            return $this->render('createfromquick2', [
                 'model' => $model,
              //   'user' => $user,
                 'element' => $element,
