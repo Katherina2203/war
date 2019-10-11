@@ -359,10 +359,10 @@ class RequestsController extends Controller
                 return $this->redirect(['requests/view', 'id' => $idrequest]);
 
             } catch(\Exception $e) {
-                    $transaction->rollBack();
-                    throw $e;
+                $transaction->rollBack();
+                throw $e;
             } catch(\Throwable $e) {
-                    $transaction->rollBack();
+                $transaction->rollBack();
             }
 
         } //if ($model->load(Yii::$app->request->post()) && $model->validate()) {

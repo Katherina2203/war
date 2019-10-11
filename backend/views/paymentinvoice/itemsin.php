@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $modelpay->supplier->phone;  ?><br/>
             </div>
             <div class="col-sm-4 invoice-col">
-                <?= '<b>Плательщик:</b> <br/>' . $modelpay->payer->name;//idpayer  ?><br/>
+                <?= '<b>Плательщик:</b> <br/>' . (is_null($modelpay->idpayer) ? '-' : $modelpay->payer->name);//idpayer  ?><br/>
                 Вул. Печенизька, 8, Киев, 04107<br/>
             </div>
            
