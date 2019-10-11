@@ -272,26 +272,24 @@ $this->params['breadcrumbs'][] = $this->title;
   <?php Pjax::begin(); ?>
 
 </div>
-    <script type="text/javascript">
-$(function () { 
-            $("[data-toggle='tooltip']").tooltip(); 
-          });
-          $(function () { 
-                $("[data-toggle='popover']").popover(); 
-                    
-            });
-        });
+<script type="text/javascript">
+    $(function () { 
+        $("[data-toggle='tooltip']").tooltip(); 
     });
+//        $(function () { 
+//            $("[data-toggle='popover']").popover(); 
+//        });
 </script>
 
-<?php $this->registerJs(
- // Вызов модального окна формы заказа
-   "$('#modalButtonConfirm').on('click', function() {
-        $('#modalConfirm').modal('show')
-            .find('#modal-content')
-            .load($(this).attr('data-target'));
-    });
-  "
+<?php 
+    $this->registerJs(
+        // Вызов модального окна формы заказа
+       "$('#modalButtonConfirm').on('click', function() {
+            $('#modalConfirm').modal('show')
+                .find('#modal-content')
+                .load($(this).attr('data-target'));
+        });
+        "
     );
 ?>
 

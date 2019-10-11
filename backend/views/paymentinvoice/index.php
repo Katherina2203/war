@@ -120,13 +120,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?php echo Html::a('Создать счет', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(['id' => 'paymentinvoice']); ?>    
+<?php //Pjax::begin(['id' => 'paymentinvoice']); 
+ ?>    
     <?= GridView::widget([
        // 'id' => 'id-paymentinvoice-index',
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
      //   'columns'=>$gridColumns,
-        'pjax' => true,
+//        'pjax' => true,
         'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
         'headerRowOptions'=>['class'=>'kartik-sheet-style'],
         'filterRowOptions'=>['class'=>'kartik-sheet-style'],
@@ -136,21 +137,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'bordered' => true,
         'floatHeader' => true,
      //   'floatHeaderOptions' => ['scrollingTop' => $scrollingTop],
-        'toolbar'=> [
-            ['content'=>
-          //  Html::button('<i class="glyphicon glyphicon-plus"></i> Создать счет', [
-           //     'type'=>'button', 
-            //    'title'=>'Создать счет', 
-          //      'class'=>'btn btn-success', 
-               // 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");'
-           //     ]) . ' '.
-            Html::a('<i class="glyphicon glyphicon-plus"></i> Создать счет', ['create'], ['data-pjax'=>0, 
-                'class'=>'btn btn-success', 
-                'title'=>'Создать счет'])
-            ],
-       // '{export}',
-       // '{toggleData}',
-        ], 
+//        'toolbar'=> [
+//            ['content'=>
+//          //  Html::button('<i class="glyphicon glyphicon-plus"></i> Создать счет', [
+//           //     'type'=>'button', 
+//            //    'title'=>'Создать счет', 
+//          //      'class'=>'btn btn-success', 
+//               // 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");'
+//           //     ]) . ' '.
+//            Html::a('<i class="glyphicon glyphicon-plus"></i> Создать счет', ['create'], ['data-pjax'=>0, 
+//                'class'=>'btn btn-success', 
+//                'title'=>'Создать счет'])
+//            ],
+//       // '{export}',
+//       // '{toggleData}',
+//        ], 
         'rowOptions' => function($model, $key, $index, $grid){
             if($model->cnt){
                 return ['class' => 'danger', 'style' => 'color:#ba1313; background-color: #ba1313;'];
@@ -277,5 +278,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-  <?php Pjax::end(); ?>
+  <?php //Pjax::end();
+  ?>
 </div>
