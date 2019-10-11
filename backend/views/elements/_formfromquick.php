@@ -19,8 +19,8 @@ $boards = common\models\Boards::find()->select(['name', 'idboards'])->indexBy('i
 
 <div class="fromquick-form col-md-4">
     <div class="box box-success">
-          <div class="box-header with-border"><h2 class="box-title"><?= Html::encode($this->title) ?></h2></div>
-    <div class="box-body">
+        <div class="box-header with-border"><h2 class="box-title"><?= Html::encode($this->title) ?></h2></div>
+        <div class="box-body">
         <?php $form = ActiveForm::begin([
                // 'id' => 'form-add-intoinvoice', 
                 'enableClientValidation' => true,

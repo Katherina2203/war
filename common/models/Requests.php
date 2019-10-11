@@ -24,11 +24,13 @@ use yii\helpers\ArrayHelper;
  */
 class Requests extends \yii\db\ActiveRecord
 {
-    const REQUEST_NOACTIVE = 0; //
-    const REQUEST_ACTIVE = 1; //in progress
-    const REQUEST_CANCEL = 2; //cancel
-    const REQUEST_DONE = 3; //done
-    const REQUEST_DONE_PARTLY = 4; //done
+    const REQUEST_NOACTIVE = '0'; //
+    const REQUEST_ACTIVE = '1'; //in progress
+    const REQUEST_CANCEL = '2'; //cancel
+    const REQUEST_DONE = '3'; //done
+    const REQUEST_DONE_PARTLY = '4'; //done
+    
+    const SCENARIO_UPDATE_STATUS = "update_status";
     
     public $processing_count;
     
@@ -86,15 +88,23 @@ class Requests extends \yii\db\ActiveRecord
           //  ['status', 'in', 'range' => [self::REQUEST_ACTIVE, self::REQUEST_CANCEL]],
             [['name', 'description', 'status'], 'string', 'max' => 255],
             [['note'], 'string', 'max' => 128],
+            
+            //SCENARIO_UPDATE_STATUS rules
+            [['status',], 'required', 'on' => self::SCENARIO_UPDATE_STATUS],
+            [['note',], 'trim', 'on' => self::SCENARIO_UPDATE_STATUS],
+            [['note'], 'string', 'max' => 64, 'on' => self::SCENARIO_UPDATE_STATUS],
         ];
     }
     
-//    public function scenarios()
-//    {
-//        return [
-//            'default' => ['img', '!thumb'],
-//        ];
-//    }
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_UPDATE_STATUS] = [
+            'status', 'note',
+        ];
+        return $scenarios;
+    }
+    
     /**
      * @inheritdoc
      */
@@ -205,10 +215,11 @@ class Requests extends \yii\db\ActiveRecord
     public static function getStatusesArray()
     {
         return [
-            self::REQUEST_NOACTIVE => 'Не размещено',
+            self::REQUEST_NOACTIVE => 'Не обработано',
             self::REQUEST_ACTIVE => 'Активно',
             self::REQUEST_CANCEL => 'Отменено',
             self::REQUEST_DONE => 'Выполнено',
+            self::REQUEST_DONE_PARTLY => 'Выполнено частично',
         ];
     }
     

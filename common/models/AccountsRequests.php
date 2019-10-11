@@ -78,7 +78,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
 
         WHERE r.estimated_idel = :estimated_idel 
 
-        ORDER BY r.created_at DESC
+        ORDER BY r.created_at DESC, a.created_at DESC
         ";
         return AccountsRequests::findBySql($sSql, ['estimated_idel' => $id]);
     }

@@ -97,7 +97,8 @@ class Accounts extends \yii\db\ActiveRecord
         ];
     }
 
-    public function scenarios() {
+    public function scenarios()
+    {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_REQUEST_BY_ID] = [
             'idelem', 'quantity', 'idinvoice', 'amount', 'delivery', 'date_receive', 'sorting',

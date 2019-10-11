@@ -45,19 +45,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Создать заявку', ['create', 'iduser' => yii::$app->user->identity->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Начать обрабатывать', ['processingrequest/additem', 'idrequest' => $model->idrequest, 'idel' => $model->estimated_idel], ['class' => 'btn btn-warning'])?>
-        <?= Html::button('Change status', ['value' => Url::to(['updatestatus', 'idrequest' => $model->idrequest]), 'class' => 'btn btn-primary', 'id' => 'modalButtonProduce']) ?>
-        <?php Modal::begin([
+        <?php 
+            echo Html::button('Change status', ['value' => Url::to(['updatestatus', 'idrequest' => $model->idrequest]), 'class' => 'btn btn-primary', 'id' => 'modalButtonProduce']) ;
+            Modal::begin([
                 'header' => '<b>' . Yii::t('app', 'Update Request Status') . '</b>',
                 'id' => 'modalProduce',
                 'size' => 'modal-md',
                 'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE]
             ]);
                 echo "<div id='modal-content'>".
-                        $this->render('updatestatus', ['model' => $model, 'id' => $model->idrequest])
-                . "</div>";
+//                        $this->render('updatestatus2', ['model' => $model, 'id' => $model->idrequest]). 
+                        $this->render('updatestatus', ['modelRequests' => $model,]). 
+                "</div>";
 
-            Modal::end();?>
- <?php // Html::a('Change status', ['updatestatus', 'idrequest' => $model->idrequest], ['class' => 'btn btn-primary']) ?>
+            Modal::end();
+        ?>
+        <?php //echo Html::a('Change status', ['updatestatus', 'idrequest' => $model->idrequest], ['class' => 'btn btn-primary']); 
+        ?>
     </p>
    
     <h1>Заявка № <?= Html::encode($model->idrequest)?> - <?= Html::encode($this->title) ?></h1>
@@ -391,10 +395,11 @@ $this->params['breadcrumbs'][] = $this->title;
      
     </div> 
     <div class="row">
-        <div class="col col-md-10">
+        <div class="col col-md-12">
             <div class="box">
                 <div class="box-header"><h3>История заявки</h3></div>
-                    <?php Pjax::begin(); ?>    <?= GridView::widget([
+                    <?php Pjax::begin(); ?>
+                        <?= GridView::widget([
                             'dataProvider' => $dataProviderHistory,
                             'filterModel' => $searchModelHistory,
                             'columns' => [
@@ -405,15 +410,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'attribute' => 'status',
                                     'format' => 'raw',
-                                    'value' => function($model){
-                                        if($model->status == '0'){ //not active
+                                    'value' => function($model)
+                                    {
+                                        if ($model->status == '0') { //not active
                                             return '<span class="glyphicon glyphicon-unchecked" style="color: #d05d09"> Не обработано</span>';
-                                        }elseif($model->status == '1'){//active
+                                        } elseif ($model->status == '1') {//active
                                             return '<span class="glyphicon glyphicon-ok" style="color: green"> Активна</span>';
-                                        }elseif($model->status == '2'){//active
-                                            return '<span class="glyphicon glyphicon-remove" style="color: #888"> Отмена</span>';
-                                        }elseif($model->status == '3'){
-                                            return '<span class="glyphicon glyphicon-done" style="color: #888"> Выполнено</span>';
+                                        } elseif ($model->status == '2') {//cancel
+                                            return '<span class="glyphicon glyphicon-remove" style="color: #b02c0d"> Отменено</span>';
+                                        } elseif ($model->status == '3') { //done
+                                            return '<span class="glyphicon glyphicon-saved" style="color: grey"> Выполнено</span>';
+                                        } elseif($model->status == '4'){ //done
+                                            return '<span class="glyphicon glyphicon-import" style="color: #257fc5"> Выполнено частично</span>';
                                         }
                                     },
                                 ],
@@ -425,7 +433,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                  'note',
 
-                                ['class' => 'yii\grid\ActionColumn'],
+                                //['class' => 'yii\grid\ActionColumn'],
                             ],
                         ]); ?>
                     <?php Pjax::end(); ?>
