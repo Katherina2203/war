@@ -74,7 +74,7 @@ class Specification extends \yii\db\ActiveRecord
     {
         return [
             [['quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'required'],
-            [['quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }

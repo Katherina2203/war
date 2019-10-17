@@ -10,8 +10,8 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel backend\models\ShortageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Shortages';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->title = 'Shortages';
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="board-shortage">
     

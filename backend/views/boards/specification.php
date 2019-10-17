@@ -7,11 +7,11 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\SourceMessageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Specification');
-$this->params['breadcrumbs'][] = $this->title;
+//$this->title = Yii::t('app', 'Specification');
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="specification-index">
-<h2>Template of the specification</h2>
+<h2>Specification</h2>
    
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -21,9 +21,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProviderspec,
         'filterModel' => $searchModelspec,
         'columns' => [
-            'idspec',
-            'quantity',
+            'id',
             'idelement',
+            [
+                'attribute' => 'idelement',
+                'value' => 'elements.name'
+            ],
+            'quantity',
+            
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
