@@ -39,9 +39,9 @@ class RequestStatusHistorySearch extends RequestStatusHistory
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($idrequest, $params)
     {
-        $query = RequestStatusHistory::find();
+        $query = RequestStatusHistory::find()->where(['idrequest' => $idrequest]);
 
         // add conditions that should always apply here
 

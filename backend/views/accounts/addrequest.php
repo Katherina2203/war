@@ -7,9 +7,7 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\Pjax;
 
 use common\models\Currency;
-
 ?>
-
 <?php
 if (isset($modelRequests)) {
     $this->title = yii::t('app', 'Add request') . ' № ' . $modelRequests->idrequest;

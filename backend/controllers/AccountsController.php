@@ -23,6 +23,7 @@ use common\models\Purchaseorder;
 use common\models\Paymentinvoice;
 use common\models\Requests;
 use common\models\AccountsRequests;
+use common\models\RequestStatusHistory;
 use backend\models\AccountsSearch;
 use backend\models\ReceiptSearch;
 use backend\models\ElementsSearch;
@@ -419,6 +420,12 @@ class AccountsController extends Controller
         ]);
     }
     
+    /**
+     * The method connects a request to an existed account
+     * @param integer $accounts_id - an ID of an existed account
+     * @param integer $requests_id - an ID of a connected request
+     * @return type
+     */
     public function actionAddToAccount($accounts_id, $requests_id)
     {        
         //checking a valid Accounts Id
@@ -496,16 +503,27 @@ class AccountsController extends Controller
             $transaction = $db->beginTransaction();
 
             try {
+                //saving the price
                 $modelPrices->idel = $modelAccounts->idelem;
                 $modelPrices->save(false);
 
+                //saving the account data
                 $modelAccounts->idprice = $modelPrices->idpr;
                 $modelAccounts->save(false);
                 
+                //changing status of a request
                 $modelRequests->status = strval(Requests::REQUEST_ACTIVE);
                 $modelRequests->estimated_idel = $modelAccounts->idelem;
                 $modelRequests->save();
 
+                //saving a status change history
+                $modelRequestStatusHistory = new RequestStatusHistory();
+                $modelRequestStatusHistory->idrequest = $modelRequests->idrequest;
+                $modelRequestStatusHistory->status = $modelRequests->status;
+                $modelRequestStatusHistory->note = "Added to the account № " . $modelAccounts->idord . " of the invoice № " . $idinvoice;
+                $modelRequestStatusHistory->save(false);
+                
+                //saving the relation of the account and the request
                 $modelAccountsRequests = new AccountsRequests();
                 $modelAccountsRequests->accounts_id = $modelAccounts->idord;
                 $modelAccountsRequests->requests_id = $modelRequests->idrequest;

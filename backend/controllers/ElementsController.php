@@ -36,6 +36,7 @@ use common\models\Produce;
 use common\models\Boards;
 use common\models\Specification;
 use common\models\AccountsRequests;
+use common\models\RequestStatusHistory;
 
 /**
  * ElementsController implements the CRUD actions for Elements model.
@@ -56,12 +57,12 @@ class ElementsController extends Controller
                       //  'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
-                        'actions' => ['createfrom', 'createreturn', 'create', 'viewfrom', 'tostock', 'addreceipt', 'createreceipt', 'update', 'viewcat', 'createfromquick', 'closeshortage'],
+                        'actions' => ['createreturn', 'create', 'tostock', 'addreceipt', 'createreceipt', 'update', 'viewcat', 'closeshortage'],
                     ],
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'actions' => ['index', 'view', 'orderquick', 'vue'],
+                        'actions' => ['index', 'view', 'orderquick', 'viewfrom', 'vue',  'createfromquick',  'createfrom',],
                     ],
                 ],
             ],
@@ -208,6 +209,12 @@ class ElementsController extends Controller
 
                 
                     $modelrequests->save(false);
+                    
+                    $modelRequestStatusHistory = new RequestStatusHistory();
+                    $modelRequestStatusHistory->idrequest = $modelrequests->idrequest;
+                    $modelRequestStatusHistory->status = $modelrequests->status;
+                    $modelRequestStatusHistory->note = $modelrequests->note;
+                    $modelRequestStatusHistory->save(false);
 
                     $transaction->commit();
                     
@@ -418,7 +425,47 @@ class ElementsController extends Controller
         }
     }
     
-     public function actionCreatefromquick($idel)
+    
+    public function actionCreatefromquick($idel)
+    {
+        $modelElements = Elements::findOne($idel);
+        $modelOutofstock = new Outofstock(['scenario' => Outofstock::SCENARIO_OUT_OF_STOCK_QUICKLY]);
+        $modelOutofstock->idelement = $modelElements->idelements;
+        
+        if ($modelOutofstock->load(Yii::$app->request->post()) && $modelOutofstock->validate()) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $modelBoards = Boards::findOne($modelOutofstock->idboart);
+                $modelOutofstock->idtheme = $modelBoards->idtheme;
+                $modelOutofstock->idthemeunit = $modelBoards->idthemeunit;
+                $modelOutofstock->iduser = \yii::$app->user->id;
+                $modelOutofstock->save();
+
+                $modelElements->quantity -= $modelOutofstock->quantity;
+                $modelElements->save();
+                
+                $transaction->commit();
+                
+                Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
+                return $this->redirect(['elements/viewfrom', 'idel' => $modelOutofstock->idelement]);
+
+            } catch(\Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+            } catch(\Throwable $e) {
+                    $transaction->rollBack();
+            }
+        }
+        
+        return $this->render('createfromquick', [
+            'modelOutofstock' => $modelOutofstock,
+            'modelElements' => $modelElements,
+        ]);
+        
+        
+    }
+    
+    public function actionCreatefromquick2($idel)
     {
         $model = new Outofstock();
         $board = new Boards();
@@ -434,13 +481,12 @@ class ElementsController extends Controller
                
             
                   //  if($_POST['idboart'])){
-        if(!empty($model->idboart)){ 
-                    
-                        $model->idtheme = 114; //->where(['discontinued' => Boards::DISCONTINUED_ACTIVE])
-                        $model->idthemeunit = 113;
-                    }else{
-                         Yii::$app->session->setFlash('error', 'не указан номер платы');
-                    }
+            if(!empty($model->idboart)){ 
+                $model->idtheme = 114; //->where(['discontinued' => Boards::DISCONTINUED_ACTIVE])
+                $model->idthemeunit = 113;
+            }else{
+                Yii::$app->session->setFlash('error', 'не указан номер платы');
+            }
                     
             
            // $model->idtheme = $board->themes->idtheme;
@@ -485,7 +531,7 @@ class ElementsController extends Controller
            
         } else {
            // var_dump($model->getErrors());
-            return $this->render('createfromquick', [
+            return $this->render('createfromquick2', [
                 'model' => $model,
              //   'user' => $user,
                 'element' => $element,
@@ -507,6 +553,7 @@ class ElementsController extends Controller
         $modelReceipt->id = $modelAccounts->idelem;
         $modelReceipt->idinvoice = $modelAccountsRequests->accounts_id;
         $modelReceipt->users_id = yii::$app->user->identity->id;
+        $modelReceipt->date_receive = date('Y-m-d');
         	
         if ($modelReceipt->load(Yii::$app->request->post()) && $modelReceipt->validate()) {
 
@@ -531,7 +578,6 @@ class ElementsController extends Controller
                 
                 //getting all requests related to the account
                 $aRequestsOfAccount = AccountsRequests::getRequestsOfAccount($modelAccountsRequests->accounts_id)->all();
-//                Yii::info('<before>'. print_r($aRequestsOfAccount, true).'</pre>', 'ajax');
                 //separation of the current accounts_requests from the rest of the array
                 foreach ($aRequestsOfAccount as $iKey => $model) {
                     if ($modelAccountsRequests->id == $model->id) {
@@ -541,9 +587,9 @@ class ElementsController extends Controller
                     }
                 }
                 $iReceiptQuantity = $modelReceipt->quantity;
-//                Yii::info('<after>'. print_r($aRequestsOfAccount, true).'</pre>', 'ajax');
                 //adding quantity to the current accounts_requests first
-                $iReceiptQuantity = $this->changeAccountsRequests($modelCurrent, $iReceiptQuantity);
+                $iReceiptQuantity = $this->changeAccountsRequests($modelCurrent, $iReceiptQuantity, true);
+                $iAddedQuantityCurrent = $modelReceipt->quantity - $iReceiptQuantity;
                 
                 foreach ($aRequestsOfAccount as $model) {
                     if (!$iReceiptQuantity) {
@@ -555,6 +601,10 @@ class ElementsController extends Controller
                 //then add it to the current accounts_requests.quantity
                 $modelCurrent->quantity += $iReceiptQuantity;
                 $modelCurrent->save();
+                
+                //saveing a status history of the current request
+                $modelRequestsCurrent = Requests::findOne($modelCurrent->requests_id);
+                RequestStatusHistory::saveStatusHistory($modelRequestsCurrent->idrequest, $modelRequestsCurrent->status, "Received on stock in quantity " . ($iAddedQuantityCurrent + $iReceiptQuantity) . " on account № " . $modelCurrent->accounts_id);
 
                 $transaction->commit();
 
@@ -576,28 +626,32 @@ class ElementsController extends Controller
     }
 
 
-    private function changeAccountsRequests($model, $iReceiptQuantity)
+    private function changeAccountsRequests($model, $iReceiptQuantity, $isCurrent = false)
     {
         //how much we need to set REQUEST_DONE status
         $iNeededQuantity = $model->requests_quantity - $model->total_quantity;
         $iNeededQuantity = $iNeededQuantity > 0 ? $iNeededQuantity : 0;
         //how much we can add
         $iAddedQuantity = ($iNeededQuantity >=  $iReceiptQuantity) ? $iReceiptQuantity : $iNeededQuantity;
-         Yii::info('<before>'. print_r($model, true).'</pre>', 'ajax');
         //adding quantity to an accounts_requests.quantity
         $model->quantity += $iAddedQuantity;
-        Yii::info('<pre>'. print_r($model, true).'</pre>', 'ajax');
         $result = $model->save();
+        
         //setting a new status for a request
         $modelRequests = Requests::findOne($model->requests_id); 
         $modelRequests->status = (($model->total_quantity + $iAddedQuantity) >= $modelRequests->quantity) ? strval(Requests::REQUEST_DONE) : strval(Requests::REQUEST_DONE_PARTLY);
         $modelRequests->save();
+           
+        if (!$isCurrent) {
+            //saveing a status history if it is not the current request
+            RequestStatusHistory::saveStatusHistory($modelRequests->idrequest, $modelRequests->status, "Received on stock in quantity " . $iAddedQuantity . " on account № " . $model->accounts_id);
+        }
+        
         //calculating the last quantity
         $iReceiptQuantity -= $iAddedQuantity;
-        return $iReceiptQuantity > 0 ? $iReceiptQuantity : 0;
+        return ($iReceiptQuantity > 0 ? $iReceiptQuantity : 0);
     }
-            
-            
+
     public function actionCreatereceipt($idord, $idel)
     {
         $model = new Receipt();

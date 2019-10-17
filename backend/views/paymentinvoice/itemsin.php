@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $modelpay->supplier->phone;  ?><br/>
             </div>
             <div class="col-sm-4 invoice-col">
-                <?= '<b>Плательщик:</b> <br/>' . $modelpay->payer->name;//idpayer  ?><br/>
+                <?= '<b>Плательщик:</b> <br/>' . (is_null($modelpay->idpayer) ? '-' : $modelpay->payer->name);//idpayer  ?><br/>
                 Вул. Печенизька, 8, Киев, 04107<br/>
             </div>
            
@@ -272,26 +272,24 @@ $this->params['breadcrumbs'][] = $this->title;
   <?php Pjax::begin(); ?>
 
 </div>
-    <script type="text/javascript">
-$(function () { 
-            $("[data-toggle='tooltip']").tooltip(); 
-          });
-          $(function () { 
-                $("[data-toggle='popover']").popover(); 
-                    
-            });
-        });
+<script type="text/javascript">
+    $(function () { 
+        $("[data-toggle='tooltip']").tooltip(); 
     });
+//        $(function () { 
+//            $("[data-toggle='popover']").popover(); 
+//        });
 </script>
 
-<?php $this->registerJs(
- // Вызов модального окна формы заказа
-   "$('#modalButtonConfirm').on('click', function() {
-        $('#modalConfirm').modal('show')
-            .find('#modal-content')
-            .load($(this).attr('data-target'));
-    });
-  "
+<?php 
+    $this->registerJs(
+        // Вызов модального окна формы заказа
+       "$('#modalButtonConfirm').on('click', function() {
+            $('#modalConfirm').modal('show')
+                .find('#modal-content')
+                .load($(this).attr('data-target'));
+        });
+        "
     );
 ?>
 

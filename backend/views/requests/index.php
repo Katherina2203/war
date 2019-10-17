@@ -168,18 +168,21 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                 'filter' => ['0'=> 'Не обработано', '1' => 'Активна','2' => 'Отменено','3' => 'Выполнено','4' => 'Выполнено частично']
             ],
 
-            ['class' => 'yii\grid\ActionColumn',
-            // 'contentOptions' => ['style' => 'width:45px;'],
-             'contentOptions' => ['style' => 'white-space: nowrap; text-align: center; letter-spacing: 0.1em; max-width: 7em;'],
-             'template' => '{view} {update} {delete} {processingrequest}', 
-             'buttons' => [
-                   'processingrequest' => function ($url,$model,$key) {
-                  $url = Url::to(['viewprocess', 'idrequest' => $key]);
-                    return Html::a('<span class="glyphicon glyphicon-user"></span>', $url,
-                            ['title' => 'Посмотреть обработку заявок']
-                            );
-                },
-              ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                // 'contentOptions' => ['style' => 'width:45px;'],
+                'contentOptions' => ['style' => 'white-space: nowrap; text-align: center; letter-spacing: 0.1em; max-width: 7em;'],
+                'template' => '{view} {update} {delete} {changestatus} {processingrequest}', 
+                'buttons' => [
+                    'changestatus' => function ($url, $model, $key) {
+                        $url = Url::to(['updatestatus', 'idrequest' => $model->idrequest]);
+                        return Html::a('<span class="glyphicon glyphicon-info-sign"></span>', $url, ['title' => 'Изменить статус']);
+                    },
+                   'processingrequest' => function ($url, $model, $key) {
+                        $url = Url::to(['viewprocess', 'idrequest' => $key]);
+                        return Html::a('<span class="glyphicon glyphicon-user"></span>', $url, ['title' => 'Посмотреть обработку заявок']);
+                    },
+               ],
             ],
           //  ],
         ],

@@ -50,7 +50,7 @@ class RequestsController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'actions' => ['myrequests'],
+                        'actions' => ['myrequests', 'updatestatus'],
                     //    'roles' => ['updateOwnPost'],
                     ],
                 ],
@@ -204,8 +204,10 @@ class RequestsController extends Controller
         ]);
         
         $searchModelHistory = new RequestStatusHistorySearch;
-        $dataProviderHistory = $searchModelHistory->search(Yii::$app->request->queryParams);
+        $dataProviderHistory = $searchModelHistory->search($id, Yii::$app->request->queryParams);
         
+//Yii::info('<pre>'. print_r($searchModelHistory, true).'</pre>', 'ajax');
+//Yii::info('<pre>'. print_r($dataProviderHistory, true).'</pre>', 'ajax');
         
         
         return $this->render('view', [
@@ -332,6 +334,46 @@ class RequestsController extends Controller
     }
     
     public function actionUpdatestatus($idrequest)
+    {
+        $modelRequests = Requests::findOne($idrequest);
+        $modelRequests->scenario = Requests::SCENARIO_UPDATE_STATUS;
+        if (is_null($modelRequests)) {
+            return $this->redirect(['requests/index']);
+        }
+         
+        if ($modelRequests->load(Yii::$app->request->post()) && $modelRequests->validate()) {
+
+            $transaction = Yii::$app->db->beginTransaction();
+            try {                    
+                $modelRequestStatusHistory = new RequestStatusHistory();
+                $modelRequestStatusHistory->idrequest = $modelRequests->idrequest;
+                $modelRequestStatusHistory->status = $modelRequests->status;
+                $modelRequestStatusHistory->note = $modelRequests->note;
+                if ($modelRequestStatusHistory->validate()) {
+                    $modelRequestStatusHistory->save(false);
+                    $modelRequests->save(false);
+                }
+
+                $transaction->commit();
+                Yii::$app->session->setFlash('success', 'Статус успешно изменен');
+                return $this->redirect(['requests/view', 'id' => $idrequest]);
+
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
+
+        } //if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+        return $this->render('updatestatus', [
+            'modelRequests' => $modelRequests,
+        ]);
+
+    }
+    
+    public function actionUpdatestatus2($idrequest)
     {
         $model = $this->findModel($idrequest);
          
