@@ -32,6 +32,19 @@ class OutofstockSearch extends Outofstock
         return Model::scenarios();
     }
 
+    public function attributes()
+    {
+        // делаем поле зависимости доступным для поиска
+        return array_merge(parent::attributes(), [
+            'users_surname', //users.surname
+            'themes_name', //themes.name
+            'themeunits_nameunit', //themeunits.nameunit
+            'boards_idboards_name', //CONCAT(b.idboards, "  ", b.name) as boards_idboards_name
+            'date_only', //DATE_FORMAT(outofstock.date, '%Y %m %d')
+        ]);
+    }
+    
+    
     /**
      * Creates data provider instance with search query applied
      *
@@ -39,36 +52,52 @@ class OutofstockSearch extends Outofstock
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search()
     {
-        $query = Outofstock::find()->with(['users', 'themes', 'themeunits', 'boards']);
-
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        //жадная загрузка
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
+        $iElementsId = Yii::$app->request->get('idel') ? Yii::$app->request->get('idel') : Yii::$app->request->get('id');
+        $queryOutofstockSearch = OutofstockSearch::find()
+            ->select([
+                "o.idofstock",
+                'u.surname as users_surname',
+                'o.quantity',
+                "DATE_FORMAT(o.date, '%Y %m %d') as date_only",
+                "o.date",
+                't.name as themes_name',
+                'tu.nameunit as themeunits_nameunit',
+                'CONCAT(b.idboards, "  ", b.name) as boards_idboards_name',
+                'o.ref_of_board',
+            ])
+            ->from([
+                'o' => 'outofstock', 
+                'u' => 'users',
+                't' => 'themes',
+                'tu' => 'themeunits',
+                'b' => 'boards',
+            ])
+            ->where('o.iduser = u.id')
+            ->andWhere('o.idtheme = t.idtheme')
+            ->andWhere('o.idthemeunit = tu.idunit')
+            ->andWhere('o.idboart = b.idboards')
+            ->andWhere('o.idelement = :idelement', [':idelement' => $iElementsId])
+            ;
+        if (!$this->load(Yii::$app->request->get()) || !$this->validate()) {
+            $queryOutofstockSearch->orderBy('date_only DESC');
+            return $queryOutofstockSearch;
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'idofstock' => $this->idofstock,
-            'idelement' => $this->idelement,
-            'iduser' => $this->iduser,
-            'quantity' => $this->quantity,
-            'date' => $this->date,
-            'idtheme' => $this->idtheme,
-            'idthemeunit' => $this->idthemeunit,
-            'idboart' => $this->idboart,
-            'idprice' => $this->idprice,
+        $queryOutofstockSearch->andFilterWhere([
+            'o.idofstock' => $this->idofstock,
+            'o.iduser' => $this->iduser,
+            'o.quantity' => $this->quantity,
+            'o.idtheme' => $this->idtheme,
+            'o.idthemeunit' => $this->idthemeunit,
+            'o.idboart' => $this->idboart,
         ]);
 
-        $query->andFilterWhere(['like', 'ref_of_board', $this->ref_of_board]);
+        $queryOutofstockSearch->andFilterWhere(['like', 'ref_of_board', $this->ref_of_board]);
 
-        return $dataProvider;
+        $queryOutofstockSearch->orderBy('date_only DESC');
+        return $queryOutofstockSearch;
     }
 }

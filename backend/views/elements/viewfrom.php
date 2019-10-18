@@ -5,6 +5,9 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use kartik\detail\DetailView;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\OutofstockSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -98,42 +101,16 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
       </div>
     </div>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            'idofstock',
-            [
-                'attribute' => 'iduser',
-                'value' => 'users.surname'
-            ],
-            'quantity',
-            'date',
-            [
-                'attribute' => 'idtheme',
-                'value' => 'themes.name',
-                'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModel, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->all(), 'idtheme', 'name'),['class'=>'form-control','prompt' => 'Выберите проект']),
-                'contentOptions' => ['style' => 'max-width: 120px;white-space: normal'],
-            ],
-            [
-                'attribute' => 'idthemeunit',
-                'value' => 'themeunits.nameunit',
-                'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModel, 'idthemeunit', ArrayHelper::map(\common\models\Themeunits::find()->select(['idunit', 'nameunit'])->all(), 'idunit', 'nameunit'),['class'=>'form-control','prompt' => 'Выберите модуль']),
-                'contentOptions' => ['style' => 'max-width: 120px;white-space: normal'],
-            ],
-            [
-                'attribute' => 'idboart',
-                'value' => 'boards.name',
-                'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModel, 'idboart', ArrayHelper::map(\common\models\Boards::find()->select(['idboards', 'name'])->all(), 'idboards', 'name'),['class'=>'form-control','prompt' => 'Выберите плату']),
-            ],
-            'ref_of_board',
-            [
-             'class' => 'yii\grid\ActionColumn',
-             'controller' => 'outofstock',
-            ],
-        ],
-    ]); ?>
+    <div class="row">
+        <div class='col-sm-12'>
+            <div class="box-body">
+                <?php
+                    echo $this->render('_view_outofstock', [
+                        'dataProviderout' => $dataProvider,
+                        'searchModelout' => $searchModel,
+                    ]) 
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
