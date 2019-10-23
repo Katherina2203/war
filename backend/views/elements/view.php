@@ -405,72 +405,19 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>  
 </div>
-<div class="row">
-    <div class='col-sm-12'>
-    <div class="box box-primary">
-        <div class="box-header with-border"><h3 class="box-title">Взято со склада</h3></div>
-        <div class="box-body">
-            <?= GridView::widget([
-                'dataProvider' => $dataProviderout,
-                'filterModel' => $searchModelout,
-                'showOnEmpty' => false,
-                'emptyText' => '<table><tbody></tbody></table>',
-                'class' => 'kartik\grid\EditableColumn',
-                  
-                'columns' => [
-                    'idofstock',
-          //  'idelement',
-            [
-                'attribute' => 'iduser',
-                'value' => 'users.surname',
-                
-                  'filter' => Html::activeDropDownList($searchModelout, 'iduser', ArrayHelper::map(\common\models\Users::find()->select(['id', 'surname'])->indexBy('id')->all(), 'id', 'surname'),['class'=>'form-control','prompt' => 'Select user']),
-            ],
-            [
-                'attribute' => 'quantity',
-                'format' => 'raw',
-                'value' => function($data){
-                    return '<strong><center>' . $data->quantity . '</center></strong>';
-                }
-            ],
-            'date',
-         //   'idtheme',
-            [
-                'attribute' => 'idtheme',
-                'value' => function($data){
-                //    return $data->themes->ThemList;
-                  // return is_null($data->idtheme) ? '-' : $data->themes->name;
-                },
-                'format' => 'raw',
-                'filter' => Html::activeDropDownList($searchModelout, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->where(['status' => 'active'])->all(), 'idtheme', 'ThemList'),['class'=>'form-control','prompt' => 'Выберите проект']),
-            ],
-            [
-                'attribute' => 'idthemeunit',
-              //  'value' => 'themeunits.UnitsListId',
-                'value' => function($data){
-                  //  return empty($data->idthemeunit) ? '-' : $data->themeunits->nameunit;
-                },
-                'format' => 'raw',
-                'filter' => Html::activeDropDownList($searchModelout, 'idthemeunit', ArrayHelper::map(\common\models\Themeunits::find()->select(['idunit', 'nameunit'])->all(), 'idunit', 'UnitsListId'),['class'=>'form-control','prompt' => 'Выберите модуль']),
-            ], 
-            [
-                'attribute' => 'idboart',
-                'format' => 'raw',
-                'value' => function($data, $url){
-                    $url = Url::to(['boards/view', 'id' => $data->idboart]);
-                    return html::a($data->boards->BoardnameId, $url);//$data->boards->BoardnameId = '0' ? '-' :
-                },
-                'filter' => Html::activeDropDownList($searchModelout, 'idboart', ArrayHelper::map(\common\models\Boards::find()->select(['idboards', 'name'])->where(['discontinued' => '1'])->all(), 'idboards', 'BoardnameId'),['class'=>'form-control','prompt' => 'Выберите плату']),
-            ], 
-            'ref_of_board',
-
-            ['class' => 'yii\grid\ActionColumn',
-                'controller' => 'outofstock',
-                ],
-                ]
-            ]) ?>
-             </div>
+    <div class="row">
+        <div class='col-sm-12'>
+            <div class="box box-primary">
+                <div class="box-header with-border"><h3 class="box-title">Взято со склада</h3></div>
+                <div class="box-body">
+                    <?php
+                        echo $this->render('_view_outofstock', [
+                            'dataProviderout' => $dataProviderout,
+                            'searchModelout' => $searchModelout,
+                        ]) 
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </div>

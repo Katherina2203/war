@@ -11,6 +11,7 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use yii\db\Transaction;
 use yii\db\Expression;
+use yii\helpers\Url;
 
 
 use common\models\Outofstock;
@@ -168,10 +169,60 @@ class OutofstockController extends Controller
     /**
      * Updates an existing Outofstock model.
      * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id - an ID outofstock
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $modelOutofstock = Outofstock::findOne($id);
+        if (is_null($modelOutofstock)) {
+            return $this->redirect(['elements/index']);
+        }
+
+        if ($modelOutofstock->load(Yii::$app->request->post()) && $modelOutofstock->validate()) {
+
+            $transaction = Yii::$app->db->beginTransaction();
+
+            try {
+                //taking/receiving back an element from/on stock
+                if ($modelOutofstock->oldAttributes['idelement'] != $modelOutofstock->idelement) {
+                    $modelElementsOld = Elements::findOne($modelOutofstock->oldAttributes['idelement']);
+                    $modelElementsOld->quantity += $modelOutofstock->oldAttributes['quantity'];
+                    $modelElementsOld->save();
+                    
+                    $modelElementsNew = Elements::findOne($modelOutofstock->idelement);
+                    $modelElementsNew->quantity -= $modelOutofstock->quantity;
+                    $modelElementsNew->save();
+                } else {
+                    $modelElements = Elements::findOne($modelOutofstock->idelement);
+                    $modelElements->quantity += $modelOutofstock->oldAttributes['quantity'] - $modelOutofstock->quantity;
+                    $modelElements->save();
+                }
+                $modelOutofstock->save(false);
+                
+                $transaction->commit();
+
+                Yii::$app->session->setFlash('success', 'Запись успешно изменена.');
+                return $this->redirect(['/elements/viewfrom', 'idel' => $modelOutofstock->idelement]);
+
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                    throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
+        }
+        
+        return $this->render('update', ['model' => $modelOutofstock, 'update' => true]);
+    }
+
+    /**
+     * Updates an existing Outofstock model.
+     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id, $idelement)
+    public function actionUpdate2($id, $idelement)
     {
         $model = $this->findModel($id, $idelement);
         $model->idelement = $idelement;
@@ -184,7 +235,7 @@ class OutofstockController extends Controller
             ]);
         }
     }
-
+    
     /**
      * Deletes an existing Outofstock model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -193,9 +244,20 @@ class OutofstockController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $sUrlToReturn = isset($_SERVER['HTTP_REFERER']) ? Url::to($_SERVER['HTTP_REFERER']) : Url::to(['index']);
+        
+        $modelOutofstock = Outofstock::findOne($id);
+        if (is_null($modelOutofstock)) {
+            return $this->redirect($sUrlToReturn);
+        }
+        //returnning an elements on stock
+        $modelElements = Elements::findOne($modelOutofstock->idelement);
+        $modelElements->quantity += $modelOutofstock->quantity;
+        $modelElements->save();
+        //deleting a outofstock record
+        $modelOutofstock->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect($sUrlToReturn);
     }
 
     /**

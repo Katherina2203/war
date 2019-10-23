@@ -46,13 +46,14 @@ class Outofstock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idelement', 'iduser', 'quantity', 'idtheme', 'idboart', 'ref_of_board'], 'required'], 
-            [['idelement', 'iduser', 'quantity', 'idtheme', 'idthemeunit', 'idboart', 'idprice'], 'integer'],
-            [['quantity'], 'safe'],
-            ['idtheme', 'required', 'message' => 'Please enter a project'],
-            ['idthemeunit', 'required', 'message' => 'Please enter a unit'],
-            ['idboart', 'required', 'message' => 'Please enter a board'],
+            [['idelement', 'iduser', 'quantity', 'idtheme', 'idthemeunit', 'idboart', 'ref_of_board'], 'required'], 
+            [['idelement', 'iduser', 'quantity', 'idtheme', 'idthemeunit', 'idboart'], 'integer'],
+            [['quantity', 'ref_of_board', ], 'trim'],
+//            ['idtheme', 'required', 'message' => 'Please enter a project'],
+//            ['idthemeunit', 'required', 'message' => 'Please enter a unit'],
+//            ['idboart', 'required', 'message' => 'Please enter a board'],
             [['ref_of_board'], 'string', 'max' => 64],
+            [['idelement'], 'validateElementId'],
             
             //SCENARIO_OUT_OF_STOCK_QUICKLY rules
             [['quantity', 'idboart',], 'required', 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
@@ -61,6 +62,13 @@ class Outofstock extends \yii\db\ActiveRecord
             [['ref_of_board'], 'string', 'max' => 64, 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
             [['idboart'], 'validateBoardId', 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
         ];
+    }
+    
+    public function validateElementId($attribute, $params)
+    {
+        if (!Elements::find()->where(['idelements' => $this->$attribute])->exists()) {
+            $this->addError($attribute, 'Такого элемента нет.');
+        }
     }
     
     public function validateBoardId($attribute, $params)

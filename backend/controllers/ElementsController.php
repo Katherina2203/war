@@ -166,7 +166,8 @@ class ElementsController extends Controller
         ]);  /*in future point the limit of requests..E.x. last 5 orders */
         
         $searchModelout = new OutofstockSearch();
-        $queryout = Outofstock::find()->where(['idelement' => $id])->orderBy('date DESC');//
+        $queryout = $searchModelout->search();
+//        $queryout = Outofstock::find()->where(['idelement' => $id])->with(['themes', 'themeunits',])->orderBy('date DESC');//
         $dataProviderout = new ActiveDataProvider([
             'query' => $queryout,
         ]);
@@ -415,14 +416,13 @@ class ElementsController extends Controller
                     echo $e->getMessage();
             }
            
-        } else {
-            return $this->render('createfrom', [
-                'model' => $model,
-                'user' => $user,
-                'element' => $element,
-                
-            ]);
         }
+        return $this->render('createfrom', [
+            'model' => $model,
+            'user' => $user,
+            'element' => $element,
+
+        ]);
     }
     
     
@@ -927,11 +927,12 @@ class ElementsController extends Controller
     {
         $element = Elements::findOne($idel);
         $model = new Outofstock();
-        $searchModel = new OutofstockSearch();
         
-        $query = Outofstock::find()->where(['idelement' => $idel])->with(['themes', 'themeunits', 'users', 'boards'])->orderBy('date DESC');
+        
+//        $query = Outofstock::find()->where(['idelement' => $idel])->with(['themes', 'themeunits', 'users', 'boards'])->orderBy('date DESC');
+        $searchModel = new OutofstockSearch();
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $searchModel->search(),
         ]);
         
         $queryret = Returnitem::find()->where(['idelement' => $idel])->orderBy('created_at DESC');
