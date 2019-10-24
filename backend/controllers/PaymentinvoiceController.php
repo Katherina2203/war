@@ -147,6 +147,7 @@ class PaymentinvoiceController extends Controller
     public function actionCreate()
     {
         $model = new Paymentinvoice();
+        $model->date_invoice = date('Y-m-d');
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
            // $model->confirm = '0';
