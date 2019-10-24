@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'label' => 'My activities',
-                            
+                            'content' =>  $this->render('_myactivities', ['model' => $modelout, 'dataProviderout' => $dataProviderout]),
                         ],
                      /*   [
                             'label' => 'Пароль',

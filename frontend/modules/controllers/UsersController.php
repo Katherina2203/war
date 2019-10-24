@@ -48,11 +48,18 @@ class UsersController extends Controller
     
     public function actionMyprofile($id)
     {
-       
+        $modelout = new \common\models\Outofstock();
+        $query = \common\models\Outofstock::find()->where(['iduser' => $id])->orderBy('date DESC');
+        $dataProviderout = new ActiveDataProvider([
+            'query'=>$query,
+        ]);
+        $searchModelout = new \backend\models\OutofstockSearch();
         
          return $this->render('myprofile', [
             'model' => $this->findModel($id),
-         
+            'modelout' => $modelout,
+            'dataProviderout' => $dataProviderout,
+            'searchModelout' => $searchModelout,
         ]);
         
     }

@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 //use yii\widgets\DetailView;
 use kartik\detail\DetailView;
@@ -13,7 +12,7 @@ $this->title = $model->name;
 //$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="users-view" style="background-color: #fff;">
+<div class="users-view">
 <div class="row">
     <div class="col-lg-6" >
     <?= DetailView::widget([
