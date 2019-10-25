@@ -37,7 +37,6 @@ return [
         'view' => [
            'theme' => [
              'pathMap' => [
-               // '@app/views' => '@app/backend/views'
                 // '@app/views' => '@app/frontend/views'
                 '@app/views' => '@app/frontend/modules/views'
              ],
@@ -54,8 +53,9 @@ return [
             'identityCookie' => [
                    'name' => '_backendIdentity',
                    'httpOnly' => true,
-               ],
+                ],
         ],
+        
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -71,7 +71,7 @@ return [
         ],
    
         'session' => [
-            'name' => 'BACKENDSESSIONID', //FRONTENDID
+            'name' => 'FRONTENDSESSIONID', //FRONTENDID
               //  'savePath' => __DIR__ . '/tmp',
                 'class' => 'yii\web\DbSession',
         ],
@@ -100,12 +100,7 @@ return [
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ],
         ],
-        'urlManagerBackend' =>[
-            'class' => 'yii\web\UrlManager',
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'baseUrl' => 'http://10.0.21.156/warehouse/backend/web/',
-        ],
+       
         'i18n' => [
             'translations' => [
                  'app' => [

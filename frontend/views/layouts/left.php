@@ -49,16 +49,17 @@ use mdm\admin\components\MenuHelper;
                         'label' => Yii::t('app', 'Requests'),
                         'items' => [
                             [
-                              'label' => Yii::t('app', 'Create request'),
-                              'url' => ['/requests/create', 'iduser' => yii::$app->user->identity->id]
+                                'label' => Yii::t('app', 'Create request'),
+                                'url' => ['/requests/create', 'iduser' => yii::$app->user->identity->id]
                             ],
                             [
-                              'label' => Yii::t('app', 'My requests'),
-                              'url' => ['/requests/myrequests', 'iduser' => yii::$app->user->identity->id]
+                                'label' => Yii::t('app', 'My requests'),
+                                'url' => ['/requests/myrequests', 'iduser' => yii::$app->user->identity->id]
                             ],
                             [
-                              'label' => 'Журнал заявок', 'icon' => 'fa fa-book',
-                              'url' => ['/requests/index']
+                                'label' => Yii::t('app', 'All requests'), 
+                                'icon' => 'fa fa-book',
+                                'url' => ['/requests/index']
                             ],
                             [
                                 'label' => 'Назначить исполнителя',
@@ -113,32 +114,32 @@ use mdm\admin\components\MenuHelper;
                         'label' => 'Проекты',
                         'items' => [
                             [
-                                'label' => 'Список Текущих проектов',
+                                'label' => yii::t('app', 'Current projects'),
                                 'url' => ['/myaccount/themes/indexshort']
                             ],
                             [
-                                'label' => 'Список Всех проектов',
+                                'label' => yii::t('app', 'All projects'),
                                 'url' => ['/myaccount/themes/index'],
                                 'visible' => yii::$app->user->can('admin') or yii::$app->user->can('manager'), 
                             ],
                             [
-                              'label' => 'Подмодули проектов',
-                             'url' => ['/myaccount/themeunits/index']
+                                'label' => 'Подмодули проектов',
+                                'url' => ['/myaccount/themeunits/index']
                             ],
                             [
-                               'label' => 'Список Текущих плат',
-                             'url' => ['/myaccount/boards/currentboard']
+                                'label' => yii::t('app', 'Current boards'),
+                                'url' => ['/myaccount/boards/currentboard']
                             ],
                             [
                                'label' => 'Список Недостач по платам',
                                 'url' => ['/myaccount/shortage']
                             ],
                             [
-                               'label' => 'Список Всех плат',
-                             'url' => ['/myaccount/boards/index']
+                               'label' => yii::t('app', 'All boards'),
+                               'url' => ['/myaccount/boards/index']
                             ],
                             [
-                                'label' => 'Мои платы',
+                                'label' => yii::t('app', 'My boards'),
                                 'url' => ['/myaccount/boards/myboards', 'iduser' => yii::$app->user->identity->id],
                              //???   'visible' => yii::$app->user->can('admin'), 
                             ],
@@ -148,27 +149,27 @@ use mdm\admin\components\MenuHelper;
                         'label' => 'Список',
                         'items' => [
                             [
-                                'label' => 'Производителей',
+                                'label' => yii::t('app', 'Manufacturers'),
                                 'url' => ['/myaccount/produce/index']
                             ],
                             [
-                                'label' => 'Поставщиков',
+                                'label' => yii::t('app', 'Suppliers'),
                                 'icon' => 'fa fa-address-book-o',
                                 'url' => ['/myaccount/supplier/index']
                             ],
                             [
-                                'label' => 'Сотрудники',
+                                'label' => yii::t('app', 'Co-workers'),
                                 'icon' => 'fa fa-users',
                                 'url' => ['/myaccount/users/index'],
                                 'visible' => yii::$app->user->can('admin'), 
                             ],
                             [
-                                'label' => 'Плательщики',
+                                'label' => yii::t('app', 'Payers'),
                                 'icon' => 'fa fa-tty',
                                 'url' => ['/myaccount/payer/index']
                             ],
                             [
-                                'label' => 'Валют',
+                                'label' => yii::t('app', 'Currency'),
                                 'url' => ['/myaccount/currency/index']
                             ],
                            

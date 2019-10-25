@@ -235,7 +235,7 @@ echo dmstr\widgets\Menu::widget([
                             ],
                             [
                                'label' => yii::t('app', 'All boards'),
-                             'url' => ['/boards/index']
+                               'url' => ['/boards/index']
                             ],
                             [
                                 'label' => yii::t('app', 'My boards'),
