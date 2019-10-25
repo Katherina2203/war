@@ -87,7 +87,7 @@ return [
         'urlManager' => [
             //'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
-            'showScriptName' => true,
+            'showScriptName' => true ,
            // 'enableScriptParsing' => true, 
             'class' => 'codemix\localeurls\UrlManager',
             'enableLanguagePersistence' => false,
