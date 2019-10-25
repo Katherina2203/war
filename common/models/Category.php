@@ -65,7 +65,27 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasMany(Elements::className(), ['idcategory' => 'idcategory']);
     }
        
-    public static function getHierarchy() {
+    public static function getHierarchy()
+    {
+        $aCategories = [];
+        $aModels = Category::find()->orderBy('name ASC')->all();
+        foreach ($aModels as $modelCategory) {
+            $aCategories[$modelCategory->parent][$modelCategory->idcategory] = $modelCategory->name;
+        }
+         
+        $aHierarchy = [];
+        foreach ($aCategories[0] as $iParentId => $sParentName) {
+            if (isset($aCategories[$iParentId])) {
+                $aHierarchy[$sParentName] = $aCategories[$iParentId];
+            } else {
+                $aHierarchy[$sParentName] = [];
+            }
+        }
+        return $aHierarchy;
+    }
+    
+    public static function getHierarchy_Old()
+    {
         $options = [];
          
         $parents = self::find()->where("parent=0")->all();

@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\web\Response;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 use yii\web\HttpException;
 use yii\helpers\Html;
@@ -37,7 +38,7 @@ use common\models\Boards;
 use common\models\Specification;
 use common\models\AccountsRequests;
 use common\models\RequestStatusHistory;
-
+use common\models\Category;
 /**
  * ElementsController implements the CRUD actions for Elements model.
  */
@@ -82,36 +83,54 @@ class ElementsController extends Controller
      */
     public function actionIndex()
     {
-        $modelprice = new Prices();
-        $searchModelprice = new PricesSearch();
-        $dataProviderprice = $searchModelprice->search(Yii::$app->request->queryParams);
-     
-        $modelrequests = new Requests();
-        $searchModelrequests = new RequestsSearch();
-        $dataProviderrequests = $searchModelrequests->search(Yii::$app->request->queryParams);
-       
-        $model = new Elements();
         $searchModel = new ElementsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-        $modelacc = new Accounts();
-        $queryacc = Accounts::find()->where(['idelem' => $model->idelements])->orderBy('date_receive DESC')->limit(10);
-        $dataProvideracc = new ActiveDataProvider([
-            'query' => $queryacc,
+        $dataProvider = new ActiveDataProvider([
+            'query' => $searchModel->search(Yii::$app->request->queryParams),
+            'sort' => [
+                'attributes' => [
+                    'idelements' => [
+                        'asc' => ['e.idelements' => SORT_ASC],
+                        'desc' => ['e.idelements'=> SORT_DESC],
+                        'default' => SORT_DESC,
+                    ],
+                    'box' => [
+                        'asc' => ['e.box' => SORT_ASC],
+                        'desc' => ['e.box'=> SORT_DESC],
+                    ],
+                    'name' => [
+                        'asc' => ['e.name' => SORT_ASC],
+                        'desc' => ['e.name'=> SORT_DESC],
+                    ],
+                    'nominal' => [
+                        'asc' => ['e.nominal' => SORT_ASC],
+                        'desc' => ['e.nominal'=> SORT_DESC],
+                    ],
+                    'quantity' => [
+                        'asc' => ['e.quantity' => SORT_ASC],
+                        'desc' => ['e.quantity'=> SORT_DESC],
+                        'default' => SORT_DESC,
+                    ],
+                    'category_name' => [
+                        'asc' => ['category_name' => SORT_ASC],
+                        'desc' => ['category_name'=> SORT_DESC],
+                    ],
+                    'manufacture' => [
+                        'asc' => ['manufacture' => SORT_ASC],
+                        'desc' => ['manufacture'=> SORT_DESC],
+                    ],
+                    'active' => [
+                        'asc' => ['e.active' => SORT_ASC],
+                        'desc' => ['e.active'=> SORT_DESC],
+                    ],
+                ],
+            ]
         ]);
-      
+        
         return $this->render('index', [
-                'model' => $model,
-                'modelacc' => $modelacc,
                 'searchModel' => $searchModel,
-                'searchModelprice' => $searchModelprice,
                 'dataProvider' => $dataProvider,
-                'dataProviderprice' => $dataProviderprice,
-                'modelprice' => $modelprice,
-                'modelrequests' => $modelrequests, //for elements
-                'searchModelrequests' => $searchModelrequests,
-                'dataProviderrequests' => $dataProviderrequests,
-                'dataProvideracc' => $dataProvideracc,
+                "aCategoryHierarchy" => Category::getHierarchy(),
+                "aProduce" => ArrayHelper::map(Produce::find()->select(['idpr', 'manufacture',])->orderBy('manufacture ASC')->asArray()->all(), 'idpr', 'manufacture'),
             ]);
         
     }

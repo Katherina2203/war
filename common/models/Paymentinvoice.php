@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-use \yii\behaviors\TimestampBehavior;
+use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 /**
  * This is the model class for table "paymentinvoice".
@@ -21,59 +21,37 @@ class Paymentinvoice extends \yii\db\ActiveRecord
     const CONFIRM_NOT = 0; //by head
     const CONFIRM_AGREE = 1; //yes
     const CONFIRM_CANCEL = 2; //canceled by head or usik
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return '{{%paymentinvoice}}';
     }
-
-      public function beforeSave($insert)
-    {
-        if ($insert) {
-            $this->created_by = \Yii::$app->user->identity->id;
-          //  $this->CreatedOn = time();
-        } else {
-            $this->edited_by = \Yii::$app->user->identity->id;
-            //$this->ModifiedOn = time();
-        }
-       if (parent::beforeSave($insert)) {
-            if ($this->isNewRecord) {
-                $this->confirm = '0';
-            }
-            //elseif(Paymentinvoice::CONFIRM_CANCEL){
-            //    $modelacc = new Accounts;
-            //    $modelacc->status = Accounts::ACCOUNTS_CANCEL;
-         //   }
-            
-            return true;
-        } else {
-            return false;
-        }
-    }
     
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'timestamp' => [
                'class' => TimestampBehavior::className(),
+               'createdAtAttribute' => ['created_at', 'updated_at'],
+               'updatedAtAttribute' => 'updated_at',
                'value' => new \yii\db\Expression('NOW()'),
             ],
             [
                 'class' => BlameableBehavior::className(),
-                'createdByAttribute' => 'created_by',
+                'createdByAttribute' => ['created_by', 'edited_by'],
                 'updatedByAttribute' => 'edited_by',
             ],
         ];
          
     }
-    
+
     public function rules()
     {
         return [
-            [['invoice'], 'required'],
-            [['idpayer', 'idsupplier', 'created_by', 'edited_by'], 'integer'],
-            [['date_payment', 'date_invoice', 'confirm', 'tracking_number'], 'safe'],
+            [['idsupplier', 'invoice', 'date_invoice', 'idpayer'], 'required'],
+            [['idpayer', 'idsupplier',], 'integer'],
+            [['invoice', 'date_invoice', 'usd', 'date_payment', 'tracking_number',], 'trim'],
+            [['confirm',], 'safe'],
             ['confirm', 'default','value' => self::CONFIRM_NOT],
             [['invoice'], 'string', 'max' => 128],
             [['tracking_number'], 'string', 'max' => 20],
@@ -90,7 +68,6 @@ class Paymentinvoice extends \yii\db\ActiveRecord
             'idpaymenti' => Yii::t('app', 'Idpaymenti'),
             'idsupplier' => Yii::t('app', 'Поставщик'),
             'invoice' => Yii::t('app', '№ Счета'),
-            'amount' => Yii::t('app', 'Сумма с НДС'),
             'date_invoice' => Yii::t('app', 'Дата счета'),
             'idpayer' => Yii::t('app', 'Плательщик'),
             'date_payment' => Yii::t('app', 'Дата оплаты'),
@@ -99,10 +76,8 @@ class Paymentinvoice extends \yii\db\ActiveRecord
             'created_by' => Yii::t('app', 'Кем создано'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'edited_by' => Yii::t('app', 'Кем отредактировано'),
-            'price' => Yii::t('app', 'Цена'),
             'tracking_number' => Yii::t('app', 'Декларация'),
             'usd' => Yii::t('app', 'Курс доллара'),
-            'cnt' => Yii::t('app', 'Не доставленные позиции'),
         ];
     }
     
@@ -120,8 +95,7 @@ class Paymentinvoice extends \yii\db\ActiveRecord
     }
     
     public function getAccounts(){
-        return $this->hasMany(Accounts::className(), ['idinvoice' => 'idpaymenti']);
-                
+        return $this->hasMany(Accounts::className(), ['idinvoice' => 'idpaymenti']);       
     }
 
     public function getInvoicelist(){

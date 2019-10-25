@@ -1,10 +1,10 @@
 <?php
-
 namespace backend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use common\models\Elements;
 
 /**
@@ -19,9 +19,9 @@ class ElementsSearch extends Elements
     public function rules()
     {
         return [
-            [['idelements', 'quantity', 'created_by' , 'updated_by', 'idcategory'], 'integer'],
-            [['box', 'name', 'nominal', 'image', 'active', 'searchstring', 'idproduce'], 'safe'],
-            [['name', 'searchstring'], 'trim'],
+            [['idelements', 'quantity', 'created_by' , 'updated_by', 'idcategory', 'idproduce'], 'integer'],
+            [['box', 'name', 'nominal', 'image', 'active', 'searchstring'], 'trim'],
+            [['active'], 'string', 'max' => 1],
         ];
     }
 
@@ -33,77 +33,80 @@ class ElementsSearch extends Elements
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function search($params)
+    
+    public function attributes()
     {
-     //   $query = Elements::find();
-         $query = Elements::find()->With(['category', 'produce']);
-
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'attributes' => [
-                    'idelements',
-                    'box',
-                    '{{%elements}}.name',
-                    'nominal',
-                    'quantity',
-              //      'idcategory',
-               //     'idproduce',
-                    'idcategory'=>[
-                        'asc' => ['{{%category}}.name' => SORT_ASC],
-                        'desc' => ['{{%category}}.name'=> SORT_DESC],
-                    ],
-                    'idproduce'=>[
-                        'asc' => ['{{%produce}}.manufacture' => SORT_ASC],
-                        'desc' => ['{{%produce}}.manufacture'=> SORT_DESC],
-                        'default' => SORT_ASC,
-                    ],
-                    'active',
-                ],
-            ]
+        return array_merge(parent::attributes(),[
+            "manufacture",
+            "category_name",
+            "date_receive", //accounts.date_receive
+            "expacted_quantity", // accounts.expacted_quantity
         ]);
+    }
+    
+    public function search()
+    {
+        //the subquery to get account data of an elements
+        $queryAccounts = (new Query())
+            ->select([
+                'idelem' => "min(`idelem`)",
+                'date_receive' => "min(`date_receive`)", 
+                'expacted_quantity' => "sum((quantity - received_quantity))"
+            ])
+            ->from('accounts')
+            ->where(['in', 'status', ['2', '5']])
+            ->groupBy('idelem')
+        ;
 
-        //жадная загрузка
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
+        $queryElementsSearch = ElementsSearch::find()
+            ->select([
+                "e.idelements",
+                'e.box',
+                'e.name',
+                'e.nominal',
+                'e.quantity',
+                "e.idproduce",
+                "p.manufacture",
+                "e.idcategory",
+                "c.name as category_name",
+                "e.active",
+                "a.date_receive",
+                "a.expacted_quantity",
+            ])
+            ->from(['e' => 'elements',])
+            ->leftJoin(['p' => 'produce',], 'e.idproduce = p.idpr')
+            ->leftJoin(['c' => 'category',], 'e.idcategory = c.idcategory')
+            ->leftJoin(['a' => $queryAccounts,], 'a.idelem = e.idelements')
+        ;
+
+        if (!($this->load(Yii::$app->request->get()) && $this->validate())) {
+            return $queryElementsSearch;
         }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-         //   'idelements' => $this->idelements,
-           // 'name' => $this->name,
-           // 'nominal' => $this->nominal,
-            'quantity' => $this->quantity,
-            'idproduce' => $this->idproduce,
-            'idcategory' => $this->idcategory,
-            'created_at' => $this->created_at,
-        ]);
-
         
-        $query = $query->andFilterWhere(['like', 'idelements', $this->idelements])
-       //     ->andFilterWhere(['like', 'box', $this->box])
-            ->andFilterWhere(['like', 'name', $this->name])
-           // ->andFilterWhere(['like', 'nominal', $this->nominal])
-          //  ->andFilterWhere(['like', 'nominal', $this->searchstring])
-            ->andFilterWhere(['like', 'quantity', $this->quantity])
-            ->andFilterWhere(['like', 'name', $this->searchstring])
-            ->andFilterWhere(['like', 'active', $this->active]);
-        $nominalParam = preg_split('/\s+/', $this->nominal, -1, PREG_SPLIT_NO_EMPTY);
-        foreach($nominalParam as $sParam) {
-            $query->andFilterWhere(['like', 'nominal', $sParam]);
+        $aAttributes = Yii::$app->request->get('ElementsSearch');
+        $bIsEmpty = true;
+        foreach ($aAttributes as $sAttr) {
+            if ($sAttr != '') {
+                $bIsEmpty = false;
+                break;
+            }
         }
-        $query->orderBy(['quantity' => SORT_DESC]);
-
-        return $dataProvider;
+        if ($bIsEmpty) {
+            return $queryElementsSearch;
+        }
+        
+        $queryElementsSearch->andFilterWhere([
+                'e.idelements' => $this->idelements,
+                'e.quantity' => $this->quantity,
+                'e.idproduce' => $this->idproduce,
+                'e.idcategory' => $this->idcategory,
+                'e.active' => $this->active,
+            ])
+            ->andFilterWhere(['like', 'e.box', $this->box])
+            ->andFilterWhere(['like', 'e.name', $this->name])
+            ->andFilterWhere(['like', 'e.name', $this->searchstring])
+            ->andFilterWhere(['like', 'e.nominal', preg_split('/\s+/', $this->nominal, -1, PREG_SPLIT_NO_EMPTY)]);
+        $queryElementsSearch->orderBy(['quantity' => SORT_DESC]);
+        return $queryElementsSearch;
     }
 }

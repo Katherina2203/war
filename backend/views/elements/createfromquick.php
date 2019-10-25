@@ -22,7 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="fromquick-create">
     <div class="fromquick-form col-md-4">
         <div class="box box-success">
-            <div class="box-header with-border"><h2 class="box-title"><?= $modelElements->name . '<br />' . $modelElements->nominal ?></h2></div>
+            <div class="box-header with-border"><h2 class="box-title"><?= $modelElements->name ?></h2></div>
+            <div class="box-header with-border"><?= $modelElements->nominal ?></div>
             <div class="box-body">
             <?php $form = ActiveForm::begin(['id' => 'create-from-quick',]); ?>
                 <?php echo $form->field($modelOutofstock, 'idelement', ['template' => '{input}',])->input('hidden'); ?>
