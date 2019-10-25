@@ -33,7 +33,7 @@ use common\models\Users;
 use common\models\Returnitem;
 use common\models\Purchaseorder;
 use common\models\Produce;
-//use common\models\Shortage;
+use common\models\Shortage;
 use common\models\Boards;
 use common\models\Specification;
 use common\models\AccountsRequests;
@@ -145,44 +145,36 @@ class ElementsController extends Controller
         ]);
         //end show prices
         
-        //requests
-        $modelrequests = new Requests();
-        $modelrequests->idtype = '1';
-        $modelrequests->status = '0';
-        $modelrequests->iduser = yii::$app->user->identity->id;
-       // if(\yii::$app->request->isAjax && $modelrequests->load(\yii::$app->request->post())){      
-        if($modelrequests->load(\yii::$app->request->post())){      
-           // \yii::$app->response->format = Response::FORMAT_JSON;
-            $modelrequests->name = $model->name;
-            $modelrequests->description = $model->nominal;
-            $modelrequests->idproduce = $model->idproduce;
-            $modelrequests->estimated_category = $model->idcategory;
-            $modelrequests->estimated_idel = $model->idelements;
-           // $result = ['success' => true, 'message' => 'Заявка успешно создана!'];
-            if($modelrequests->save(false)) {
-                Yii::$app->session->setFlash('success', $modelrequests->name .' Успешно отправлен в заявки!');
-                return $this->redirect(['elements/view', 'id' => $model->idelements]);
-            }
-            /*else{
-                Yii::$app->session->setFlash('error', 'Возникла ошибка при создании заявки');
-            }*/
-        }
-        // end requests
+        //view specification
+        
+        $receipt = new Receipt();
+        
+        $modelSpecification = new Specification();
+        $querySpecification = Specification::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
+        $dataProviderSpecification = new ActiveDataProvider([
+            'query' => $querySpecification,
+        ]);
         
         $queryacc = Accounts::find()->where(['idelem' => $id])->orderBy('date_receive DESC')->limit(10);
         $dataProvideracc = new ActiveDataProvider([
             'query' => $queryacc,
         ]);
         
+        
+        $queryar = AccountsRequests::getAccountsRequestsDetails($id);
+        $dataAccountsRequests = new ActiveDataProvider([
+            'query' => $queryar,
+        ]);
+        
         $querypur = Purchaseorder::find()->where(['idelement' => $id])->orderBy('created_at DESC')->limit(5);
-    //    $countQuery = clone $querypur;
-     //   $pages = new Pagination(['totalCount' => $countQuery->count()]);
+//        echo '<pre>'; var_dump($querypur->createCommand()->rawSql); echo '</pre>'; die();
         $dataProviderpur = new ActiveDataProvider([
             'query' => $querypur,
         ]);  /*in future point the limit of requests..E.x. last 5 orders */
         
         $searchModelout = new OutofstockSearch();
-        $queryout = Outofstock::find()->where(['idelement' => $id])->orderBy('date DESC');//
+        $queryout = $searchModelout->search();
+//        $queryout = Outofstock::find()->where(['idelement' => $id])->with(['themes', 'themeunits',])->orderBy('date DESC');//
         $dataProviderout = new ActiveDataProvider([
             'query' => $queryout,
         ]);
@@ -193,12 +185,60 @@ class ElementsController extends Controller
             'query' => $queryreceipt,
         ]);
         
-        $modelShortage = new Shortage();
-        $queryShortage = Shortage::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
-        $dataProviderShortage = new ActiveDataProvider([
-            'query' => $queryShortage,
-        ]);
-           
+        
+        //requests
+        $modelrequests = new Requests();
+        $modelrequests->idtype = '1';
+        $modelrequests->status = '0';
+        $modelrequests->iduser = yii::$app->user->identity->id;
+       // if(\yii::$app->request->isAjax && $modelrequests->load(\yii::$app->request->post())){      
+        if ($modelrequests->load(\yii::$app->request->post())) {
+            $transaction = \Yii::$app->db->beginTransaction();
+            
+            $modelrequests->name = $model->name;
+            $modelrequests->description = $model->nominal;
+            $modelrequests->idproduce = $model->idproduce;
+            $modelrequests->estimated_category = $model->idcategory;
+            $modelrequests->estimated_idel = $model->idelements;
+
+            try {
+                if ($modelrequests->validate()) {
+                    if ($modelrequests->idboard != NULL) {
+                        //create shortage
+                        Yii::$app->db->createCommand()->insert('specification', [
+                            'idboard' => $modelrequests->idboard, 
+                            'idelement' => $model->idelements, 
+                            'quantity' => $modelrequests->quantity, 
+                            'status' => Specification::STATUS_ACTIVE,
+                            'created_by' => yii::$app->user->identity->id,
+                            'updated_by' => yii::$app->user->identity->id,
+                            ])->execute();
+                    }
+
+                
+                    $modelrequests->save(false);
+                    
+                    $modelRequestStatusHistory = new RequestStatusHistory();
+                    $modelRequestStatusHistory->idrequest = $modelrequests->idrequest;
+                    $modelRequestStatusHistory->status = $modelrequests->status;
+                    $modelRequestStatusHistory->note = $modelrequests->note;
+                    $modelRequestStatusHistory->save(false);
+
+                    $transaction->commit();
+                    
+                    Yii::$app->session->setFlash('success', 'Товар успешно отправлен в заявку!');
+                    return $this->redirect(['elements/view', 'id' => $model->idelements]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Возникла ошибка при создании заявки');
+                }
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
+        }
+        
         return $this->render('view', [
          //   'pages' => $pages,
             'model' => $this->findModel($id),
@@ -206,14 +246,16 @@ class ElementsController extends Controller
             'dataProvider2' => $dataProvider2,
             'modelprice' => $modelprice,
             'modelrequests' => $modelrequests,
-            'modelShortage' => $modelShortage,
+            'receipt' => $receipt,
+            'modelSpecification' => $modelSpecification,
             'dataProvideracc' => $dataProvideracc,
             'dataProviderpur' => $dataProviderpur,
             'dataProviderout' => $dataProviderout,
-            'dataProviderShortage' => $dataProviderShortage,
+            'dataProviderSpecification' => $dataProviderSpecification,
             'searchModelout' => $searchModelout,
             'searchModelreceipt' => $searchModelreceipt,
             'dataProviderreceipt' => $dataProviderreceipt,
+            'dataAccountsRequests' => $dataAccountsRequests,
         ]);
     }
     
@@ -323,20 +365,55 @@ class ElementsController extends Controller
     {
         $model = new Outofstock();
         $model->idelement = $idel;
+        $model->iduser = $iduser;
         $user = new Users();
         $user->id = $iduser;
+        $element = new Elements();
+        $element->idelements = $idel;
+        
+        $board = new Boards();
+        $model->idtheme = $board->idtheme;
+        $model->idthemeunit = $board->idthemeunit;
+        
+       // $modelprice = new Prices();
+     //   $idprice = $modelprice->idpr;
+       // $lastprice = Prices::find()->orderBy(['idpr' => SORT_DESC])->where(['idel' => $model->idelement])->one();
+      //  $model->idprice = $lastprice;
+        
+
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->idelement = $idel;
-          //  $model->iduser = \yii::$app->user->identity->id;
-            $model->save();
-            return $this->redirect(['viewfrom', 'idel' => $model->idelement]);
-        } else {
-            return $this->render('createfrom', [
-                'model' => $model,
-                'user' => $user,
-            ]);
+            
+            $transaction = $model->getDb()->beginTransaction(//Yii::$app->db->beginTransaction(
+                 //   Transaction::SERIALIZABLE
+                    );
+            try{
+                $valid = $model->validate();
+               
+                Yii::$app->db->createCommand()->update('elements', ['quantity' => new Expression('quantity - :modelquantity', [':modelquantity' => $model->quantity])], ['idelements'=> $model->idelement])->execute();
+
+                if ($valid) {
+                // the model was validated, no need to validate it once more
+                    $model->save(false);
+
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Товар успешно взят со склада');
+                    return $this->redirect(['viewfrom', 'idel' => $model->idelement]);
+                } else {
+                    $transaction->rollBack();
+                }  
+                }catch (ErrorException $e) {
+                    $transaction->rollBack();
+                    echo $e->getMessage();
+            }
+           
         }
+        return $this->render('createfrom', [
+            'model' => $model,
+            'user' => $user,
+            'element' => $element,
+
+        ]);
     }
     
      public function actionCreatereceipt($idord, $idel)
