@@ -22,10 +22,8 @@ use kartik\helpers\Html;
         <?php } ?>
          
         <div class="breadcrumb">
-            <?=
-            Breadcrumbs::widget(
-                [
-                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            <?= Breadcrumbs::widget(
+                ['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ]
             ) ?>
         </div>

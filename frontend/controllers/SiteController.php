@@ -80,6 +80,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
           if (!Yii::$app->user->isGuest) {
+           //     return $this->goHome();
             return $this->redirect(['/myaccount/']);
            //  return $this->redirect(['backend/admin/']);
         }
@@ -130,7 +131,6 @@ class SiteController extends Controller
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
-           //  return $this->redirect(['backend/admin/']);
         }
 
         $model = new LoginForm();

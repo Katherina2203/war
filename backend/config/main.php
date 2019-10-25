@@ -31,12 +31,12 @@ return [
         ],
         'session' => [
             'name' => 'BACKENDSESSIONID',   //Set name
-         //   'class' => 'yii\web\DbSession',
+            'class' => 'yii\web\DbSession',
            // 'savePath' => __DIR__ . '/tmp', //create tmp folder and set path
-      /*       'cookieParams' => [
+             'cookieParams' => [
                 'httpOnly' => true,
-                'path' => '/admin',
-            ],*/
+               // 'path' => '/admin',
+            ],
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',

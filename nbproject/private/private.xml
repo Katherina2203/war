@@ -3,14 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/xampp/htdocs/war/backend/views/boards/view.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/controllers/BoardsController.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/elements/view.php</file>
-            <file>file:/D:/xampp/htdocs/war/common/models/AccountsRequests.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/models/PaymentinvoiceSearch.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/users/myprofile.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/users/viewmyprofile.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/models/AccountsSearch.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/views/layouts/header.php</file>
+            <file>file:/D:/xampp/htdocs/war/frontend/config/main.php</file>
+            <file>file:/D:/xampp/htdocs/war/frontend/modules/controllers/UsersController.php</file>
+            <file>file:/D:/xampp/htdocs/war/frontend/views/layouts/head.php</file>
+            <file>file:/D:/xampp/htdocs/war/frontend/views/layouts/content.php</file>
+            <file>file:/D:/xampp/htdocs/war/frontend/views/layouts/myaccount.php</file>
+            <file>file:/D:/xampp/htdocs/war/backend/config/main.php</file>
+            <file>file:/D:/xampp/htdocs/war/frontend/modules/controllers/DefaultController.php</file>
         </group>
     </open-files>
 </project-private>

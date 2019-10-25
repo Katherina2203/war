@@ -9,7 +9,7 @@ dmstr\web\AdminLteAsset::register($this);
 backend\assets\AppAsset::register($this);
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
    // $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/bower/bootstrap/dist');
-$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
+//$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
 ?>
     <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -25,8 +25,8 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
     <?php $this->beginBody() ?>
     <div class="wrapper" style="display: table; clear: both; overflow: visible; width: auto; min-width:100%;">
         <?= $this->render(
-            'header.php',
-            ['directoryAsset' => $directoryAsset]
+            'header.php'
+          //  ['directoryAsset' => $directoryAsset]
         ) ?>
 
         <?= $this->render(

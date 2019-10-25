@@ -1,18 +1,30 @@
 <?php
 use yii\helpers\Html;
 
-/* @var $this \yii\web\View */
-/* @var $content string */
+if (Yii::$app->controller->action->id === 'login') { 
+/**
+ * Do not use this code in your template. Remove it. 
+ * Instead, use the code  $this->layout = '//main-login'; in your controller.
+ */
+    echo $this->render(
+        'main-login',
+        ['content' => $content]
+    );
+} else {
 
-$this->title = $this->title;
-dmstr\web\AdminLteAsset::register($this);
-frontend\assets\AppAsset::register($this);
-$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
-   // $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/bower/bootstrap/dist');
-//$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
+    if (class_exists('frontend\assets\AppAsset')) {
+        frontend\assets\AppAsset::register($this);
+    } else {
+        backend\assets\mainAsset::register($this);
+    }
+
+    dmstr\web\AdminLteAsset::register($this);
+      
+    $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist'); //@vendor/bower/bootstrap/dist
 ?>
-    <?php $this->beginPage() ?>
-<!DOCTYPE html>
+
+<?php $this->beginPage() ?>
+    <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
@@ -21,10 +33,10 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
 </head>
-<body class="hold-transition skin-blue-light sidebar-mini" style="overflow: visible; min-width:100%;">
+<body class="hold-transition skin-blue-light sidebar-mini">
     <?php $this->beginBody() ?>
     <div class="wrapper" style="display: table; clear: both; overflow: visible; width: auto; min-width:100%;">
-        <?= $this->render(
+       <?= $this->render(
             'head.php',
             ['directoryAsset' => $directoryAsset]
         )?>
@@ -40,15 +52,16 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@web/dist');
         )?>
        
         <?php
-         $this->render(           
+        echo $this->render(           
             'right.php',            
             ['directoryAsset' => $directoryAsset]          
         )?>
-
+        
+       
     </div>
 
     <?php $this->endBody() ?>
 </body>
 </html>
-    <?php $this->endPage(); ?>
-
+    <?php $this->endPage() ?>
+<?php } ?>

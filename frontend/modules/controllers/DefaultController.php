@@ -4,6 +4,8 @@ namespace frontend\modules\controllers;
 use yii;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 use common\models\Requests;
 use backend\models\RequestsSearch;
@@ -21,8 +23,40 @@ use common\models\Boards;
 class DefaultController extends Controller
 {
    
-    public $layout = '/myaccount';
+  //  public $layout = '/myaccount';
     
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+            //    'only' => ['index', 'view','create'],
+                'rules' => [
+                    [
+                      //  'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['head', 'admin', 'Purchasegroup', 'manager'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['Purchasegroup'],
+                        'actions' => ['atttoinvoice', 'createitem', 'createreceipt'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'actions' => ['index', 'view', 'viewin', 'viewreceipt'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
      /**
      * Renders the index view for the module
      * @return string

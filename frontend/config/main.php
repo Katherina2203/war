@@ -11,8 +11,9 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
-    'language' => 'en',
-    'sourceLanguage' => 'en',
+    'language' => 'ru-RU',
+    'sourceLanguage' => 'en-US',
+      
    
     'components' => [
         'authManager' => [
@@ -46,6 +47,7 @@ return [
        'user' => [
             'identityClass' => 'common\models\User',// 'identityClass' => 'mdm\admin\models\User',
             'enableAutoLogin' => true,
+            'enableSession' => true,
         //    'enableSession' => true,
             'authTimeout' => 3600 * 30 * 24, //1800,
             'loginUrl' => ['site/login', 'site/index'],
@@ -71,7 +73,7 @@ return [
         'session' => [
             'name' => 'BACKENDSESSIONID', //FRONTENDID
               //  'savePath' => __DIR__ . '/tmp',
-              //  'class' => 'yii\web\DbSession',
+                'class' => 'yii\web\DbSession',
         ],
 
         'common' => [
@@ -89,7 +91,7 @@ return [
            // 'enableScriptParsing' => true, 
             'class' => 'codemix\localeurls\UrlManager',
             'enableLanguagePersistence' => false,
-            'languages' => ['en', 'ru'],
+            'languages' => ['en-GB', 'en', 'ru'],
             'rules' => [
                 '/' => 'site/index',
                 '<action:contact|about|login|logout>' => 'site/<action>',
@@ -106,14 +108,22 @@ return [
         ],
         'i18n' => [
             'translations' => [
-                'app*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                   // 'sourceLanguage' => 'en',
-                    'basePath' => '@common/messages',
-                    'fileMap' => [
+                 'app' => [
+                    'class' => 'yii\i18n\DbMessageSource',
+                   // 'class' => 'yii\i18n\PhpMessageSource',
+                    'db' => 'db',
+                //    'sourceMessageTable' => '{{%source_message}}',
+                  //  'messageTable' => '{{%message}}',
+                 
+                    'sourceLanguage' => 'en-US',
+                    'forceTranslation'   => TRUE,
+                    'cachingDuration'    => 86400,
+                    'enableCaching'      => FALSE,
+                 /*   'basePath' => '@common/messages',
+                 'fileMap' => [
                         'app' => 'app.php',
                         'app/error' => 'error.php',
-                    ]
+                    ]*/
                 ],
             ],
         ],
@@ -171,18 +181,6 @@ return [
             'class' => 'app\modules\myaccount',
         ],
     ],
-  //  'as access' => [
-   //     'class' => 'mdm\admin\components\AccessControl',
-   //     'allowActions' => [
-    //        'site/*',
-          //  'admin/*',
-           // 'some-controller/some-action',
-       //     'rbac/*',
-            //'/site/login/',
-         //   '/elements/index',
-          //  '/category/index',
-          //  '/orders/index',
-      //  ]
-    //],
     'params' => $params,
+   // 'defaultRoute' => '/myaccount',
 ];
