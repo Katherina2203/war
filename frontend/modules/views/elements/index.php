@@ -112,17 +112,26 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:45px;'],
-                'template' => '{update} {accounts} {viewfrom} ',// {delete}
+                'template' => ' {prices} {viewfrom}',
                 'buttons' => [
-                    'accounts' => function($url, $model, $key) {
-                        $url = Url::to(['tostock', 'idel' => $key]);
-                        return Html::a('<span class="glyphicon glyphicon-plus"></span>', $url, ['title' => 'Положить на склад']);
+                    'prices' => function($url,$model,$key) {
+                        $url = Url::to(['viewprice', 'idel' => $key]);
+                        return Html::a('<span class="glyphicon glyphicon-euro"></span>', $url, ['title' => 'Посмотреть цену']);
                     },
-                    'viewfrom' => function($url, $model, $key) {
+                    'viewfrom' => function($url,$model,$key) {
                         $url = Url::to(['viewfrom', 'idel' => $key]);
                         return Html::a('<span class="glyphicon glyphicon-minus"></span>', $url, ['title' => 'Посмотреть что взято со склада']);
                     },
-                  
+                    'urlCreator' => function($action, $model, $key, $index) {
+                        if ($action === 'receipt') {
+                            $url = yii::$app->controller->createUrl('receipt');
+                            return $url;
+                        }
+                        if ($action === 'prices') {
+                            $url ='prices/view?idelement='.$model->idel;
+                            return $url;
+                        }
+                    },
                 ],
             ],
         ],

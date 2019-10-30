@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "category".
@@ -22,6 +24,23 @@ class Category extends \yii\db\ActiveRecord
     {
         return '{{%category}}';
     }
+    
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => ['created', 'updated_at'],
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => ['created_by', 'edited_by'],
+                'updatedByAttribute' => 'edited_by',
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -29,9 +48,10 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'url', 'parent'], 'required'],
+            [['name', 'url', 'parent', 'name_ru'], 'required'],
             [['parent'], 'integer'],
             [['name'], 'string', 'max' => 46],
+            [['name_ru'], 'string', 'max' => 128],
             [['url'], 'string', 'max' => 26],
         ];
     }
@@ -43,8 +63,8 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             'idcategory' => Yii::t('app', 'Idcategory'),
-            'name' =>  Yii::t('app', 'name'),
-            'name_ru' =>  Yii::t('app', 'Название_рус'),
+            'name' =>  Yii::t('app', 'Название'),
+            'name_ru' =>  Yii::t('app', 'Название на русском'),
             'url' => Yii::t('app', 'Url'),
             'parent' => Yii::t('app', 'Родительская категория'),
         ];
@@ -82,22 +102,6 @@ class Category extends \yii\db\ActiveRecord
             }
         }
         return $aHierarchy;
-    }
-    
-    public static function getHierarchy_Old()
-    {
-        $options = [];
-         
-        $parents = self::find()->where("parent=0")->all();
-        foreach($parents as $id => $p) {
-            $children = self::find()->where("parent=:parent", [":parent"=>$p->idcategory])->all();
-            $child_options = [];
-            foreach($children as $child) {
-                $child_options[$child->idcategory] = $child->name;
-            }
-            $options[$p->name] = $child_options;
-        }
-        return $options;
     }
         
     public function getCategories($type = NULL, &$data = [], $parent = NULL)

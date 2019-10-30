@@ -4,100 +4,59 @@ namespace backend\models;
 
 use Yii;
 use yii\base\Model;
+use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use common\models\Category;
 use yii\db\Expression;
-/**
- * CategorySearch represents the model behind the search form about `common\models\Category`.
- */
+
 class CategorySearch extends Category
 {
-   // public $grand_id;
-    public $elements_count;
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
-              [['idcategory', 'parent', 'created_by' , 'edited_by', 'elements_count'], 'integer'],//'grand_id'
-           // [['name', 'url'], 'safe'],
-              [['name'], 'safe'],
+            [['idcategory', 'parent',], 'integer'],
+            [['name'], 'string', 'max' => 46],
+            [['name'], 'trim'],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
+    public function attributes()
     {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return array_merge(parent::attributes(),["parent_name",]);
     }
-
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function search($params)
+    
+    public function search()
     {
-        $query = Category::find()
-                ->select(['{{%category}}.*', 'elements_count' => new Expression('COUNT({{%elements}}.idelements)')])
-               // ->from(['c' => Category::tableName()])
-                ->joinWith(['elements'], false)
-              // ->with(['{{%category}}.parent'])
-                ->groupBy('{{%category}}.idcategory, {{%category}}.parent')
-                ->With(['parent']);
- /*
-  * from(['c' => Category::tableName()])
-  * ->joinWith([
-  *    'parent' => function(ActiveQuery $query){
-  *             $query->from('parent'=>Category::tableName());
-  *     }
-  * ])
-  */
-        // add conditions that should always apply here
+//        SELECT `c`.*
+//        FROM category `p` 
+//        LEFT JOIN (
+//            SELECT c1.*, c2.name as parent_name FROM category c1
+//            LEFT JOIN category c2 on c1.parent = c2.idcategory
+//        ) `c` ON (p.idcategory = c.parent OR c.idcategory = p.idcategory)
+//        where p.parent = 0
+//        order by p.name, c.parent, c.name
+        $queryCategory = (new Query())
+            ->select(['c1.*', 'parent_name' => "c2.name",])
+            ->from(['c1' => 'category'])
+            ->leftJoin(['c2' => 'category',], 'c1.parent = c2.idcategory')
+        ;
+        $queryCategorySearch = CategorySearch::find()
+            ->select(['c.*',])
+            ->from(['p' => 'category',])
+            ->leftJoin(['c' => $queryCategory,], '(p.idcategory = c.parent OR c.idcategory = p.idcategory)')
+            ->where('p.parent = 0')
+            ->orderBy('p.name, c.parent, c.name')
+        ;
+//        Yii::info("\n******\n" . print_r($queryCategorySearch->createCommand()->rawSql, true) . "\n", 'ajax');
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'attributes' => [
-                    'idcategory',
-                    'name',
-                    'parent',
-                    'elements_count',
-                ]
-            ]
-        ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+        if ($this->load(Yii::$app->request->get()) && $this->validate()) {
+            $queryCategorySearch->andFilterWhere(['like', 'c.name', $this->name]);
         }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            '{{%category}}.idcategory' => $this->idcategory,
-            '{{%category}}.parent' => $this->parent, //parent.parent
-            '{{%category}}.name' => $this->name,
-        ]);
-        
-        if(isset($this->elements_count)){
-            $query->andHaving([
-                'elements_count' => $this->elements_count,
+        return $dataProviderCategory = new ActiveDataProvider([
+                'query' => $queryCategorySearch,
+                'pagination' => [
+                    'pageSize' => 40,
+                ],
             ]);
-        }
-        
-
-        $query->andFilterWhere(['like', 'name', $this->name]);
-          //  ->andFilterWhere(['like', 'url', $this->url]);
-
-        return $dataProvider;
     }
 }

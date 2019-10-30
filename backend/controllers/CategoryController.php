@@ -46,28 +46,10 @@ class CategoryController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Category();
         $searchModel = new CategorySearch();
-
-    //    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $queryParent = Category::find()->where(['parent' => FALSE])->groupBy('idcategory'); //->orderBy('idcategory DESC')
-        //$pages = new Pagination(['totalCount' => $queryParent->count()]);
-        
-        $dataProviderParent = new ActiveDataProvider([
-            'query'=> $queryParent//->offset($pages->offset)//->limit($pages->limit),
-                        ]);
-        
-      /*  $dataProviderChild = new ActiveDataProvider([
-                            'query'=> Category::find()->where("parent=:parent", [":parent"=>$model->idcategory])
-                                    ->orderBy('name ASC') //, [":parent"=>$model->idcategory = 1]  ->groupBy('idcategory')
-                        ]); */
-
         return $this->render('index', [
-            'model' => $model,
-          //  'pages' => $pages,
             'searchModel' => $searchModel,
-            'dataProviderParent' => $dataProviderParent,
-        //    'dataProviderChild' => $dataProviderChild,
+            'dataProviderCategory' => $searchModel->search(Yii::$app->request->queryParams),
         ]);
     }
     
@@ -136,14 +118,13 @@ class CategoryController extends Controller
     public function actionCreate()
     {
         $model = new Category();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idcategory]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->save(false);
+            return $this->redirect(['index']);
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
     
     public function actionCreatemanufacture()
@@ -182,15 +163,14 @@ class CategoryController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idcategory]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        $modelCategory = Category::findOne($id);
+        if ($modelCategory->load(Yii::$app->request->post()) && $modelCategory->validate()) {
+            $modelCategory->save(false);
+            return $this->redirect(['category/index']);
         }
+        return $this->render('update', [
+            'model' => $modelCategory,
+        ]);
     }
 
     /**
@@ -201,9 +181,15 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $modelCategory = Category::findOne($id);
+        if (is_null($modelCategory)) {
+            return $this->redirect(['category/index']);
+        }
+        if (!$modelCategory->parent) {
+            Category::updateAll(['parent' => 0], ['parent' => $modelCategory->idcategory]);
+        }
+        $modelCategory->delete();
+        return $this->redirect(['category/index']);
     }
 
     /**
