@@ -60,7 +60,7 @@ class OutofstockSearch extends Outofstock
                 "o.idofstock",
                 'u.surname as users_surname',
                 'o.quantity',
-                "DATE_FORMAT(o.date, '%Y %m %d') as date_only",
+                "DATE_FORMAT(o.date, '%Y-%m-%d') as date_only",
                 "o.date",
                 't.name as themes_name',
                 'tu.nameunit as themeunits_nameunit',

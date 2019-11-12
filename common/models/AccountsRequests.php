@@ -24,6 +24,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
     {
         // делаем поле зависимости доступным для поиска
         return array_merge(parent::attributes(), [
+			'requests_date', //requests.created_at
             'requests_quantity', //requests.quantity
             'received_quantity', //accounts_requests.quantity
             'requests_status', //requests.status
@@ -53,6 +54,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
         SELECT 
             ar.id as id,
             r.idrequest as requests_id, 
+			DATE_FORMAT(r.created_at, '%Y-%m-%d') as requests_date, 
             FORMAT(r.quantity, 0) as requests_quantity,  
             FORMAT(ar.quantity, 0) as received_quantity, 
             r.status as requests_status,

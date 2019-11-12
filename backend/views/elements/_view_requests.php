@@ -30,6 +30,11 @@ use kartik\grid\GridView;
                                return Html::a($data->requests_id, ['requests/view', 'id' => $data->requests_id]);
                             },
                         ],
+						[
+                            'attribute' => 'requests_date',
+                            'label' => 'Создано',
+                            'format' => 'raw',
+                        ],
                         [
                             'attribute' => 'requests_quantity',
                             'label' => 'Кол-во',

@@ -48,16 +48,20 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ]) ?>
                         <?= Html::a('<i class="glyphicon glyphicon-list"></i>Заказать', 
-                                ['orderquick', 'iduser' => yii::$app->user->identity->id, 'idel' => $model->idelements], 
-                                [ 'title'=>'Создать заявку этого товара', 'class' => 'btn btn-warning'])
+							['orderquick', 'iduser' => yii::$app->user->identity->id, 'idel' => $model->idelements], 
+							[ 'title'=>'Создать заявку этого товара', 'class' => 'btn btn-warning'])
                         ?>
+						<?= Html::a('<i class="glyphicon glyphicon-edit"></i> Взять со склада быстро', 
+							['createfromquick',  'idel' => $model->idelements, 'iduser' => yii::$app->user->identity->id], 
+							['title'=>'Взять со склада быстро', 'class' => 'btn btn-success'])
+						?>
                         <?= Html::a('<i class="glyphicon glyphicon-minus"></i> Взять со склада', 
-                                ['createfrom', 'iduser' => yii::$app->user->identity->id, 'idel' => $model->idelements], 
-                                [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-info'])
+							['createfrom', 'iduser' => yii::$app->user->identity->id, 'idel' => $model->idelements], 
+							[ 'title'=>'Создать единицу товара', 'class' => 'btn btn-info'])
                         ?>
                         <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Вернуть на склад', 
-                                ['createreturn', 'iduser' => yii::$app->user->identity->id, 'idel' => $model->idelements], 
-                                [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-default'])
+							['createreturn', 'iduser' => yii::$app->user->identity->id, 'idel' => $model->idelements], 
+							[ 'title'=>'Создать единицу товара', 'class' => 'btn btn-default'])
                         ?>
 
                     </p>
