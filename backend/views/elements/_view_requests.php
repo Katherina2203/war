@@ -89,7 +89,10 @@ use kartik\grid\GridView;
                         [
                             'attribute' => 'amount',
                             'label' => 'Сумма',
-                            'format' => 'raw',
+//                            'format' => 'raw',
+                            'value' => function($data) {
+                               return number_format($data->amount, 2, ".", "");
+                            },
                         ],
                         [
                             'attribute' => 'invoice_name',

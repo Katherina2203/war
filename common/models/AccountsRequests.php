@@ -24,7 +24,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
     {
         // делаем поле зависимости доступным для поиска
         return array_merge(parent::attributes(), [
-			'requests_date', //requests.created_at
+            'requests_date', //requests.created_at
             'requests_quantity', //requests.quantity
             'received_quantity', //accounts_requests.quantity
             'requests_status', //requests.status
@@ -61,7 +61,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
             ar.accounts_id as accounts_id,
             FORMAT(p.unitPrice, 2) as unit_price,
             FORMAT(a.quantity, 0) as accounts_quantity,
-            FORMAT(a.amount, 2) as amount,
+            amount,
             CONCAT('№', pi.invoice, ' от ', pi.date_invoice ) as invoice_name,
             a.status as accounts_status, 
             pi.idpaymenti as invoice_id,
