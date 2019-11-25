@@ -137,7 +137,7 @@ $getProject = ArrayHelper::map($modelTheme::find()->select(['idtheme', 'name'])-
                 'attribute' => 'idproject',
                 'value' => 'themes.name',
                 'format' => 'text',
-                'filter' => Html::activeDropDownList($searchModel, 'iduser', $getProject,['class'=>'form-control','prompt' => 'Выберите проект']),
+                'filter' => Html::activeDropDownList($searchModel, 'idproject', $getProject,['class'=>'form-control','prompt' => 'Выберите проект']),
                 'contentOptions' => ['style' => 'max-width: 150px;white-space: normal'],
             ],
             [

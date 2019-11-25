@@ -79,7 +79,9 @@ use kartik\grid\GridView;
                         [
                             'attribute' => 'unit_price',
                             'label' => 'Цена',
-                            'format' => 'raw',
+                            'value' => function($data) {
+                               return is_null($data->unit_price) ? $data->unit_price : number_format($data->unit_price, 2, ".", "");
+                            },
                         ],
                         [
                             'attribute' => 'accounts_quantity',
@@ -91,7 +93,7 @@ use kartik\grid\GridView;
                             'label' => 'Сумма',
 //                            'format' => 'raw',
                             'value' => function($data) {
-                               return number_format($data->amount, 2, ".", "");
+                               return is_null($data->amount) ? $data->amount : number_format($data->amount, 2, ".", "");
                             },
                         ],
                         [
