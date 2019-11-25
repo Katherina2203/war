@@ -38,12 +38,14 @@ class AccountsRequests extends \yii\db\ActiveRecord
             'elements_id', //requests.estimated_idel
             'project_name', //themes.name
             'board_id', //requests.idboard
+            'boards_name', //boards.name
             'users_name', //users.surname
             'delivery', //accounts.delivery
             'date_receive', //accounts.date_receive
             'elements_name', //elements.name
             'elements_nominal', //elements.nominal
             'total_quantity', //SUM(accounts_requests.quantity)
+            'date_receive', //accounts.date_receive
 
         ]);
     }
@@ -54,12 +56,12 @@ class AccountsRequests extends \yii\db\ActiveRecord
         SELECT 
             ar.id as id,
             r.idrequest as requests_id, 
-			DATE_FORMAT(r.created_at, '%Y-%m-%d') as requests_date, 
+            DATE_FORMAT(r.created_at, '%Y-%m-%d') as requests_date, 
             FORMAT(r.quantity, 0) as requests_quantity,  
             FORMAT(ar.quantity, 0) as received_quantity, 
             r.status as requests_status,
             ar.accounts_id as accounts_id,
-            FORMAT(p.unitPrice, 2) as unit_price,
+            p.unitPrice as unit_price,
             FORMAT(a.quantity, 0) as accounts_quantity,
             amount,
             CONCAT('№', pi.invoice, ' от ', pi.date_invoice ) as invoice_name,
@@ -68,14 +70,17 @@ class AccountsRequests extends \yii\db\ActiveRecord
             r.estimated_idel as elements_id,
             t.name as project_name, 
             r.idboard as board_id,
-            u.surname as users_name
-
+            b.name as boards_name,
+            u.surname as users_name,
+            a.date_receive as date_receive
+            
         FROM requests r
         LEFT JOIN accounts_requests ar ON r.idrequest = ar.requests_id
         LEFT JOIN accounts a ON a.idord = ar.accounts_id
         LEFT JOIN prices p ON a.idprice = p.idpr
         LEFT JOIN paymentinvoice pi ON pi.idpaymenti = a.idinvoice
         LEFT JOIN themes t ON t.idtheme = r.idproject
+        LEFT JOIN boards b ON b.idboards = r.idboard
         LEFT JOIN users u ON u.id = r.iduser
 
         WHERE r.estimated_idel = :estimated_idel 

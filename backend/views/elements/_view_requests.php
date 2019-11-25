@@ -135,9 +135,15 @@ use kartik\grid\GridView;
                             'label' => 'Проект',
                             'format' => 'raw',
                             'value' => function($data) {
-                                return $data->project_name . (is_null($data->board_id) ? '' : ' - ' . $data->board_id);   
+                                return $data->project_name . (is_null($data->board_id) ? '' : ' - ' . $data->board_id . ' ' . $data->boards_name);   
                             }
                         ],
+                        [
+                            'attribute' => 'date_receive',
+                            'label' => 'Дата получения',
+                            'format' => 'raw',
+                        ],
+                                
                     ],
                 ]);
                                     ?>
