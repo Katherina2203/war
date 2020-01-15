@@ -126,6 +126,11 @@ use kartik\grid\GridView;
                             },
                         ],
                         [
+                            'attribute' => 'supplier_name',
+                            'label' => 'Поставщик',
+                            'format' => 'raw',
+                        ],
+                        [
                             'attribute' => 'users_name',
                             'label' => 'Заказчик',
                             'format' => 'raw',

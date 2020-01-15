@@ -35,6 +35,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
             'invoice_name', //CONCAT('№', pi.invoice, ' от ', pi.date_invoice ) 
             'accounts_status', //accounts.status
             'invoice_id', //paymentinvoice.idpaymenti
+            'supplier_name', //supplier.name
             'elements_id', //requests.estimated_idel
             'project_name', //themes.name
             'board_id', //requests.idboard
@@ -67,6 +68,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
             CONCAT('№', pi.invoice, ' от ', pi.date_invoice ) as invoice_name,
             a.status as accounts_status, 
             pi.idpaymenti as invoice_id,
+            s.name as supplier_name,
             r.estimated_idel as elements_id,
             t.name as project_name, 
             r.idboard as board_id,
@@ -79,6 +81,7 @@ class AccountsRequests extends \yii\db\ActiveRecord
         LEFT JOIN accounts a ON a.idord = ar.accounts_id
         LEFT JOIN prices p ON a.idprice = p.idpr
         LEFT JOIN paymentinvoice pi ON pi.idpaymenti = a.idinvoice
+        LEFT JOIN supplier s ON pi.idsupplier = s.idsupplier
         LEFT JOIN themes t ON t.idtheme = r.idproject
         LEFT JOIN boards b ON b.idboards = r.idboard
         LEFT JOIN users u ON u.id = r.iduser
