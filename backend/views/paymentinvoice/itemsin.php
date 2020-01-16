@@ -190,7 +190,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'label' => 'Сумма без НДС',
                             'attribute' => 'amount',
-                            'footer' => TotalColumn::pageTotal($dataProvider->models,'amount'),
+                            'footer' => TotalColumn::pageTotal($dataProvider->models, 'amount'),
                         ],
                    /*     [
                          //   'class'=>'kartik\grid\FormulaColumn',
