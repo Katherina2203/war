@@ -59,14 +59,14 @@ class AccountsController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'actions' => ['index', 'view', 'viewin', 'viewreceipt'],
+                        'actions' => ['index', 'view', 'viewin', 'viewreceipt', 'delete'],
                     ],
                 ],
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+//                    'delete' => ['POST'],
                 ],
             ],
         ];
@@ -665,9 +665,46 @@ class AccountsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $modelAccounts = Accounts::findOne($id);
+        if (is_null($modelAccounts) || !in_array($modelAccounts->status, array('2', '4'))) {
+            return $this->redirect(['paymentinvoice/index']);
+        }
 
-        return $this->redirect(['index']);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            //the list of the requests related to an account
+            $aModelAccountsRequests = AccountsRequests::find()->where(['accounts_id' => $modelAccounts->idord])->all();
+
+            foreach($aModelAccountsRequests as $model) {
+                //checking each request related to an account
+                $modelRequests = Requests::findOne($model->requests_id);
+                //if it has an active status check if it is related to the other accounts
+                if ($modelRequests->status == Requests::REQUEST_ACTIVE) {
+                    //the list of the accounts related to a request
+                    $iAccountsToRequestCount = AccountsRequests::find()->where(['requests_id' => $model->requests_id])->count();
+                    //if a request is not related to the other accounts change its status to "Not active"
+                    if ($iAccountsToRequestCount == 1) {
+                        $modelRequests->status = Requests::REQUEST_NOACTIVE;
+                        $modelRequests->save();
+                    }
+                }
+                //deleting a record from accounts_requests table
+                $model->delete();
+            }
+
+            Prices::findOne($modelAccounts->idprice)->delete();
+            $iInvoiceId = $modelAccounts->idinvoice;
+            $modelAccounts->delete();
+        
+            $transaction->commit();
+        } catch(\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch(\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+        return $this->redirect(['paymentinvoice/itemsin', 'idinvoice' => $iInvoiceId]);
     }
 
     /**

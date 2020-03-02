@@ -220,13 +220,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'date_receive',
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{view} {edit_account} {deletefrom} {receipt} {changeprice}',
+                            'template' => '{view} {edit_account} {delete} {receipt} {changeprice}',
                             'controller' => 'accounts',
-                            'buttons' => [
-                                'deletefrom' => function ($url,$model,$key) {
-                                    $url = Url::to(['deletefrom', 'id' => $key]);
+                            'visibleButtons' => [
+                                'delete' => function ($model, $key, $index) {
+                                    return $model->status == '2' || $model->status == '4';
                                   
                                 },
+                            ],
+                            'buttons' => [
                                 'edit_account' => function ($url,$model,$key) {
                                     $url = Url::to(['accounts/edit-account', 'idinvoice' => $model->idinvoice, 'idaccount' => $model->idord]);
                                     return $model->status == '2' ? Html::a('<span class="glyphicon glyphicon-edit"></span>', $url,['title' => 'Редактировать позицию в счете'])
