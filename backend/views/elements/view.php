@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Товары', 'url' => ['index']]
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-
 <div class="elements-view">
     <p>
          <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Позицию', ['create'], [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-success']) ?>
@@ -128,6 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                             <?= $this->render('_formquick', [
                                         'model' => $modelrequests,
+                                        'modelShortage' => $modelShortage,
                             ]) ?>
                         <?php 
 //                        Pjax::end(); 
@@ -150,14 +150,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box box-warning">
             <div class="box-header with-border"><h3 class="box-title">История заказа</h3></div>
             <div class="box-body">
-                <div id="infobox">
+                <!--div id="infobox">
                     <div class="pad margin no-print">
                         <div class="callout callout-warning">
                             <h4><i class="fa fa-info"></i> Обратите внимание!</h4>
                                 История заявки будет отображаться, когда отдел закупок начнет ее обрабатывать
                         </div>
                     </div>
-                </div>
+                </div-->
                 <?php Pjax::begin(['id' => 'historyorder']); ?>
                 <?php echo GridView::widget([
                     'dataProvider' => $dataProviderpur,
@@ -177,14 +177,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Количество',
                             'format' => 'raw',
                             'value' => function($data){
-                                return $data->requests->quantity;
+                                return is_null($data->requests) ? '' : $data->requests->quantity;
                             }
                         ],
                         [
                             'attribute' => 'idrequest',
                             'label' => 'Заказчик',
                             'value' => function($data){
-                                return $data->requests->users->surname;
+                                return is_null($data->requests) ? '' : $data->requests->users->surname;
                                
                             },
                         ],
@@ -192,7 +192,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'idrequest',
                             'label' => 'Проект',
                             'value' => function($data){
-                                return is_null($data->requests->themes) ? "" : $data->requests->themes->name;
+                                return is_null($data->requests) || is_null($data->requests->themes) ? "" : $data->requests->themes->name;
                             },
                         ],
                         [
@@ -200,14 +200,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Создано',
                             'format' => ['date', 'php:Y-m-d'],
                             'value' => function($data){
-                                return $data->requests->created_at;
+                                return is_null($data->requests) ? '' : $data->requests->created_at;
                             },
                         ],
                         [
                             'attribute' => 'idrequest',
                             'label' => 'Примечание',
                             'value' => function($data){
-                                return $data->requests->note;
+                                return is_null($data->requests) ? '' : $data->requests->note;
                             },
                         ],
                         [
@@ -215,6 +215,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Статус',
                             'format' => 'raw',
                             'value'=> function($model){
+								if (is_null($model->requests)) {
+									return '';
+								}
                                 if($model->requests->status == '0'){ //not active
                                    return '<span class="glyphicon glyphicon-unchecked" style="color: #d05d09"> Не обработано</span>';
                                 }elseif($model->requests->status == '1'){//active
@@ -234,20 +237,19 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         </div> 
-        <div class='col-sm-4'>
+        <div class='col-sm-5'>
             <div class="box box-danger">
                 <div class="box-header with-border"><h3 class="box-title">Недостачи по платам</h3></div>
-               
                 <div class="box-body">
                     <?php Pjax::begin(['id' => 'shortages']); ?>
-                                <?= $this->render('_specificationby', [
-                                            'model' => $modelSpecification,
-                                            'dataProviderSpecification'=>$dataProviderSpecification,
-                                ]) ?>
+                        <?= $this->render('_specificationby', [
+                            'queryShortage' => $queryShortage,
+                            'dataProviderShortage' => $dataProviderShortage,
+                        ]) ?>
                     <?php Pjax::end(); ?>
                 </div>
             </div>
-    </div> 
+        </div>
 </div>
 
 <div class="row">

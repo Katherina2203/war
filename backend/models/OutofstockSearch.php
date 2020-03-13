@@ -68,20 +68,18 @@ class OutofstockSearch extends Outofstock
                 'o.ref_of_board',
             ])
             ->from([
-                'o' => 'outofstock', 
                 'u' => 'users',
                 't' => 'themes',
-                'tu' => 'themeunits',
-                'b' => 'boards',
+                'o' => 'outofstock', 
             ])
+            ->leftJoin(['tu' => 'themeunits'], 'o.idthemeunit = tu.idunit')
+            ->leftJoin(['b' => 'boards',], 'o.idboart = b.idboards')
             ->where('o.iduser = u.id')
             ->andWhere('o.idtheme = t.idtheme')
-            ->andWhere('o.idthemeunit = tu.idunit')
-            ->andWhere('o.idboart = b.idboards')
             ->andWhere('o.idelement = :idelement', [':idelement' => $iElementsId])
             ;
         if (!$this->load(Yii::$app->request->get()) || !$this->validate()) {
-            $queryOutofstockSearch->orderBy('date_only DESC');
+            $queryOutofstockSearch->orderBy('o.date DESC');
             return $queryOutofstockSearch;
         }
 

@@ -24,6 +24,7 @@ use common\models\Paymentinvoice;
 use common\models\Requests;
 use common\models\AccountsRequests;
 use common\models\RequestStatusHistory;
+use common\models\Shortage;
 use backend\models\AccountsSearch;
 use backend\models\ReceiptSearch;
 use backend\models\ElementsSearch;
@@ -538,6 +539,13 @@ class AccountsController extends Controller
                 $modelPurchaseorder->date = $modelAccounts->date_receive;
                 $modelPurchaseorder->save();
 
+                $modelShortage = Shortage::findOne(['idrequest' => $modelRequests->idrequest]);
+                if (!is_null($modelShortage)) {
+                    $modelShortage->note = "Changing an element (" . $modelShortage->idelement . ") on an element (" . $modelRequests->estimated_idel . ").";
+                    $modelShortage->idelement = $modelRequests->estimated_idel;
+                    $modelShortage->save(false);
+                }
+                    
                 $transaction->commit();
 
                 if (Amounts::checkAmount($modelPrices, $modelAccounts)) {

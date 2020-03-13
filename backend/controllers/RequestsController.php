@@ -26,6 +26,7 @@ use common\models\Themes;
 use common\models\Supplier;
 use common\models\RequestStatusHistory;
 use backend\models\RequestStatusHistorySearch;
+use common\models\Shortage;
 
 /**
  * RequestsController implements the CRUD actions for Requests model.
@@ -206,10 +207,6 @@ class RequestsController extends Controller
         $searchModelHistory = new RequestStatusHistorySearch;
         $dataProviderHistory = $searchModelHistory->search($id, Yii::$app->request->queryParams);
         
-//Yii::info('<pre>'. print_r($searchModelHistory, true).'</pre>', 'ajax');
-//Yii::info('<pre>'. print_r($dataProviderHistory, true).'</pre>', 'ajax');
-        
-        
         return $this->render('view', [
             'model' => $model,
             'searchModelorder' => $searchModelorder,
@@ -234,35 +231,53 @@ class RequestsController extends Controller
      */
 
     
-   public function actionCreate($iduser = null)
+    public function actionCreate($iduser = null)
     {
         $model = new Requests();
         $model->iduser = $iduser;
         $model->status = '0';
         $model->idtype = '1';
-            
-        if($model->load(Yii::$app->request->post()) && $model->validate()){
+//            Yii::info('<pre>'. print_r($_POST, true).'</pre>', 'ajax');
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
         
             $img = UploadedFile::getInstance($model, 'img');
          
-            if($img && $img->tempName){
+            if ($img && $img->tempName) {
                 $model->img = $img;
-         
-                if($model->img && $model->validate(['img'])){
-                    $dir = Yii::getAlias('@frontend/'). 'images/requests/';
-                    $imgPath = $model->img->baseName .  '.' . $model->img->extension;
+                if ($model->img && $model->validate(['img'])) {
+                    $dir = Yii::getAlias('@frontend/') . 'images/requests/';
+                    $imgPath = $model->img->baseName . '.' . $model->img->extension;
                     $model->img->saveAs($dir . $imgPath); //$model->img->extension
-                    $model->img = 'images/requests/'. $imgPath;
-        //{$model->id}/{$model->media_file->name}
-                } 
+                    $model->img = 'images/requests/' . $imgPath;
+                }
+            }
+            //check for an Element ID
+            $aModelElements = Elements::find()->where(['name' => $model->name])->all();
+            
+            if (!empty($aModelElements) && !is_null($aModelElements[0])) {
+                $model->estimated_idel = $aModelElements[0]->idelements;
+            } else {
+                 
+                $modelElement = new Elements();
+                $modelElement->box = '-';
+                $modelElement->name = $model->name;
+                $modelElement->nominal = $model->description;
+                $modelElement->quantity = 0;
+                $modelElement->idproduce = is_null($model->idproduce) ? $model->idproduce : 10;
+                $modelElement->idcategory = $model->estimated_category ? $model->estimated_category : 11;
+                $modelElement->active = '1';
+//                Yii::info('<pre>'. print_r($modelElement->getErrors(), true).'</pre>', 'ajax');
+                $modelElement->save();
+                
+                $model->estimated_idel = $modelElement->idelements;
             }
 
-           if($model->save(false)){
+            if($model->save(false)){
              
                 Yii::$app->session->setFlash('success', 'Заявка успешно сохранена');
                 return $this->redirect(['view', 'id'=>$model->idrequest]);
-           }
-        }else{
+            }
+        } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -315,7 +330,7 @@ class RequestsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->img = UploadedFile::getInstance($model, 'img');
             
-           if ($img && $img->tempName) {
+           /* if ($img && $img->tempName) {
                 $model->img = $img;
                 
                 if ($model->img && $model->validate(['img'])) {  
@@ -324,7 +339,7 @@ class RequestsController extends Controller
                     $model->img->saveAs($dir.$model->img->baseName .  '.' . $model->img->extension);
                     $model->img = $model->img->baseName .  '.' . $model->img->extension;
                 }
-           }
+           } */
             return $this->redirect(['view', 'id' => $model->idrequest]);
         } else {
             return $this->render('update', [
@@ -344,14 +359,25 @@ class RequestsController extends Controller
         if ($modelRequests->load(Yii::$app->request->post()) && $modelRequests->validate()) {
 
             $transaction = Yii::$app->db->beginTransaction();
-            try {                    
+            try {
+                $modelRequests->save(false);
+                
                 $modelRequestStatusHistory = new RequestStatusHistory();
                 $modelRequestStatusHistory->idrequest = $modelRequests->idrequest;
                 $modelRequestStatusHistory->status = $modelRequests->status;
                 $modelRequestStatusHistory->note = $modelRequests->note;
                 if ($modelRequestStatusHistory->validate()) {
                     $modelRequestStatusHistory->save(false);
-                    $modelRequests->save(false);
+                }
+                
+                //Cancel a shortage if a request is cancelled
+                if ($modelRequests->status == Requests::REQUEST_CANCEL) {
+                    $modelShortage = Shortage::findOne(['idrequest' => $modelRequests->idrequest]);
+                    if (!is_null($modelShortage)) {
+                        $modelShortage->status = Shortage::STATUS_CANCEL;
+                        $modelShortage->note = "The request №" . $modelRequests->idrequest . " was cancelled.";
+                        $modelShortage->save(false);
+                    }
                 }
 
                 $transaction->commit();

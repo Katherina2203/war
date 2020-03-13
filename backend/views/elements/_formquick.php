@@ -31,6 +31,7 @@ use dosamigos\datepicker\DatePicker;
                 'name'),['prompt'=>'Выберете проект']); ?>
     
             <?= $form->field($model, 'idboard')->textInput()->input('№ платы', ['placeholder' => "Enter number pcb"])->label(false)?>
+            <?= $form->field($modelShortage, 'ref_of')->textInput()->input('Позиция на плате', ['placeholder' => "Enter board position"])->label(false)?>
 
             <?= $form->field($model, 'quantity')->textInput() ?>
           

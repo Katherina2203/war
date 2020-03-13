@@ -87,7 +87,8 @@ class Elements extends \yii\db\ActiveRecord
         return [
             [['box', 'name', 'nominal', 'idcategory', 'idproduce'], 'required'],
             [['quantity', 'idproduce', 'idcategory', 'created_by' , 'updated_by'], 'integer'],
-            ['box', 'required'],
+            ['quantity', 'default', 'value' => 0],
+//            ['box', 'required'],
         //    ['box', 'required', 'message' => 'Can not be blank'],
           //  [['name', 'nominal'], 'string', 'max' => 20],
             ['idcategory', 'required', 'message' => 'Please choose a category'],

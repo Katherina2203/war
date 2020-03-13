@@ -14,7 +14,7 @@ public static function pageTotal($provider, $fieldName)
         if (is_null($invoiceCurrency)) {
             $modelCurrency = Currency::findOne($item->prices['idcurrency']);
             $invoiceCurrency = $modelCurrency['currency'];
-            Yii::info('<pre>****'. print_r($invoiceCurrency, true).'</pre>', 'ajax');
+//            Yii::info('<pre>****'. print_r($invoiceCurrency, true).'</pre>', 'ajax');
         }
         $total += $item[$fieldName];
     }

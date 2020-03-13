@@ -39,6 +39,7 @@ use common\models\Specification;
 use common\models\AccountsRequests;
 use common\models\RequestStatusHistory;
 use common\models\Category;
+use common\models\Shortage;
 /**
  * ElementsController implements the CRUD actions for Elements model.
  */
@@ -63,7 +64,7 @@ class ElementsController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'actions' => ['index', 'view', 'orderquick', 'viewfrom', 'vue',  'createfromquick',  'createfrom',],
+                        'actions' => ['index', 'view', 'orderquick', 'viewfrom', 'vue',  'createfromquick',  'createfrom', 'compensate-shortage', 'change-status',],
                     ],
                 ],
             ],
@@ -139,6 +140,8 @@ class ElementsController extends Controller
     {
         return $this->render('vue');
     }
+    
+    
     /**
      * Displays a single Elements model.
      * @param integer $id
@@ -161,12 +164,14 @@ class ElementsController extends Controller
         
         $receipt = new Receipt();
         
-        $modelSpecification = new Specification();
-        $querySpecification = Specification::find()->where(['idelement' => $id])->andWhere(['status' => '1'])->orderBy('created_at DESC'); //show where need element
-        $dataProviderSpecification = new ActiveDataProvider([
-            'query' => $querySpecification,
+        $queryShortage = Shortage::find()
+            ->where(['idelement' => $id])
+            ->andWhere(['status' => ['0', '1']])
+            ->orderBy('created_at DESC');
+
+        $dataProviderShortage = new ActiveDataProvider([
+            'query' => $queryShortage,
         ]);
-        
         $queryacc = Accounts::find()->where(['idelem' => $id])->orderBy('date_receive DESC')->limit(10);
         $dataProvideracc = new ActiveDataProvider([
             'query' => $queryacc,
@@ -197,14 +202,16 @@ class ElementsController extends Controller
             'query' => $queryreceipt,
         ]);
         
-        
         //requests
         $modelrequests = new Requests();
         $modelrequests->idtype = '1';
         $modelrequests->status = '0';
         $modelrequests->iduser = yii::$app->user->identity->id;
+        //a shortage related a request
+        $modelShortage = new Shortage();
+        $modelShortage->scenario = Shortage::SCENARIO_ADD_REQUEST;
        // if(\yii::$app->request->isAjax && $modelrequests->load(\yii::$app->request->post())){      
-        if ($modelrequests->load(\yii::$app->request->post())) {
+        if ($modelrequests->load(\yii::$app->request->post()) && $modelShortage->load(\yii::$app->request->post())) {
             $transaction = \Yii::$app->db->beginTransaction();
             
             $modelrequests->name = $model->name;
@@ -214,22 +221,34 @@ class ElementsController extends Controller
             $modelrequests->estimated_idel = $model->idelements;
 
             try {
-                if ($modelrequests->validate()) {
-                    if ($modelrequests->idboard != NULL) {
-                        //create shortage
-                        Yii::$app->db->createCommand()->insert('specification', [
-                            'idboard' => $modelrequests->idboard, 
-                            'idelement' => $model->idelements, 
-                            'quantity' => $modelrequests->quantity, 
-                            'status' => Specification::STATUS_ACTIVE,
-                            'created_by' => yii::$app->user->identity->id,
-                            'updated_by' => yii::$app->user->identity->id,
-                            ])->execute();
-                    }
-
-                
+                if ($modelrequests->validate() && $modelShortage->validate()) {
                     $modelrequests->save(false);
                     
+                    //create shortage
+                    $modelShortage->idrequest = $modelrequests->idrequest;
+                    $modelShortage->idboard = $modelrequests->idboard;
+                    $modelShortage->ref_of = $modelShortage->ref_of;
+                    $modelShortage->idelement = $modelrequests->estimated_idel;
+                    $modelShortage->quantity = $modelrequests->quantity;
+                    $modelShortage->status = Shortage::STATUS_NOACTIVE;
+                    $modelShortage->note = $modelrequests->note;
+                    $modelShortage->iduser = $modelrequests->iduser;
+                    $modelShortage->idtheme = $modelrequests->idproject;
+                    $modelShortage->save(false);
+
+//                    if ($modelrequests->idboard != NULL) {
+//                        //create specification
+//                        Yii::$app->db->createCommand()->insert('specification', [
+//                            'idboard' => $modelrequests->idboard, 
+//                            'idelement' => $model->idelements, 
+//                            'quantity' => $modelrequests->quantity, 
+//                            'status' => Specification::STATUS_ACTIVE,
+//                            'created_by' => yii::$app->user->identity->id,
+//                            'updated_by' => yii::$app->user->identity->id,
+//                            ])->execute();
+//                    }
+
+
                     $modelRequestStatusHistory = new RequestStatusHistory();
                     $modelRequestStatusHistory->idrequest = $modelrequests->idrequest;
                     $modelRequestStatusHistory->status = $modelrequests->status;
@@ -258,12 +277,13 @@ class ElementsController extends Controller
             'dataProvider2' => $dataProvider2,
             'modelprice' => $modelprice,
             'modelrequests' => $modelrequests,
+            'modelShortage' => $modelShortage,
             'receipt' => $receipt,
-            'modelSpecification' => $modelSpecification,
             'dataProvideracc' => $dataProvideracc,
             'dataProviderpur' => $dataProviderpur,
             'dataProviderout' => $dataProviderout,
-            'dataProviderSpecification' => $dataProviderSpecification,
+            'queryShortage' => $queryShortage,
+            'dataProviderShortage' => $dataProviderShortage,
             'searchModelout' => $searchModelout,
             'searchModelreceipt' => $searchModelreceipt,
             'dataProviderreceipt' => $dataProviderreceipt,
@@ -271,7 +291,7 @@ class ElementsController extends Controller
         ]);
     }
     
-    public function actionViewcat($idcategory){
+    public function actionViewcat($idcategory) {
         $searchModel = new ElementsSearch();
         
         $query = Elements::find()->where(['idcategory' => $idcategory])->With(['category', 'produce'])->orderBy('idcategory')->limit(80);
@@ -366,11 +386,10 @@ class ElementsController extends Controller
                 Yii::$app->session->setFlash('success', 'Товар успешно добавлен');
                 return $this->redirect(['view', 'id' => $model->idelements]);
             }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
     
     public function actionCreateproduce()
@@ -792,6 +811,141 @@ class ElementsController extends Controller
         }
     }
     
+    public function actionChangeStatus()
+    {
+        $out = Json::encode(['output' => '', 'message' => '']);
+        if (!Yii::$app->request->post('hasEditable')) {
+            echo $out;
+            return;
+        }
+        
+        if (!in_array($_POST['Shortage'][$_POST['editableIndex']]['status'], array('0', '1', '2', '3', '4'))) {
+            echo $out;
+            return;
+        }
+        
+        $model = Shortage::findOne(Yii::$app->request->post('editableKey'));
+        if (is_null($model)) {
+            echo $out;
+            return;
+        }
+        $model->scenario = Shortage::SCENARIO_CHANGE_STATUS;
+        
+        $post['Shortage'] = [
+            'status' => $_POST['Shortage'][$_POST['editableIndex']]['status'],
+            'note' => $_POST['Shortage']['note'],
+        ];
+        
+        if ($model->load($post) && $model->validate()) {
+            $transaction = $model->getDb()->beginTransaction();
+
+            try {
+                $model->save(false);
+                $transaction->commit();
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
+            
+            $sStatus = '';
+            switch ($model->status) {
+                case Shortage::STATUS_NOACTIVE:
+                    $sStatus = '<span class="glyphicon glyphicon-hourglass" style="color: #fda901;"> Не погашено</span>';
+                    break;
+                case Shortage::STATUS_ACTIVE:
+                    $sStatus = '<span class="glyphicon glyphicon-thumbs-up" style="color: blue;"> Частично погашено</span>';
+                    break;
+                case Shortage::STATUS_CHANGED:
+                    $sStatus = '<span class="glyphicon glyphicon-thumbs-up" style="color: green;"> Найдена замена</span>';
+                    break;
+                case Shortage::STATUS_CANCEL:
+                    $sStatus = '<span class="glyphicon glyphicon-thumbs-down" style="color: #ff0000;"> Отменено</span>';
+                    break;
+                case Shortage::STATUS_CLOSE:
+                    $sStatus = '<span class="glyphicon glyphicon-thumbs-up" style="color: grey;"> Погашена</span>';
+                    break;
+            }
+            $out = Json::encode(['output' => $sStatus, 'message' => '']);
+        }
+        echo $out;
+        return;
+    }
+    
+    
+    public function actionCompensateShortage()
+    {
+        $out = Json::encode(['output' => '', 'message' => '']);
+        if (!Yii::$app->request->post('hasEditable')) {
+            echo $out;
+            return;
+        }
+        $iTakenQty = $_POST['Shortage'][$_POST['editableIndex']]['quantity'];
+        if (!is_numeric($iTakenQty)) {
+            echo $out;
+            return;
+        }
+        $iTakenQty = intval($iTakenQty);
+        
+//        Yii::info("\n******\n" . print_r($_POST, true) . "\n", 'ajax');
+        $model = Shortage::findOne(Yii::$app->request->post('editableKey'));
+        if (is_null($model)) {
+            echo $out;
+            return;
+        }
+        $model->scenario = Shortage::SCENARIO_COMPENSATE_SHORTAGE;
+        
+        $post['Shortage'] = [
+            'quantity' => ($model->quantity - $iTakenQty),
+            'ref_of' => $_POST['Shortage']['ref_of'],
+        ];
+        if ($model->load($post) && $model->validate()) {
+            $transaction = $model->getDb()->beginTransaction();
+
+            try {
+                $model->status = ($model->quantity) ? Shortage::STATUS_ACTIVE : Shortage::STATUS_CLOSE;
+                $model->save(false);
+                
+                //['scenario' => Outofstock::SCENARIO_OUT_OF_STOCK_QUICKLY]
+                $modelOutofstock = new Outofstock();
+                $modelOutofstock->idtheme = $model->idtheme;
+                $modelOutofstock->idboart = 0;
+                $modelOutofstock->idthemeunit = 0;
+                if (!is_null($model->idboard)) {
+                    $modelBoards = Boards::findOne($model->idboard);
+                    $modelOutofstock->idboart = $model->idboard;
+                    $modelOutofstock->idthemeunit = $modelBoards->idthemeunit;
+                    $modelOutofstock->idtheme = $modelBoards->idtheme;
+                }
+                $modelOutofstock->idelement = $model->idelement;
+                $modelOutofstock->quantity = $iTakenQty;
+                $modelOutofstock->ref_of_board = $model->ref_of;
+                $modelOutofstock->iduser = \yii::$app->user->id;
+                $bResult = $modelOutofstock->save();
+//                Yii::info("\n***bResult***\n" . print_r($bResult, true) . "\n", 'ajax');
+//                Yii::info("\n***errors***\n" . print_r($modelOutofstock->errors, true) . "\n", 'ajax');
+                
+                $modelElements = Elements::findOne($model->idelement);
+                $modelElements->quantity -= $iTakenQty;
+                $modelElements->save();
+                
+                $transaction->commit();
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+            }
+
+            $iQty = Yii::$app->formatter->asInteger($model->quantity);
+            $output = $iQty ? '<span class="label label-danger pull-right" style="min-width: 28px; padding: 5px; font-size: 15px">' . $iQty . '</span>' : $iQty;
+            $out = Json::encode(['output' => $output, 'message' => '']);
+        }
+        echo $out;
+        return;
+    }
+    
     public function actionCreateprice($idel)
     {
         $model = new Elements();
@@ -902,11 +1056,11 @@ class ElementsController extends Controller
                 return $this->redirect(['view', 'id' => $model->idelements]);
             }
            // return $this->redirect(['view', 'id' => $model->idelements]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+        
     }
 
     /**

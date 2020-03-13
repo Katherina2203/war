@@ -81,7 +81,7 @@ class Prices extends \yii\db\ActiveRecord
             'forUP' => Yii::t('app', 'за шт'),
             'idcurrency' => Yii::t('app', 'Валюта'),
             'pdv' => Yii::t('app', 'ПДВ'),
-            'usd' => Yii::t('app', 'Дол'),
+            'usd' => Yii::t('app', 'Индекс валюта/дол'),
             'created_at' => Yii::t('app', 'Создано'),
         ];
     }

@@ -80,7 +80,7 @@ class Purchaseorder extends \yii\db\ActiveRecord
         return $this->hasOne(Accounts::className(), ['idord' =>'idinvoice']);
     }
     
-    public function getRequests(){
+    public function getRequests() {
         return $this->hasOne(Requests::className(), ['idrequest' => 'idrequest']);
       //  ->viaTable('requests_orders', ['idrequest' => 'ididrequest']);
     }

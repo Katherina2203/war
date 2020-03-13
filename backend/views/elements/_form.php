@@ -24,10 +24,13 @@ use \common\models\Produce;
           <div class="box-header with-border"><h2 class="box-title"><?= Html::encode($this->title) ?></h2></div>
     <div class="box-body">
 <?php Pjax::begin(['id' => 'new_element']) ?>
-    <?php $form = ActiveForm::begin([
-        'options' => ['enctype'=>'multipart/form-data'],
-            'enableClientValidation' => true,
-            'enableAjaxValidation' => true
+    <?php $form = ActiveForm::begin(['id' => 'element_form',
+        'options' => [
+            'enctype'=>'multipart/form-data',
+            
+        ],
+//            'enableClientValidation' => true,
+//            'enableAjaxValidation' => true
         ]); 
         $produce = Produce::find()->select(['manufacture', 'idpr'])->indexBy('idpr')->column();
         $category = Category::getHierarchy(); // Category::find()->select(['name', 'idcategory'])->indexBy('idcategory')->column();
@@ -98,13 +101,14 @@ use \common\models\Produce;
     <?php ActiveForm::end(); ?>
 <?php Pjax::end(); ?>
 </div>
-<?php $this->registerJs(
+<?php
+//$this->registerJs(
  // Вызов модального окна формы заказа
-   "$('#modalButtonProduce').on('click', function() {
-        $('#modalProduce').modal('show')
-            .find('#modal-content')
-            .load($(this).attr('data-target'));
-    });
-  "
-    );
+//   "$('#modalButtonProduce').on('click', function() {
+//        $('#modalProduce').modal('show')
+//            .find('#modal-content')
+//            .load($(this).attr('data-target'));
+//    });
+//  "
+   // );
 ?>

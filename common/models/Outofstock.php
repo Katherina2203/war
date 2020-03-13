@@ -22,6 +22,7 @@ class Outofstock extends \yii\db\ActiveRecord
 {
     
     const SCENARIO_OUT_OF_STOCK_QUICKLY = "out_of_stock_quickly";
+    const SCENARIO_COMPENSATE_SHORTAGE = "compensate_shortage";
     
     /**
      * @inheritdoc
@@ -31,7 +32,8 @@ class Outofstock extends \yii\db\ActiveRecord
         return '{{%outofstock}}';
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
            'timestamp' => [
                'class' => TimestampBehavior::className(),
@@ -61,6 +63,9 @@ class Outofstock extends \yii\db\ActiveRecord
             [['quantity', 'idboart',], 'trim', 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
             [['ref_of_board'], 'string', 'max' => 64, 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
             [['idboart'], 'validateBoardId', 'on' => self::SCENARIO_OUT_OF_STOCK_QUICKLY],
+            
+            //SCENARIO_COMPENSATE_SHORTAGE rules
+            
         ];
     }
     

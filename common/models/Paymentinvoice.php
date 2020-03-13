@@ -38,7 +38,7 @@ class Paymentinvoice extends \yii\db\ActiveRecord
             ],
             [
                 'class' => BlameableBehavior::className(),
-                'createdByAttribute' => ['created_by', 'edited_by'],
+                'createdByAttribute' => 'created_by',
                 'updatedByAttribute' => 'edited_by',
             ],
         ];

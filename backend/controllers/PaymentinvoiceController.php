@@ -151,7 +151,7 @@ class PaymentinvoiceController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
            // $model->confirm = '0';
-            $model->save();
+            $model->save(false);
             return $this->redirect(['itemsin', 'idinvoice' => $model->idpaymenti]); //view
         }
         return $this->render('create', [
@@ -289,9 +289,9 @@ class PaymentinvoiceController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+//        $this->findModel($id)->delete();
+//
+//        return $this->redirect(['index']);
     }
 
     /**

@@ -29,7 +29,7 @@ use yii\widgets\Pjax;
             'attribute' => 'themes_name',
             'format' => 'raw',
             'value' => function($data) {
-                return ((mb_strlen($data->themes_name) > 20) ? mb_substr($data->themes_name, 0, 20) . "..." : $data->themes_name);
+                return ((mb_strlen($data->themes_name) > 35) ? mb_substr($data->themes_name, 0, 35) . "..." : $data->themes_name);
             },
             'filter' => Html::activeDropDownList($searchModelout, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->where(['status' => 'active'])->all(), 'idtheme', 'ThemList'),['class'=>'form-control','prompt' => 'Выберите проект']),
         ],
@@ -37,7 +37,7 @@ use yii\widgets\Pjax;
             'attribute' => 'themeunits_nameunit',
             'format' => 'raw',
             'value' => function($data) {
-                return ((mb_strlen($data->themeunits_nameunit) > 20) ? mb_substr($data->themeunits_nameunit, 0, 20) . "..." : $data->themeunits_nameunit);
+                return ((mb_strlen($data->themeunits_nameunit) > 35) ? mb_substr($data->themeunits_nameunit, 0, 35) . "..." : $data->themeunits_nameunit);
             },
             'filter' => Html::activeDropDownList($searchModelout, 'idthemeunit', ArrayHelper::map(\common\models\Themeunits::find()->select(['idunit', 'nameunit'])->all(), 'idunit', 'UnitsListId'),['class'=>'form-control','prompt' => 'Выберите модуль']),
         ], 
@@ -45,7 +45,7 @@ use yii\widgets\Pjax;
             'attribute' => 'boards_idboards_name',
             'format' => 'raw',
             'value' => function($data) {
-                return ((mb_strlen($data->boards_idboards_name) > 30) ? mb_substr($data->boards_idboards_name, 0, 30) . "..." : $data->boards_idboards_name);
+                return ((mb_strlen($data->boards_idboards_name) > 35) ? mb_substr($data->boards_idboards_name, 0, 35) . "..." : $data->boards_idboards_name);
             },
             'filter' => Html::activeDropDownList($searchModelout, 'idboart', ArrayHelper::map(\common\models\Boards::find()->select(['idboards', 'name'])->where(['discontinued' => '1'])->all(), 'idboards', 'BoardnameId'),['class'=>'form-control','prompt' => 'Выберите плату']),
         ], 
