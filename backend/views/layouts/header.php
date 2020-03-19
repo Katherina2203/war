@@ -55,14 +55,28 @@ $user = new \common\models\Users();
                 <!-- End Languange:  -->
                  <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?= Url::to('@web/images/'. 'users/kat.jpg') ?>" class="user-image" alt="<?php // Yii::$app->user->identity->surname?>"/>
-                        <span class="hidden-xs">Katherina</span>
-                    </a>
+                    <?php 
+                    $sUserPhoto = '@web/images/users/no-photo.png';
+                    if(is_null(Yii::$app->user->identity)) {
+                    ?>
+                        <a href="<?= Url::to(['login']); ?>" class="dropdown-toggle">
+                            <img src="<?= Url::to($sUserPhoto) ?>" class="user-image" alt=""/>
+                            <span class="hidden-xs">Log in</span>
+                        </a>
+                    <?php
+                    } else {
+                        $sUserPhoto = (Yii::$app->user->identity->name == 'Ekaterina') ?
+                            Url::to('@web/images/users/kat.jpg') : Url::to('@web/images/users/anonim-128.png');
+                    ?>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="<?= $sUserPhoto; ?>" class="user-image" alt="" />
+                            <span class="hidden-xs"><?= Yii::$app->user->identity->name;?></span>
+                        </a>
+                    <?php } ?>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?= Url::to('@web/images/'. 'users/kat.jpg') ?>" class="img-circle"
+                            <img src="<?= Url::to($sUserPhoto) ?>" class="img-circle"
                                  alt="<?php // Yii::$app->user->identity->surname?>"/>
 
                             <p>
