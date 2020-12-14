@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use mdm\admin\components\Helper;
 use mdm\admin\components\MenuHelper;
 
+use kartik\form\ActiveForm;
+use backend\models\ElementsSearch;
+
 ?>
 <aside class="main-sidebar">
 
@@ -23,15 +26,20 @@ use mdm\admin\components\MenuHelper;
             </div>
         <?php endif; ?>
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Search..."/>
-              <span class="input-group-btn">
-                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-        </form>
+       <?php $form = ActiveForm::begin([
+                        'action' => ['elements/index'],
+                        'method' => 'get',
+                        'class' => 'sidebar-form',
+                      ]); ?>
+                     <?php $searchElements = new ElementsSearch();
+                     echo $form->field($searchElements, 'name', [
+                         'template' => '<div class="input-group">{input}<span class="input-group-btn">' .
+                             Html::submitButton('<i class="fa fa-search"></i>', ['id' => 'search-btn', 'class' => 'btn btn-flat']) .
+                             '</span></div>',
+                         ])->textInput(['placeholder' => 'Search element name']);
+                         ?>
+                <?php ActiveForm::end(); ?>
+        
         <!-- /.search form -->
 
         <?= dmstr\widgets\Menu::widget(
