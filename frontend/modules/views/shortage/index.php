@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use kartik\grid\GridView;
+use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ShortageSearch */
@@ -21,33 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'pjax' => true,
-       // 'bordered' => true,
-        'striped' => true,
-        'condensed' => true,
-        'responsive' => true,
-        'hover' => true,
-        'resizableColumns'=>true,
-        'rowOptions' => function($model, $key, $index, $grid){
-            if($model->status == '0'){  // not active
-                return ['style' => 'label label-default glyphicon glyphicon-time; color: #b2b2b2;'];;  //active class => 'sucess'   label label-primary glyphicon glyphicon-ok
-            }elseif($model->status == '1'){  //active
-               //  return ['class' => 'success']; //unactive color: #b2b2b2 label label-danger glyphicon glyphicon-remove
-            return ;
-
-            }
-        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-           // 'id',
-            [
-                'attribute' => 'idboard',
-                'label' => 'PCB',
-                'format' => 'raw',
-                'value' => function($model){
-                    return Html::a($model->boards->name, ['boards/view', 'idboards'=> $model->idboard]);
-                }
-            ],
+            'id',
+            'idboard',
             [
                 'attribute' => 'idelement', 
                 'label' => 'name',
@@ -65,20 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'ref_of',
             'quantity',
-            [
-                'attribute' => 'status',
-                'format' => 'raw',
-                'value' => function($data){
-                    if($data->status == '1'){
-                        return '<span class="label label-success">Active</span>';
-                    }elseif($data->status == '0'){
-                        return '<span class="label label-default">Close</span>';
-                    }
-                   
-                },
-                'filter'=>['1' => 'Active', '2' => 'Close'],
-                'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],
-            ],
+            'status',
             // 'date',
 
             ['class' => 'yii\grid\ActionColumn'],

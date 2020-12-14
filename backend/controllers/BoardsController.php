@@ -24,8 +24,6 @@ use backend\models\RequestsSearch;
 use common\models\Specification;
 use backend\models\SpecificationSearch;
 use backend\models\SearchByElem;
-use common\models\SpecificationTemplate;
-use backend\models\SpecificationTemplateSearch;
 
 use common\models\BoardsQuery;
 /**
@@ -118,14 +116,6 @@ class BoardsController extends Controller
             'pagination' =>['pageSize' => 50],
         ]);
         
-        $modelspectemp = new SpecificationTemplate();
-        $searchModelspectemp = new SpecificationTemplateSearch();
-        $queryspectemp = SpecificationTemplate::find()->with(['elements'])->where(['idboard' => $id]);
-        $dataProviderspectemp = new ActiveDataProvider([
-            'query' => $queryspectemp,
-            'pagination' =>['pageSize' => 50],
-        ]);
-        
         $modelrequests = new Requests();
         $searchModelrequest = new RequestsSearch();
         
@@ -148,14 +138,11 @@ class BoardsController extends Controller
             'modelsh' => $modelsh,
             'modelspec' => $modelspec,
             'modelrequests' => $modelrequests,
-            'modelspectemp' => $modelspectemp,
             'dataProvideroutof' => $dataProvideroutof,
             'dataProviderspec' => $dataProviderspec,
-            'dataProviderspectemp' => $dataProviderspectemp,
             'searchModeloutof' => $searchModeloutof,
             'searchModelelem' => $searchModelelem,
             'searchModelsh' => $searchModelsh,
-            'searchModelspectemp' => $searchModelspectemp,
             'dataProviderreq' => $dataProviderreq,
             'dataProvidersh' => $dataProvidersh,
             'searchModelspec' =>$searchModelspec,

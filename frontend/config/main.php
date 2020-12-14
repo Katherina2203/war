@@ -11,9 +11,8 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
-    'language' => 'ru-RU',
-    'sourceLanguage' => 'en-US',
-      
+    'language' => 'en',
+    'sourceLanguage' => 'en',
    
     'components' => [
         'authManager' => [
@@ -37,6 +36,7 @@ return [
         'view' => [
            'theme' => [
              'pathMap' => [
+               // '@app/views' => '@app/backend/views'
                 // '@app/views' => '@app/frontend/views'
                 '@app/views' => '@app/frontend/modules/views'
              ],
@@ -46,16 +46,14 @@ return [
        'user' => [
             'identityClass' => 'common\models\User',// 'identityClass' => 'mdm\admin\models\User',
             'enableAutoLogin' => true,
-            'enableSession' => true,
         //    'enableSession' => true,
             'authTimeout' => 3600 * 30 * 24, //1800,
             'loginUrl' => ['site/login', 'site/index'],
             'identityCookie' => [
                    'name' => '_backendIdentity',
                    'httpOnly' => true,
-                ],
+               ],
         ],
-        
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -71,9 +69,9 @@ return [
         ],
    
         'session' => [
-            'name' => 'FRONTENDSESSIONID', //FRONTENDID
+            'name' => 'BACKENDSESSIONID', //FRONTENDID
               //  'savePath' => __DIR__ . '/tmp',
-                'class' => 'yii\web\DbSession',
+              //  'class' => 'yii\web\DbSession',
         ],
 
         'common' => [
@@ -87,11 +85,11 @@ return [
         'urlManager' => [
             //'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
-            'showScriptName' => true ,
+            'showScriptName' => true,
            // 'enableScriptParsing' => true, 
             'class' => 'codemix\localeurls\UrlManager',
             'enableLanguagePersistence' => false,
-            'languages' => ['en-GB', 'en', 'ru'],
+            'languages' => ['en', 'ru'],
             'rules' => [
                 '/' => 'site/index',
                 '<action:contact|about|login|logout>' => 'site/<action>',
@@ -100,25 +98,22 @@ return [
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ],
         ],
-       
+        'urlManagerBackend' =>[
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'baseUrl' => 'http://10.0.21.156/warehouse/backend/web/',
+        ],
         'i18n' => [
             'translations' => [
-                 'app' => [
-                    'class' => 'yii\i18n\DbMessageSource',
-                   // 'class' => 'yii\i18n\PhpMessageSource',
-                    'db' => 'db',
-                //    'sourceMessageTable' => '{{%source_message}}',
-                  //  'messageTable' => '{{%message}}',
-                 
-                    'sourceLanguage' => 'en-US',
-                    'forceTranslation'   => TRUE,
-                    'cachingDuration'    => 86400,
-                    'enableCaching'      => FALSE,
-                 /*   'basePath' => '@common/messages',
-                 'fileMap' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                   // 'sourceLanguage' => 'en',
+                    'basePath' => '@common/messages',
+                    'fileMap' => [
                         'app' => 'app.php',
                         'app/error' => 'error.php',
-                    ]*/
+                    ]
                 ],
             ],
         ],
@@ -176,6 +171,18 @@ return [
             'class' => 'app\modules\myaccount',
         ],
     ],
+  //  'as access' => [
+   //     'class' => 'mdm\admin\components\AccessControl',
+   //     'allowActions' => [
+    //        'site/*',
+          //  'admin/*',
+           // 'some-controller/some-action',
+       //     'rbac/*',
+            //'/site/login/',
+         //   '/elements/index',
+          //  '/category/index',
+          //  '/orders/index',
+      //  ]
+    //],
     'params' => $params,
-   // 'defaultRoute' => '/myaccount',
 ];

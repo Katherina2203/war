@@ -44,7 +44,7 @@ use dosamigos\datepicker\DatePicker;
             <?= $form->field($model, 'note')->textarea(['rows' => 2]) ?>
     
           <?=
-            $form->field($model,'iduser')->textInput(['disabled' => \Yii::$app->user->can('admin')]);
+            $form->field($model,'iduser')->textInput(['disabled' => !\Yii::$app->user->can('admin')]);
                
                    // $form->field($model, 'iduser')->dropDownList(ArrayHelper::map(\common\models\Users::find()->select(['name', 'surname','id'])->all(), 'id', 'UserName'),
           //  ['prompt'=>'Выберите Заказчика']);
@@ -54,7 +54,7 @@ use dosamigos\datepicker\DatePicker;
         
         <div class="form-group">
             <?= 
-                Html::submitButton($model->isNewRecord ? 'Create request' : 'Create', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])      
+                Html::submitButton($model->isNewRecord ? 'Create' : 'Create', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])      
                      /*     Html::a('<i class="glyphicon glyphicon-list"></i>Заказать', 
                                 ['orderquick', 'iduser' => yii::$app->user->identity->id, 'idel' => $modelel->idelements], 
                                 [ 'title'=>'Создать заявку этого товара', 'class' => 'btn btn-warning'])*/

@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Specification');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="specification-index">
+<div class="source-message-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

@@ -197,11 +197,11 @@ class ProcessingrequestController extends Controller
                  Yii::$app->db->createCommand()->update('requests', ['status' => Requests::REQUEST_ACTIVE],['idrequest' => $modelord->idrequest])->execute();
                  
                 if ($valid) {
-                    $modelord->save();
+                    $modelord->save(false);
                     
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'Статус заявки успешно изменен на Активный');
-                    return $this->redirect(['purchaseorder/viewitem', 'idpo' => $modelord->idpo]);
+                    return $this->redirect(['purchaseorder/viewitem', 'id' => $modelord->idpo]);
                 }else {
                     $transaction->rollBack();
                 }  
@@ -217,7 +217,13 @@ class ProcessingrequestController extends Controller
             ]);
         }
            
-
+        //$modelproc->idrequest = $request;
+        
+     /*   if($modelreq->estimated_idel != NULL){
+            $modelreq->estimated_idel = $modelord->idelement;
+        }*/
+        
+        
     }
     
     public function actionChangestatus()

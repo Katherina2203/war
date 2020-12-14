@@ -184,7 +184,7 @@ $gridColumns = [
             'class' => 'yii\grid\ActionColumn',
        
             'contentOptions' => ['style' => 'width:45px;'],
-            'template' => '{update} {delete} {prices} {accounts} {viewfrom}',
+            'template' => '{view} {update} {delete} {prices} {accounts} {viewfrom}',
            
             
             'buttons' => [

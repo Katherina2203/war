@@ -220,7 +220,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'date_receive',
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{edit_account} {delete} {receipt} {changeprice}',
+                            'template' => '{view} {edit_account} {delete} {receipt} {changeprice}',
                             'controller' => 'accounts',
                             'visibleButtons' => [
                                 'delete' => function ($model, $key, $index) {

@@ -121,6 +121,7 @@ class Shortage extends ActiveRecord
     {
         return [
             'id' => Yii::t('app', '№'),
+            'idrequest' => Yii::t('app', 'idrequest'),
             'quantity' => Yii::t('app', 'Кол-во'),
             'idelement' => Yii::t('app', 'Idelement'),
             'idboard' => Yii::t('app', 'Плата'),

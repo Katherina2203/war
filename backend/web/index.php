@@ -19,5 +19,4 @@ $service->set("cache",'yii\caching\FileCache');
 
 $application = new yii\web\Application($config);
 $application->set('locator', $service);
-
 $application->run();

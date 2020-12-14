@@ -1,0 +1,397 @@
+2016-03-02 13:28:28 [10.0.21.210][4][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 10.0.21.210
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/views/layouts/main.php:76
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/controllers/SiteController.php:58
+2016-03-02 13:28:28 [10.0.21.210][4][-][info][application] $_COOKIE = [
+    '_identity' => '93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[4,\"Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f\",2592000]\";}'
+    'PHPSESSID' => 'kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1'
+    '_csrf' => '6ca7cab51c36b8032f5f36ba19adff90d20a05ef6ab8e968084b57270d00d353a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"iIYKOmPCPVmVH6rQHskEvueXhaVzntw6\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/warehouse/store/backend/web/index.php'
+    '__id' => 4
+    '__captcha/site/captcha' => 'xilege'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => '10.0.21.156'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_identity=93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B4%2C%22Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f%22%2C2592000%5D%22%3B%7D; PHPSESSID=kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1; _csrf=6ca7cab51c36b8032f5f36ba19adff90d20a05ef6ab8e968084b57270d00d353a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22iIYKOmPCPVmVH6rQHskEvueXhaVzntw6%22%3B%7D'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => ''
+    'SERVER_SOFTWARE' => 'Apache'
+    'SERVER_NAME' => '10.0.21.156'
+    'SERVER_ADDR' => '10.0.21.156'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.0.21.210'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'root@comp05'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/warehouse/warehouse/war/backend/web/index.php'
+    'REMOTE_PORT' => '55500'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/warehouse/warehouse/war/backend/web/'
+    'SCRIPT_NAME' => '/warehouse/warehouse/war/backend/web/index.php'
+    'PHP_SELF' => '/warehouse/warehouse/war/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1456925308.072
+    'REQUEST_TIME' => 1456925308
+]
+2016-03-02 13:55:34 [10.0.21.210][4][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 10.0.21.210
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/views/layouts/main.php:76
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/controllers/SiteController.php:58
+2016-03-02 13:55:34 [10.0.21.210][4][-][info][application] $_COOKIE = [
+    '_identity' => '93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[4,\"Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f\",2592000]\";}'
+    'PHPSESSID' => 'kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1'
+    '_csrf' => '7a833c4e78df825beb2fcbcebddc399d04bc8b5af21b490e2272e72574d8ea13a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"PPxqNJT1Oro19ICB1QhFFu-8etuk5Yse\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/warehouse/store/backend/web/index.php'
+    '__id' => 4
+    '__captcha/site/captcha' => 'xilege'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => '10.0.21.156'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_identity=93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B4%2C%22Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f%22%2C2592000%5D%22%3B%7D; PHPSESSID=kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1; _csrf=7a833c4e78df825beb2fcbcebddc399d04bc8b5af21b490e2272e72574d8ea13a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22PPxqNJT1Oro19ICB1QhFFu-8etuk5Yse%22%3B%7D'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => ''
+    'SERVER_SOFTWARE' => 'Apache'
+    'SERVER_NAME' => '10.0.21.156'
+    'SERVER_ADDR' => '10.0.21.156'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.0.21.210'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'root@comp05'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/warehouse/warehouse/war/backend/web/index.php'
+    'REMOTE_PORT' => '55992'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/warehouse/warehouse/war/backend/web/index.php'
+    'SCRIPT_NAME' => '/warehouse/warehouse/war/backend/web/index.php'
+    'PHP_SELF' => '/warehouse/warehouse/war/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1456926934.556
+    'REQUEST_TIME' => 1456926934
+]
+2016-03-02 13:55:41 [10.0.21.210][4][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 10.0.21.210
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/views/layouts/main.php:76
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/controllers/SiteController.php:58
+2016-03-02 13:55:41 [10.0.21.210][4][-][info][application] $_COOKIE = [
+    '_identity' => '93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[4,\"Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f\",2592000]\";}'
+    'PHPSESSID' => 'kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1'
+    '_csrf' => '048969446837cbcdd6ca377529fb1c2a0171599a01ea47dcba0f4e0275ce3b32a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"zzrZClkthZbA0OHYWJz99ObyYEfDrGsB\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/warehouse/store/backend/web/index.php'
+    '__id' => 4
+    '__captcha/site/captcha' => 'xilege'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => '10.0.21.156'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_identity=93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B4%2C%22Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f%22%2C2592000%5D%22%3B%7D; PHPSESSID=kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1; _csrf=048969446837cbcdd6ca377529fb1c2a0171599a01ea47dcba0f4e0275ce3b32a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22zzrZClkthZbA0OHYWJz99ObyYEfDrGsB%22%3B%7D'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => ''
+    'SERVER_SOFTWARE' => 'Apache'
+    'SERVER_NAME' => '10.0.21.156'
+    'SERVER_ADDR' => '10.0.21.156'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.0.21.210'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'root@comp05'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/warehouse/warehouse/war/backend/web/index.php'
+    'REMOTE_PORT' => '55992'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/warehouse/warehouse/war/backend/web/index.php'
+    'SCRIPT_NAME' => '/warehouse/warehouse/war/backend/web/index.php'
+    'PHP_SELF' => '/warehouse/warehouse/war/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1456926941.819
+    'REQUEST_TIME' => 1456926941
+]
+2016-03-02 13:57:32 [10.0.21.210][4][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 10.0.21.210
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/views/layouts/main.php:76
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/controllers/SiteController.php:58
+2016-03-02 13:57:32 [10.0.21.210][4][-][info][application] $_COOKIE = [
+    '_identity' => '93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[4,\"Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f\",2592000]\";}'
+    'PHPSESSID' => 'kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1'
+    '_csrf' => '048969446837cbcdd6ca377529fb1c2a0171599a01ea47dcba0f4e0275ce3b32a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"zzrZClkthZbA0OHYWJz99ObyYEfDrGsB\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/warehouse/store/backend/web/index.php'
+    '__id' => 4
+    '__captcha/site/captcha' => 'xilege'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => '10.0.21.156'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_identity=93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B4%2C%22Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f%22%2C2592000%5D%22%3B%7D; PHPSESSID=kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1; _csrf=048969446837cbcdd6ca377529fb1c2a0171599a01ea47dcba0f4e0275ce3b32a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22zzrZClkthZbA0OHYWJz99ObyYEfDrGsB%22%3B%7D'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => ''
+    'SERVER_SOFTWARE' => 'Apache'
+    'SERVER_NAME' => '10.0.21.156'
+    'SERVER_ADDR' => '10.0.21.156'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.0.21.210'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'root@comp05'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/warehouse/warehouse/war/backend/web/index.php'
+    'REMOTE_PORT' => '56002'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/warehouse/warehouse/war/backend/web/index.php'
+    'SCRIPT_NAME' => '/warehouse/warehouse/war/backend/web/index.php'
+    'PHP_SELF' => '/warehouse/warehouse/war/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1456927052.515
+    'REQUEST_TIME' => 1456927052
+]
+2016-03-02 13:57:52 [10.0.21.210][4][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 10.0.21.210
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/views/layouts/main.php:76
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/controllers/SiteController.php:58
+2016-03-02 13:57:52 [10.0.21.210][4][-][info][application] $_COOKIE = [
+    '_identity' => '93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[4,\"Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f\",2592000]\";}'
+    'PHPSESSID' => 'kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1'
+    '_csrf' => '048969446837cbcdd6ca377529fb1c2a0171599a01ea47dcba0f4e0275ce3b32a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"zzrZClkthZbA0OHYWJz99ObyYEfDrGsB\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/warehouse/store/backend/web/index.php'
+    '__id' => 4
+    '__captcha/site/captcha' => 'xilege'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => '10.0.21.156'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_identity=93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B4%2C%22Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f%22%2C2592000%5D%22%3B%7D; PHPSESSID=kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1; _csrf=048969446837cbcdd6ca377529fb1c2a0171599a01ea47dcba0f4e0275ce3b32a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22zzrZClkthZbA0OHYWJz99ObyYEfDrGsB%22%3B%7D'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => ''
+    'SERVER_SOFTWARE' => 'Apache'
+    'SERVER_NAME' => '10.0.21.156'
+    'SERVER_ADDR' => '10.0.21.156'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.0.21.210'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'root@comp05'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/warehouse/warehouse/war/backend/web/index.php'
+    'REMOTE_PORT' => '56010'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/warehouse/warehouse/war/backend/web/index.php'
+    'SCRIPT_NAME' => '/warehouse/warehouse/war/backend/web/index.php'
+    'PHP_SELF' => '/warehouse/warehouse/war/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1456927072.881
+    'REQUEST_TIME' => 1456927072
+]
+2016-03-02 14:11:17 [10.0.21.210][4][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 10.0.21.210
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/views/layouts/main.php:76
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/controllers/SiteController.php:58
+2016-03-02 14:11:17 [10.0.21.210][4][-][info][application] $_COOKIE = [
+    '_identity' => '93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[4,\"Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f\",2592000]\";}'
+    'PHPSESSID' => 'kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1'
+    '_csrf' => 'f281aeccf64e3639ebb97e165f0280779029fa50028ad00c16b500a095ac9b0ea:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"mq2fEJ0lL61s2378b1pl13i6wp-yAEHY\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/warehouse/store/backend/web/index.php'
+    '__id' => 4
+    '__captcha/site/captcha' => 'xilege'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'HTTP_HOST' => '10.0.21.156'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_identity=93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B4%2C%22Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f%22%2C2592000%5D%22%3B%7D; PHPSESSID=kfae2np3vion0dtb1j6jl1v0dfgkbet4avsidnprks13gg7krtl1; _csrf=f281aeccf64e3639ebb97e165f0280779029fa50028ad00c16b500a095ac9b0ea%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22mq2fEJ0lL61s2378b1pl13i6wp-yAEHY%22%3B%7D'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => ''
+    'SERVER_SOFTWARE' => 'Apache'
+    'SERVER_NAME' => '10.0.21.156'
+    'SERVER_ADDR' => '10.0.21.156'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.0.21.210'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'root@comp05'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/warehouse/warehouse/war/backend/web/index.php'
+    'REMOTE_PORT' => '56098'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/warehouse/warehouse/war/backend/web/'
+    'SCRIPT_NAME' => '/warehouse/warehouse/war/backend/web/index.php'
+    'PHP_SELF' => '/warehouse/warehouse/war/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1456927877.951
+    'REQUEST_TIME' => 1456927877
+]
+2016-03-03 09:11:45 [10.0.21.210][4][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 10.0.21.210
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/views/layouts/main.php:76
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/controllers/SiteController.php:58
+2016-03-03 09:11:45 [10.0.21.210][4][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'qmrrrihu270u7mq8jfost7ufjiupujst291d4d7vv3vmvopkglb1'
+    '_identity' => '93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[4,\"Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f\",2592000]\";}'
+    '_csrf' => '8caf70d73d56bce8e9acc0da6cf01974597931e6e90fd85e01ea8af0ec0935fda:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"05Xf9Az-susXG4oYAy8kpbnFeoHtd5IJ\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 4
+]
+
+$_SERVER = [
+    'HTTP_HOST' => '10.0.21.156'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=qmrrrihu270u7mq8jfost7ufjiupujst291d4d7vv3vmvopkglb1; _identity=93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B4%2C%22Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f%22%2C2592000%5D%22%3B%7D; _csrf=8caf70d73d56bce8e9acc0da6cf01974597931e6e90fd85e01ea8af0ec0935fda%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%2205Xf9Az-susXG4oYAy8kpbnFeoHtd5IJ%22%3B%7D'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => ''
+    'SERVER_SOFTWARE' => 'Apache'
+    'SERVER_NAME' => '10.0.21.156'
+    'SERVER_ADDR' => '10.0.21.156'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.0.21.210'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'root@comp05'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/warehouse/warehouse/war/backend/web/index.php'
+    'REMOTE_PORT' => '51333'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/warehouse/warehouse/war/backend/web/'
+    'SCRIPT_NAME' => '/warehouse/warehouse/war/backend/web/index.php'
+    'PHP_SELF' => '/warehouse/warehouse/war/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1456996305.973
+    'REQUEST_TIME' => 1456996305
+]
+2016-03-03 09:12:48 [10.0.21.210][4][-][warning][yii\debug\Module::checkAccess] Access to debugger is denied due to IP address restriction. The requesting IP address is 10.0.21.210
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/views/layouts/main.php:76
+    in /srv/www/htdocs/warehouse/warehouse/war/backend/controllers/SiteController.php:58
+2016-03-03 09:12:48 [10.0.21.210][4][-][info][application] $_COOKIE = [
+    'PHPSESSID' => 'qmrrrihu270u7mq8jfost7ufjiupujst291d4d7vv3vmvopkglb1'
+    '_identity' => '93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba:2:{i:0;s:9:\"_identity\";i:1;s:46:\"[4,\"Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f\",2592000]\";}'
+    '_csrf' => 'af10f976a76fac3b16a9440654f8a5513a33c67b05797b6e42ab6e9f25159759a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"mbep-aa2kbALaj_IN1vCrXvOLGls1sx0\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 4
+]
+
+$_SERVER = [
+    'HTTP_HOST' => '10.0.21.156'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=qmrrrihu270u7mq8jfost7ufjiupujst291d4d7vv3vmvopkglb1; _identity=93b34b7be9e7459d86ed1b87150f3ce97285277828c4e132ee5bfe121d498ffba%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A46%3A%22%5B4%2C%22Evi-pPCIfFFnnJCWgmkHzN3orLptLT4f%22%2C2592000%5D%22%3B%7D; _csrf=af10f976a76fac3b16a9440654f8a5513a33c67b05797b6e42ab6e9f25159759a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22mbep-aa2kbALaj_IN1vCrXvOLGls1sx0%22%3B%7D'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => ''
+    'SERVER_SOFTWARE' => 'Apache'
+    'SERVER_NAME' => '10.0.21.156'
+    'SERVER_ADDR' => '10.0.21.156'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.0.21.210'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'root@comp05'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/warehouse/warehouse/war/backend/web/index.php'
+    'REMOTE_PORT' => '51342'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/warehouse/warehouse/war/backend/web/'
+    'SCRIPT_NAME' => '/warehouse/warehouse/war/backend/web/index.php'
+    'PHP_SELF' => '/warehouse/warehouse/war/backend/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1456996368.424
+    'REQUEST_TIME' => 1456996368
+]

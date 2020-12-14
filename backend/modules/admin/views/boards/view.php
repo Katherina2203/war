@@ -55,13 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' =>  ArrayHelper::getValue($model, 'users.surname'),
                     ],
                     'date_added',
-                    [
-                        'attribute' => 'discontinued',
-                        'format'=>'raw',
-                        'value'=> 
-                $model->discontinued == 0 ? '<span class="warning" style="color: #d05d09">Close</span>' : '<span class="success" style="color: green">Active</span>',
-                    ],
-                    
+                    'discontinued',
                 ],
             ]) ?>
             </div>
@@ -104,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                        <div class="item panel panel-default"><!-- widgetBody -->
                            <div class="panel-heading">
-                               <h3 class="panel-title pull-left">Детали в плате:</h3>
+                               <h3 class="panel-title pull-left">Elements</h3>
                                <div class="pull-right">
                                    <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
                                    <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
@@ -166,8 +160,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
             <?php DynamicFormWidget::end(); ?>
+
+
         </div>
     </div>
+    
+    
+   
 </div>
+
 </div>
 

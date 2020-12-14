@@ -30,7 +30,7 @@ class UsersController extends Controller
                  // 'only' => ['index', 'department', 'myprofile'],
                   'rules' => [
                       [
-                          'actions' => ['index','myprofile', 'view'],
+                          'actions' => ['index'],
                           'allow' => true,
                           'roles' => ['@'],
                       ],

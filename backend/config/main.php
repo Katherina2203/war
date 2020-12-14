@@ -31,12 +31,12 @@ return [
         ],
         'session' => [
             'name' => 'BACKENDSESSIONID',   //Set name
-            'class' => 'yii\web\DbSession',
+         //   'class' => 'yii\web\DbSession',
            // 'savePath' => __DIR__ . '/tmp', //create tmp folder and set path
-             'cookieParams' => [
+      /*       'cookieParams' => [
                 'httpOnly' => true,
-               // 'path' => '/admin',
-            ],
+                'path' => '/admin',
+            ],*/
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -112,9 +112,8 @@ return [
                   //  'messageTable' => '{{%message}}',
                  
                     'sourceLanguage' => 'en-US',
-                    'forceTranslation'   => TRUE,
-                    'cachingDuration'    => 86400,
-                    'enableCaching'      => FALSE,
+                //    'cachingDuration' => 86400,
+                   // 'enableCaching' => true,
                  /*   'basePath' => '@common/messages',
                  'fileMap' => [
                         'app' => 'app.php',

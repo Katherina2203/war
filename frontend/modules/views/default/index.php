@@ -119,9 +119,9 @@ $this->title = 'Мой профиль';
                 <div class="box-body">
                     <div class="requests-create">
                         <?php Pjax::begin(); ?>
-                            <?=  $this->render('_formrequest', [
+                            <?php /* $this->render('_formrequest', [
                                         'model' => $modelrequests,
-                            ]) ?>
+                            ])*/ ?>
                         <?php Pjax::end(); ?>
                     </div>
                 </div>

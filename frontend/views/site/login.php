@@ -39,9 +39,11 @@ $fieldOptions2 = [
             ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
 
         <div class="row">
-            <div class="col-xs-6">  </div>
+            <div class="col-xs-8">
+                <?php // $form->field($model, 'rememberMe')->checkbox() ?>
+            </div>
             <!-- /.col -->
-            <div class="col-xs-6">
+            <div class="col-xs-4">
                 <?= Html::submitButton('Вход', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
             </div>
             <!-- /.col -->
@@ -49,7 +51,7 @@ $fieldOptions2 = [
 
         <?php ActiveForm::end(); ?>
 
-     <!--<a href="#">Забыли пароль?</a>-->
+      <!--  <a href="#">Забыли пароль?</a><br>-->
      <!--  <a href="register.html" class="text-center">Register a new membership</a>-->
 
     </div>

@@ -18,7 +18,7 @@ class BoardsSearch extends Boards
     public function rules()
     {
         return [
-            [['idboards', 'idtheme', 'idthemeunit', 'quantity'], 'integer'],
+            [['idboards', 'idtheme', 'idthemeunit'], 'integer'],
             [['name', 'current', 'date_added', 'discontinued'], 'safe'],
         ];
     }
@@ -63,7 +63,6 @@ class BoardsSearch extends Boards
             'idboards' => $this->idboards,
             'idtheme' => $this->idtheme,
             'idthemeunit' => $this->idthemeunit,
-            'quantity' => $this->quantity,
             'date_added' => $this->date_added,
         ]);
 

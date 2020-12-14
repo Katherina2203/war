@@ -17,18 +17,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
    
 
-    <?= Tabs::widget([
-        'items' => [
-            [
-                'label' => 'Мои данные',
-                'content' =>  $this->render('viewmyprofile', ['model' => $model]),
-                'active' => true // указывает на активность вкладки
-            ],
-            [
-                'label' => 'Обновить фото',
-                 'content' =>  $this->render('_foto', ['model' => $model]),
-
-            ],
+   <?= Tabs::widget([
+    'items' => [
+        [
+            'label' => 'Мои данные',
+            'content' =>  $this->render('viewmyprofile', ['model' => $model]),
+            'active' => true // указывает на активность вкладки
+        ],
+        [
+            'label' => 'Обновить фото',
+             'content' =>  $this->render('_foto', ['model' => $model]),
+            
+        ],
      /*   [
             'label' => 'Пароль',
             'content' =>  $this->render('changepassword', ['model' => $model]),

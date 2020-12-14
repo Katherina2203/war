@@ -79,13 +79,21 @@ class PurchaseorderController extends Controller
         ]);
     }
     
-    public function actionViewitem($idpo)
+    public function actionViewitem($id)
     {
         $modelpr = new Prices();
-
+        $model = new Purchaseorder();
+     //   $model = $this->findModel($id);
+        
+    /*    if ($modelpr->load(Yii::$app->request->post())) {
+            $model->idelement = $modelpr->idel;
+            $modelpr->save();
+        }else{}*/
+        
         return $this->render('viewitem', [
-            'model' => $this->findModel($idpo),
+            'model' => $this->findModel($id),
             'modelpr' => $modelpr,
+            
         ]);
     }
 

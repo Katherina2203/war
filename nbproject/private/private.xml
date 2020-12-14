@@ -3,17 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/xampp/htdocs/war/frontend/config/main.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/controllers/PricesController.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/paymentinvoice/itemsin.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/models/PricesSearch.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/prices/_formchangeprice.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/layouts/left.php</file>
-            <file>file:/D:/xampp/htdocs/war/frontend/views/layouts/left.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/views/prices/view.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/models/PaymentinvoiceSearch.php</file>
-            <file>file:/D:/xampp/htdocs/war/common/models/Prices.php</file>
-            <file>file:/D:/xampp/htdocs/war/backend/controllers/AccountsController.php</file>
+            <file>file:/C:/xampp/htdocs/war/frontend/web/.htaccess</file>
+            <file>file:/C:/xampp/htdocs/war/backend/config/main.php</file>
+            <file>file:/C:/xampp/htdocs/war/backend/controllers/SiteController.php</file>
+            <file>file:/C:/xampp/htdocs/war/.htaccess</file>
         </group>
     </open-files>
 </project-private>

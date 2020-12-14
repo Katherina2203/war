@@ -74,7 +74,7 @@ class Specification extends \yii\db\ActiveRecord
     {
         return [
             [['quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'required'],
-            [['id', 'quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'integer'],
+            [['quantity', 'idelement', 'idboard', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -85,7 +85,7 @@ class Specification extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'Idspec'),
+            'idspec' => Yii::t('app', 'Idspec'),
             'quantity' => Yii::t('app', 'Quantity'),
             'idelement' => Yii::t('app', 'Idelement'),
             'idboard' => Yii::t('app', 'Idboard'),

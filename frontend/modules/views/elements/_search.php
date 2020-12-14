@@ -6,8 +6,9 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\models\elementsSearch */
 /* @var $form yii\widgets\ActiveForm */
-//use common\models\Category;
-//$getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufacture', 'idpr'])->orderBy('manufacture')->asArray()->all(), 'idpr', 'manufacture');
+use common\models\Category;
+$getcategory = Category::getHierarchy(); //ArrayHelper::map(common\models\Category::find()->select(['name_ru', 'idcategory'])->all(), 'idcategory', 'name_ru');
+$getproduce = ArrayHelper::map(common\models\Produce::find()->select(['manufacture', 'idpr'])->orderBy('manufacture')->asArray()->all(), 'idpr', 'manufacture');
 ?>
 
 <div class="elements-search">
@@ -20,8 +21,8 @@ use yii\helpers\ArrayHelper;
             <?= $form->field($model, 'name') ?>
         </div>
         <div class="col col-md-4">
-            <?= $form->field($model, 'idcategory')->dropDownList($aCategoryHierarchy,
-                    ['prompt' => yii::t('app', 'Choose category')])?>
+            <?= $form->field($model, 'idcategory')->dropDownList($getcategory,
+                    ['prompt'=>'Выберите категорию'])?>
         </div>
     </div>
     <div class="row">
@@ -30,8 +31,8 @@ use yii\helpers\ArrayHelper;
             
         </div>
         <div class="col col-md-4">
-            <?php  echo $form->field($model, 'idproduce')->dropDownList($aProduce,
-                    ['prompt' => yii::t('app', 'Choose manufacturer')]) ?>
+            <?php  echo $form->field($model, 'idproduce')->dropDownList($getproduce,
+                    ['prompt'=>'Выберите производителя']) ?>
         </div>
     </div>
 

@@ -17,7 +17,7 @@ class Payer extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%payer}}';
+        return 'payer';
     }
 
     /**
@@ -28,9 +28,6 @@ class Payer extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 24],
-            [['contact'], 'string', 'max' => 128],
-            [['address'], 'string'],
-            [['phone', 'email'], 'string', 'max' => 48],
         ];
     }
 
@@ -42,10 +39,6 @@ class Payer extends \yii\db\ActiveRecord
         return [
             'idpayer' => Yii::t('app', 'Idpayer'),
             'name' => Yii::t('app', 'Name'),
-            'contact' => Yii::t('app', 'Contact'),
-            'phone' => Yii::t('app', 'Phone'),
-            'email' => Yii::t('app', 'Email'), 
-            'address' => Yii::t('app', 'Address'),
         ];
     }
 }

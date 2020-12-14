@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace app\models;
 
 use Yii;
 
@@ -29,7 +29,7 @@ class SpecificationTemplate extends \yii\db\ActiveRecord
     {
         return [
             [['idelement', 'quantity'], 'required'],
-            [['idelement', 'quantity', 'idboard'], 'integer'],
+            [['idelement', 'quantity'], 'integer'],
             [['ref_of_board'], 'string', 'max' => 64],
         ];
     }
@@ -41,9 +41,7 @@ class SpecificationTemplate extends \yii\db\ActiveRecord
     {
         return [
             'idspt' => Yii::t('app', 'Idspt'),
-            'idboard' => Yii::t('app', 'Idboard'),
             'idelement' => Yii::t('app', 'Idelement'),
-            
             'quantity' => Yii::t('app', 'Quantity'),
             'ref_of_board' => Yii::t('app', 'Ref Of Board'),
         ];

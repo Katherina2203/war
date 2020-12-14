@@ -19,7 +19,7 @@ class PayerSearch extends Payer
     {
         return [
             [['idpayer'], 'integer'],
-            [['name', 'contact', 'email', 'phone'], 'safe'],
+            [['name', 'contact'], 'safe'],
         ];
     }
 

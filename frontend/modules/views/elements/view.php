@@ -19,13 +19,27 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Товары', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<?php
+    $this->registerJs(
+        '$("document").ready(function(){
+            $("#quickorder").on("pjax:end", function() {
+            $.pjax.reload({container:"#historyorder"});  //Reload GridView
+            });
+            
+            if ($.pjax.("#historyorder").val() != empty ) { 
+                $("#infobox").hide();
+            } else {
+                $("#infobox").show();
+       
+        });
+        });'
+    );
+?>
 
 <div class="elements-view">
     <p>
          <?= Html::a('<i class="glyphicon glyphicon-plus"></i> Позицию', ['create'], [ 'title'=>'Создать единицу товара', 'class' => 'btn btn-success']) ?>
     </p>
-     <span><?= Alert::widget()?></span>
 <div class="row">
     <div class="col-md-10">
         <div class="box box-success">
@@ -39,6 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="col-md-6">
                     <p>
+                        <?= Html::a('Update', ['update', 'id' => $model->idelements], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Delete', ['delete', 'id' => $model->idelements], [
+                            'class' => 'btn btn-danger',
+                            'data' => [
+                                'confirm' => 'Are you sure you want to delete this item?',
+                                'method' => 'post',
+                            ],
+                        ]) ?>
                         <?= Html::a('<i class="glyphicon glyphicon-list"></i>Заказать', 
                                 ['orderquick', 'iduser' => yii::$app->user->identity->id, 'idel' => $model->idelements], 
                                 [ 'title'=>'Создать заявку этого товара', 'class' => 'btn btn-warning'])
@@ -107,19 +129,14 @@ $this->params['breadcrumbs'][] = $this->title;
                              ]) ?>
                       </div>
                     </div>
-                <div class="col-md-3 fastrequest">
+                <div class="col-md-3 request">
                     <h3 class="box-title">Создать заявку быстро</h3>
-                    <span><?= Alert::widget()?></span>
                     <div class="box-body">
-                        <?php 
-//                        Pjax::begin(['id' => 'quickorder']); 
-                        ?>
+                        <?php Pjax::begin(['id' => 'quickorder']); ?>
                             <?= $this->render('_formquick', [
                                         'model' => $modelrequests,
                             ]) ?>
-                        <?php 
-//                        Pjax::end(); 
-                        ?>
+                        <?php Pjax::end(); ?>
                     </div>
                 </div>
             </div><!-- /end .box-body -->
@@ -127,14 +144,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </div><!-- /end .col-md-10 -->
 </div><!-- /end .row -->
 
-<?php
-    echo $this->render('_view_requests', [
-        'dataAccountsRequests' => $dataAccountsRequests,
-    ]) 
-?>
-
 <div class="row">
-    <div class="col-sm-7">
+    <div class="col-md-7">
         <div class="box box-warning">
             <div class="box-header with-border"><h3 class="box-title">История заказа</h3></div>
             <div class="box-body">
@@ -147,7 +158,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <?php Pjax::begin(['id' => 'historyorder']); ?>
-                <?php echo GridView::widget([
+                <?= GridView::widget([
                     'dataProvider' => $dataProviderpur,
                    // 'filterModel' => $searchModelout,
                     'showOnEmpty' => false,
@@ -180,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'idrequest',
                             'label' => 'Проект',
                             'value' => function($data){
-                                return is_null($data->requests->themes) ? "" : $data->requests->themes->name;
+                                return $data->requests->themes->name;
                             },
                         ],
                         [
@@ -216,70 +227,61 @@ $this->params['breadcrumbs'][] = $this->title;
                             'filter' => ['0'=> 'Не обработано', '1' => 'Активна','2' => 'Отменено','3' => 'Выполнено']
                         ],
                     ],
-                ]);
-                                    ?>
+                ])?>
                 <?php Pjax::end(); ?>
             </div>
         </div>
-        </div> 
-        <div class='col-sm-4'>
+    </div> 
+    <div class='col-sm-3'>
             <div class="box box-danger">
                 <div class="box-header with-border"><h3 class="box-title">Недостачи по платам</h3></div>
-               
                 <div class="box-body">
-                    <?php Pjax::begin(['id' => 'shortages']); ?>
-                                <?= $this->render('_specificationby', [
-                                            'model' => $modelSpecification,
-                                            'dataProviderSpecification'=>$dataProviderSpecification,
+                    <?php Pjax::begin(); ?>
+                                <?= $this->render('_shortageby', [
+                                            'model' => $modelShortage,
+                                            'dataProviderShortage'=>$dataProviderShortage,
+                                           // 'searchModelTheme'=>$searchModelBoard
                                 ]) ?>
                     <?php Pjax::end(); ?>
                 </div>
             </div>
     </div> 
 </div>
-
 <div class="row">
-    <div class='col-sm-4'>
+        <div class='col-sm-4'>
             <div class="box">
                 <div class="box-header with-border"><h3 class="box-title">Цена</h3></div>
-                 <div class="box-body">
-                    <?= GridView::widget([
-                        'dataProvider' => $dataProvider2,
-                      //  'filterModel' => $searchModel2,
-                        'showOnEmpty' => false,
-                        'emptyText' => '<table><tbody></tbody></table>',
-                     
-
-                        'columns' => [
-                            'idpr',
-                            [
-                                'attribute' =>  'unitPrice',
-                                'format' => 'raw',
-                                'value' => function($data){
-                                       return $data->unitPrice. '/'. $data->forUP. ' ' . $data->currency->currency . '<br/><small style="color:grey">+'. $data->pdv . '</small>';
-                                },
-                            ],
-                            'usd',
-                            [
-                                'attribute' => 'idsup',
-                                'value' => 'supplier.name',
-                             //    'filter' => Html::activeDropDownList($searchModel2, 'idsup', ArrayHelper::map(common\models\Supplier::find()->select(['idsupplier', 'name'])->indexBy('idsupplier')->all(), 'idsupplier', 'name'),['class'=>'form-control','prompt' => 'Выберите поставщика']),
-                              /*  'contentOptions' => ['style' => 'max-width: 90px;white-space: normal'],*/
-                            ],
-                            [
-                                'attribute' => 'created_at',
-                                'format' => ['date', 'php:Y-m-d'],
-                            ]
-                            
-                        ], 
-                    ]);
-                   ?>    
-                </div>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider2,
+              //  'filterModel' => $searchModel2,
+                'showOnEmpty' => false,
+                'emptyText' => '<table><tbody></tbody></table>',
+                'columns' => [
+                    'idpr',
+                    [
+                        'attribute' =>  'unitPrice',
+                        'format' => 'raw',
+                        'value' => function($data){
+                               return $data->unitPrice. '/'. $data->forUP;
+                        },
+                    ],
+                    'pdv',
+                    'usd',
+                    [
+                         'attribute' => 'idsup',
+                         'value' => 'supplier.name',
+                     //    'filter' => Html::activeDropDownList($searchModel2, 'idsup', ArrayHelper::map(common\models\Supplier::find()->select(['idsupplier', 'name'])->indexBy('idsupplier')->all(), 'idsupplier', 'name'),['class'=>'form-control','prompt' => 'Выберите поставщика']),
+                    ],
+                    'created_at',
+                ], 
+            ]);
+           ?>
             </div>
-    </div>
+        </div>
       
-    <div class="col-md-8">
-            <div class="box box-info">
+        
+        <div class="col-md-8">
+            <div class="box">
               <div class="box-header with-border"><h3 class="box-title">Поступление на склад</h3></div>
              <div class="box-body">
              <?= GridView::widget([
@@ -288,18 +290,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'showOnEmpty' => false,
                 'emptyText' => '<table><tbody></tbody></table>',
                 'columns' => [
-                    [
-                        'class' => 'yii\grid\ActionColumn',
-                        'template' => '{receipt}',
-                        'controller' => 'accounts',
-                        'buttons' => [
-                            'receipt' => function ($url,$model,$key) {
-                                $url = Url::to(['createreceipt', 'idord' => $key, 'idel' => $model->idelem]);
-                                return $model->status == '2' ? Html::a('<span class="glyphicon glyphicon-plus"></span>', $url,['title' => 'Прием товара'])
-                                : '';
-                            },
-                        ],
-                    ],
                     'idord',
                     [
                         'attribute' => 'quantity',
@@ -359,22 +349,26 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                    'date_receive',
                     //],
-                   [
-                       'attribute' => 'idord',
-                       'label' => 'Получено',
-                       'format' => 'raw',
-                       'value' => function($data){
-                            return empty($data->receipt->quantity) ? '-' : $data->receipt->quantity;
-                       }//'receipt.quantity', //receipt->quantity
-                     
-                   ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{receipt}',
+                        'controller' => 'accounts',
+                        'buttons' => [
+                            'receipt' => function ($url,$model,$key) {
+                                $url = Url::to(['createreceipt', 'idord' => $key, 'idel' => $model->idelem]);
+                                return $model->status == '2' ? Html::a('<span class="glyphicon glyphicon-plus"></span>', $url,['title' => 'Прием товара'])
+                                : '';
+                            },
+                        ],
+                    ],
                  ],
                 ]);
             ?>
             </div>
           </div>
+        </div>
+
     </div>
-</div>
 
 <div class="row">
     <div class='col-sm-6'>
@@ -387,7 +381,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'showOnEmpty' => false,
                     'emptyText' => '<table><tbody></tbody></table>',
                     'columns' => [
-                        'idreturn',
+                      //  'idreturn',
                         'quantity',
                         'created_at',
                     ],
@@ -397,19 +391,70 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>  
 </div>
-    <div class="row">
-        <div class='col-sm-12'>
-            <div class="box box-primary">
-                <div class="box-header with-border"><h3 class="box-title">Взято со склада</h3></div>
-                <div class="box-body">
-                    <?php
-                        echo $this->render('_view_outofstock', [
-                            'dataProviderout' => $dataProviderout,
-                            'searchModelout' => $searchModelout,
-                        ]) 
-                    ?>
-                </div>
-            </div>
+<div class="row">
+    <div class='col-sm-12'>
+    <div class="box box-primary">
+        <div class="box-header with-border"><h3 class="box-title">Взято со склада</h3></div>
+        <div class="box-body">
+            <?= GridView::widget([
+                'dataProvider' => $dataProviderout,
+                'filterModel' => $searchModelout,
+                'showOnEmpty' => false,
+                'emptyText' => '<table><tbody></tbody></table>',
+                'columns' => [
+                    'idofstock',
+          //  'idelement',
+            [
+                'attribute' => 'iduser',
+                'value' => 'users.surname',
+                
+                  'filter' => Html::activeDropDownList($searchModelout, 'iduser', ArrayHelper::map(\common\models\Users::find()->select(['id', 'surname'])->indexBy('id')->all(), 'id', 'surname'),['class'=>'form-control','prompt' => 'Select user']),
+            ],
+            [
+                'attribute' => 'quantity',
+                'format' => 'raw',
+                'value' => function($data){
+                    return '<strong><center>' . $data->quantity . '</center></strong>';
+                }
+            ],
+            'date',
+         //   'idtheme',
+            [
+                'attribute' => 'idtheme',
+                'value' => function($data){
+                //    return $data->themes->ThemList;
+                return empty($data->idtheme) ? '-' : $data->themes->name;
+                },
+                'format' => 'text',
+                'filter' => Html::activeDropDownList($searchModelout, 'idtheme', ArrayHelper::map(\common\models\Themes::find()->select(['idtheme', 'name'])->where(['status' => 'active'])->all(), 'idtheme', 'ThemList'),['class'=>'form-control','prompt' => 'Выберите проект']),
+            ],
+            [
+                'attribute' => 'idthemeunit',
+              //  'value' => 'themeunits.UnitsListId',
+                'value' => function($data){
+                    return empty($data->idthemeunit) ? '-' : $data->themeunits->nameunit;
+                },
+                'format' => 'text',
+                'filter' => Html::activeDropDownList($searchModelout, 'idthemeunit', ArrayHelper::map(\common\models\Themeunits::find()->select(['idunit', 'nameunit'])->all(), 'idunit', 'UnitsListId'),['class'=>'form-control','prompt' => 'Выберите модуль']),
+            ], 
+            [
+                'attribute' => 'idboart',
+                'format' => 'raw',
+                'value' => function($data, $url){
+                    $url = Url::to(['boards/view', 'id' => $data->idboart]);
+                    return html::a($data->boards->BoardnameId, $url);//$data->boards->BoardnameId = '0' ? '-' :
+                },
+                'filter' => Html::activeDropDownList($searchModelout, 'idboart', ArrayHelper::map(\common\models\Boards::find()->select(['idboards', 'name'])->where(['discontinued' => '1'])->all(), 'idboards', 'BoardnameId'),['class'=>'form-control','prompt' => 'Выберите плату']),
+            ], 
+            'ref_of_board',
+
+            ['class' => 'yii\grid\ActionColumn',
+                'controller' => 'outofstock',
+                ],
+                ]
+            ]) ?>
+             </div>
         </div>
     </div>
+</div>
 </div>

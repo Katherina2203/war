@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
@@ -10,7 +10,7 @@ use common\models\Elements;
 /**
  * elementsSearch represents the model behind the search form about `common\models\Elements`.
  */
-class elementsSearch extends Elements
+class ElementsSearch extends Elements
 {
     /**
      * @inheritdoc
@@ -41,7 +41,8 @@ class elementsSearch extends Elements
      */
     public function search($params)
     {
-        $query = Elements::find();
+     //   $query = Elements::find();
+         $query = Elements::find()->with(['category', 'produce']);
 
         // add conditions that should always apply here
 
@@ -49,27 +50,27 @@ class elementsSearch extends Elements
             'query' => $query,
         ]);
 
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+        //жадная загрузка
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
          //   'idelements' => $this->idelements,
+           // 'name' => $this->name,
+           // 'nominal' => $this->nominal,
             'quantity' => $this->quantity,
             'idproduce' => $this->idproduce,
             'idcategory' => $this->idcategory,
-          //  'date_added' => $this->date_added,
+            'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'box', $this->box])
+        $query->andFilterWhere(['like', 'idelements', $this->idelements])
+       //     ->andFilterWhere(['like', 'box', $this->box])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'nominal', $this->nominal])
-            ->andFilterWhere(['like', 'image', $this->image])
+            ->andFilterWhere(['like', 'quantity', $this->quantity])
             ->andFilterWhere(['like', 'active', $this->active]);
 
         return $dataProvider;

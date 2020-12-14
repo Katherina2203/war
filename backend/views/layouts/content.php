@@ -4,29 +4,18 @@ use dmstr\widgets\Alert;
 
 ?>
 <div class="content-wrapper" style="display: table; clear: both; overflow: visible; width: auto; min-width: 100%; margin-left: 0px; padding-left: 230px;">
-  <section class="content-header">
-        <?php if (isset($this->blocks['content-header'])) { ?>
-            <h1><?= $this->blocks['content-header'] ?></h1>
-        <?php } else { ?>
+    <section class="content-header">
             <h1>
-                <?php
-                if ($this->title !== null) {
-                    echo \yii\helpers\Html::encode($this->title);
-                } else {
-                    echo \yii\helpers\Inflector::camel2words(
-                        \yii\helpers\Inflector::id2camel($this->context->module->id)
-                    );
-                    echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
-                } ?>
+            <small><?= $this->title ?></small>
             </h1>
-        <?php } ?>
-         
-        <div class="breadcrumb">
-            <?= Breadcrumbs::widget(
-                ['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                ]
-            ) ?>
-        </div>
+            <ol class="breadcrumb" style="float: left; margin-right: 200px;">
+                <?= Breadcrumbs::widget(
+                [
+                     'itemTemplate' => "<li><i>{link}</i></li>\n",
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ]);
+            ?> 
+            </ol>
     </section>
 
     <section class="content" style="overflow: visible;">

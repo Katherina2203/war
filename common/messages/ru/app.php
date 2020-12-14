@@ -6,8 +6,6 @@ return [
     'Menu' => 'Меню',
     'Create request' => 'Создать заявку',
     'My requests' => 'Мои заявки',
-    'Elements' => 'Номенклатура товаров',
-    'Invoices' => 'Счета',
     
 ]
 ;

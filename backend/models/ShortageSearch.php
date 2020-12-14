@@ -19,7 +19,7 @@ class ShortageSearch extends Shortage
     {
         return [
             [['id', 'idboard', 'idelement', 'quantity'], 'integer'],
-            [['ref_of', 'status'], 'safe'],
+            [['ref_of', 'date', 'status'], 'safe'],
         ];
     }
 

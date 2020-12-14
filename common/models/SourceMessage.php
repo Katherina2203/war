@@ -20,7 +20,7 @@ class Sourcemessage extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%source_message}}';
+        return 'source_message';
     }
 
     /**
