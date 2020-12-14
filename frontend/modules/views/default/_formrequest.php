@@ -135,4 +135,4 @@ use common\models\TypeRequest;
     <?php ActiveForm::end(); ?>
 <?php Pjax::end(); ?>
 </div>
-</div>
+

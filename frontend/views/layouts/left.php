@@ -53,25 +53,34 @@ use backend\models\ElementsSearch;
                         'url' => ['/myaccount/']
                     ],
                     
+                    
+                  
+                 ],
+            ])?>
+        <?= dmstr\widgets\Menu::widget([
+                'options' => ['class' => 'sidebar-menu'],
+                'items' => [
+                    ['label' => Yii::t('app', 'My Menu'), 'options' => ['class' => 'header']],
+                    
                     [               
                         'label' => Yii::t('app', 'Requests'),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Create request'),
-                                'url' => ['/requests/create', 'iduser' => yii::$app->user->identity->id]
+                                'url' => ['/myaccount/requests/create', 'iduser' => yii::$app->user->identity->id]
                             ],
                             [
                                 'label' => Yii::t('app', 'My requests'),
-                                'url' => ['/requests/myrequests', 'iduser' => yii::$app->user->identity->id]
+                                'url' => ['/myaccount/requests/myrequests', 'iduser' => yii::$app->user->identity->id]
                             ],
                             [
                                 'label' => Yii::t('app', 'All requests'), 
                                 'icon' => 'fa fa-book',
-                                'url' => ['/requests/index']
+                                'url' => ['/myaccount/requests/index']
                             ],
                             [
                                 'label' => 'Назначить исполнителя',
-                                'url' => ['/requests/checkprocess'],
+                                'url' => ['/myaccount/requests/checkprocess'],
                              //    'visible' => yii::$app->user->can('head') || yii::$app->user->can('admin'),
                                  'visible' => yii::$app->user->identity->role == common\models\Users::USER_TYPE_SUPER_ADMIN || yii::$app->user->identity->role == common\models\Users::USER_TYPE_HEAD, //|| yii::$app->user->can('head')
                             ],
@@ -85,13 +94,6 @@ use backend\models\ElementsSearch;
                           //  ['label' => 'Текущее состояние заявок', 'url' => ['prices/index']], //для отдела снабжения
                         ]
                     ],
-                  
-                 ],
-            ])?>
-        <?= dmstr\widgets\Menu::widget([
-                'options' => ['class' => 'sidebar-menu'],
-                'items' => [
-                    ['label' => Yii::t('app', 'My Menu'), 'options' => ['class' => 'header']],
                     
                     ['label' =>  Yii::t('app', 'Номенклатура товаров'), 'icon' => 'fa fa-bars', 'url' => ['elements/index']],
                     ['label' => 'Категории товаров', 'url' => ['/myaccount/category/index']],
